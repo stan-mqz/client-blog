@@ -3,12 +3,14 @@ import { Login } from "./Pages/Login";
 import { Register } from "./Pages/Register";
 import { action as loginAction } from "./Pages/Login";
 import { Home } from "./Pages/Home";
+import { MainLayout } from "./Layouts/MainLayout";
+import { protectedLoader } from "./loaders/protectedLoader";
 
 
 export const router = createBrowserRouter(
     [
         {
-            path: '/',
+            path: '/login',
             element: <Login/>,
             action: loginAction
         },
@@ -19,8 +21,15 @@ export const router = createBrowserRouter(
         },
 
         {
-            path: '/home',
-            element: <Home/>
+            path: '/',
+            element: <MainLayout/>,
+            loader: protectedLoader,
+            children: [
+                {
+                    index: true,
+                    element: <Home/>
+                }
+            ]
         }
     ]
 )

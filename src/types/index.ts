@@ -5,3 +5,9 @@ export const userDataLogin = z.object({
     password: z.string()
 }) 
 
+export type userData = {
+    id: number,
+    username: string,
+    email: string,
+    avatar: string
+}

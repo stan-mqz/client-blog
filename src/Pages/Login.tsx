@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import { login } from "../services/AuthService";
 import { ErrorMessage } from "../Components/ErrorMessage";
+import { useGlobalStore } from "../store/store";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   let error;
@@ -20,9 +21,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return error;
   }
 
-  await login(data);
+  const user = await login(data);
+  useGlobalStore.getState().setUserData(user);
 
-  return redirect('/home');
+  return redirect("/");
 };
 
 export const Login = () => {
