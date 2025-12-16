@@ -12,9 +12,21 @@ export const protectedLoader = async () => {
   const user = await me();
 
   if (!user) {
-    return redirect("/login");
+    return redirect("auth/login");
   }
 
   setUserData(user);
   return null;
 };
+
+
+export const protectedAuthLoader = async () => {
+  const { isAuthenticated } = useGlobalStore.getState()
+
+  
+  if (isAuthenticated) {
+    return redirect('/')
+  }
+
+
+}

@@ -4,32 +4,38 @@ import { Register } from "./Pages/Register";
 import { action as loginAction } from "./Pages/Login";
 import { Home } from "./Pages/Home";
 import { MainLayout } from "./Layouts/MainLayout";
-import { protectedLoader } from "./loaders/protectedLoader";
+import {
+  protectedAuthLoader,
+  protectedLoader,
+} from "./loaders/protectedLoaders";
 
+export const router = createBrowserRouter([
+  {
+    path: "/auth",
+    loader: protectedAuthLoader,
+    children: [
+      {
+        path: "login",
+        element: <Login />,
+        action: loginAction,
+      },
 
-export const router = createBrowserRouter(
-    [
-        {
-            path: '/login',
-            element: <Login/>,
-            action: loginAction
-        },
+      {
+        path: "register",
+        element: <Register />,
+      },
+    ],
+  },
 
-        {
-            path: '/register',
-            element: <Register/>
-        },
-
-        {
-            path: '/',
-            element: <MainLayout/>,
-            loader: protectedLoader,
-            children: [
-                {
-                    index: true,
-                    element: <Home/>
-                }
-            ]
-        }
-    ]
-)
+  {
+    path: "/",
+    element: <MainLayout />,
+    loader: protectedLoader,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+    ],
+  },
+]);
