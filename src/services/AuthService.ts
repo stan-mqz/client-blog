@@ -49,13 +49,12 @@ export const register = async (data: userData) => {
     let response;
     const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/register`;
 
-    const result =  userDataRegister.safeParse({
+    const result = userDataRegister.safeParse({
       username: data.username,
       email: data.email,
       password: data.password,
     });
 
- 
     if (result.success) {
       response = await api.post(URL, {
         username: data.username,
@@ -66,12 +65,27 @@ export const register = async (data: userData) => {
       throw new Error("Invalid Data");
     }
 
-    return response.data
-    
-
+    return response.data;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
+};
 
- 
+export const verifyEmail = async (token: string) => {
+  let success;
+
+  try {
+    const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/verify-email`;
+
+    await api.post(URL, {
+      verficationToken: token,
+    });
+
+    success = true;
+
+    return success;
+  } catch (error) {
+    success = false;
+    return success;
+  }
 };

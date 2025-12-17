@@ -12,7 +12,8 @@ import {
 import {
     action as registerAction
 } from './Pages/Register'
-import { VerifyEmail } from "./Pages/VerifyEmail";
+import { VerifyEmail, laoder as verifyEmailLoader} from "./Pages/VerifyEmail";
+
 
 export const router = createBrowserRouter([
   {
@@ -33,7 +34,8 @@ export const router = createBrowserRouter([
 
       {
         path: 'verify-email',
-        element: <VerifyEmail/>
+        element: <VerifyEmail/>,
+        loader: verifyEmailLoader
       }
     ],
   },
