@@ -13,6 +13,7 @@ import {
   action as registerAction
 } from './Pages/Register';
 import { VerifyEmail, loader as verifyEmailLoader } from "./Pages/VerifyEmail";
+import { RecoverEmail, action as recoverEmailAction } from "./Pages/RecoverEmail";
 
 
 export const router = createBrowserRouter([
@@ -37,6 +38,12 @@ export const router = createBrowserRouter([
         element: <VerifyEmail/>,
         loader: verifyEmailLoader,
        
+      },
+
+      {
+        path: 'recover-email',
+        element: <RecoverEmail/>,
+        action: recoverEmailAction
       }
     ],
   },

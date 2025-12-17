@@ -1,6 +1,10 @@
 import type { AxiosError } from "axios";
 import { useGlobalStore } from "../store/store";
-import { userDataLogin, userDataRegister } from "../types";
+import {
+  userDataLogin,
+  userDataRecoverEmail,
+  userDataRegister,
+} from "../types";
 import api from "./api";
 
 type userData = {
@@ -103,6 +107,35 @@ export const verifyEmail = async (token: string) => {
   } catch (error) {
     success = false;
     return success;
+  }
+};
+
+export const recoverEmail = async (data: userData) => {
+  try {
+    const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/recover-email`;
+
+    const result = userDataRecoverEmail.safeParse({
+      email: data.email,
+      newEmail: data.newEmail,
+    });
+
+    if (!result.success) {
+      return result.error;
+    }
+
+    const response = await api.post(URL, {
+      email: data.email,
+      newEmail: data.newEmail,
+    });
+
+    return response.data;
+  } catch (error) {
+    const err = error as AxiosError<{ message: string }>;
+    if (err.response && err.response.data) {
+      setError(err.response.data.message || "Something went wrong");
+    } else {
+      setError(err.message || "Something went wrong");
+    }
   }
 };
 
