@@ -38,14 +38,14 @@ export const login = async (data: userData) => {
       password: data.password,
     });
 
-    if (result.success) {
-      response = await api.post(URL, {
-        email: data.email,
-        password: data.password,
-      });
-    } else {
-      throw new Error("Invalid Data");
+    if (!result.success) {
+      return result.error;
     }
+
+    response = await api.post(URL, {
+      email: data.email,
+      password: data.password,
+    });
 
     return response.data;
   } catch (error) {
@@ -59,28 +59,30 @@ export const login = async (data: userData) => {
   }
 };
 
-export const register = async (data: userData) => {
+export const register = async (userData: userData) => {
   try {
     let response;
     const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/register`;
 
     const result = userDataRegister.safeParse({
-      username: data.username,
-      email: data.email,
-      password: data.password,
+      username: userData.username,
+      email: userData.email,
+      password: userData.password,
     });
 
-    if (result.success) {
-      response = await api.post(URL, {
-        username: data.username,
-        email: data.email,
-        password: data.password,
-      });
-    } else {
-      throw new Error("Invalid Data");
+    if (!result.success) {
+     return result.error;
     }
 
-    return response.data;
+    response = await api.post(URL, {
+      username: userData.username,
+      email: userData.email,
+      password: userData.password,
+    });
+
+   
+
+    return response.data
   } catch (error) {
     const err = error as AxiosError<{ message: string }>;
     if (err.response && err.response.data) {

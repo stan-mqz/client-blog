@@ -107,11 +107,9 @@ export const RecoverEmail = () => {
             Update
           </button>
         </form>
-        <Link to={"/auth/recover-email"} className="text-white">
-          Forgot your e-mail?{" "}
-          <span className="text-purple-400 cursor-pointer">
-            Click here to recover it
-          </span>
+        <Link to={"/auth/login"} className="text-white">
+          Remember your email?{" "}
+          <span className="text-purple-400 cursor-pointer">Sign in here</span>
         </Link>
       </div>
     </div>

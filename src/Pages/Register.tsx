@@ -17,7 +17,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const response = await register(data);
 
-  return response.message;
+  return response.message
 };
 
 export const Register = () => {
