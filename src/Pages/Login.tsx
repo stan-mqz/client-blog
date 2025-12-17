@@ -1,24 +1,19 @@
 import {
   Form,
   Link,
-  redirect,
-  useActionData,
-  type ActionFunctionArgs,
+  redirect, type ActionFunctionArgs
 } from "react-router-dom";
 import { login } from "../services/AuthService";
 import { ErrorMessage } from "../Components/ErrorMessage";
 import { useGlobalStore } from "../store/store";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  let error;
   const data = Object.fromEntries(await request.formData());
+  const store = useGlobalStore.getState();
 
   if (Object.values(data).includes("")) {
-    error = "All fields must be filled";
-  }
-
-  if (error) {
-    return error;
+    store.setError("All fields must be filled");
+    return null;
   }
 
   const user = await login(data);
@@ -28,7 +23,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export const Login = () => {
-  const error = useActionData() as string;
+  
+  const error = useGlobalStore((state) => state.error)
 
   return (
     <>
