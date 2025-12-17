@@ -12,7 +12,7 @@ import {
 import {
     action as registerAction
 } from './Pages/Register'
-import { VerifyEmail, laoder as verifyEmailLoader} from "./Pages/VerifyEmail";
+import { VerifyEmail, loader as verifyEmailLoader} from "./Pages/VerifyEmail";
 
 
 export const router = createBrowserRouter([

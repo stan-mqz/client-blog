@@ -1,3 +1,4 @@
+import { useGlobalStore } from "../store/store";
 import { userDataLogin, userDataRegister } from "../types";
 import api from "./api";
 
@@ -8,6 +9,7 @@ type userData = {
 export const me = async () => {
   try {
     let response;
+
     const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/me`;
 
     response = await api.get(URL);
@@ -87,5 +89,26 @@ export const verifyEmail = async (token: string) => {
   } catch (error) {
     success = false;
     return success;
+  }
+};
+
+export const logout = async () => {
+  try {
+    useGlobalStore.setState({
+      isLoading: true,
+    });
+    const store = useGlobalStore.getState();
+    const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/logout`;
+
+    await api.post(URL);
+
+    store.setUserData(null);
+  } catch (error) {
+    console.error("Error logging out:", error);
+    return null;
+  } finally {
+    useGlobalStore.setState({
+      isLoading: false,
+    });
   }
 };

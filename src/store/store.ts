@@ -3,6 +3,7 @@ import type { authUserData } from "../types";
 import { create } from "zustand";
 
 interface GlobalStore {
+  isLoading: boolean
   error: string;
   setError: (message: string) => void;
   userData: authUserData | null;
@@ -14,6 +15,7 @@ export const useGlobalStore = create<GlobalStore>()(
   devtools(
     persist(
       (set): GlobalStore => ({
+        isLoading: false,
         error: "",
         setError: (message) => {
           set({ error: message });
