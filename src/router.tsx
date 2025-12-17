@@ -9,6 +9,11 @@ import {
   protectedLoader,
 } from "./loaders/protectedLoaders";
 
+import {
+    action as registerAction
+} from './Pages/Register'
+import { VerifyEmail } from "./Pages/VerifyEmail";
+
 export const router = createBrowserRouter([
   {
     path: "/auth",
@@ -23,7 +28,13 @@ export const router = createBrowserRouter([
       {
         path: "register",
         element: <Register />,
+        action: registerAction
       },
+
+      {
+        path: 'verify-email',
+        element: <VerifyEmail/>
+      }
     ],
   },
 

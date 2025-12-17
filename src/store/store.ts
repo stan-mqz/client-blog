@@ -1,10 +1,10 @@
 import { devtools, persist } from "zustand/middleware";
-import type { userData } from "../types";
+import type { authUserData } from "../types";
 import { create } from "zustand";
 
 interface GlobalStore {
-  userData: userData | null;
-  setUserData: (user: userData | null) => void;
+  userData: authUserData | null;
+  setUserData: (user: authUserData | null) => void;
   isAuthenticated: boolean;
 }
 

@@ -1,4 +1,4 @@
-import { userDataLogin } from "../types";
+import { userDataLogin, userDataRegister } from "../types";
 import api from "./api";
 
 type userData = {
@@ -10,12 +10,12 @@ export const me = async () => {
     let response;
     const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/me`;
 
-    response = await api.get(URL)
+    response = await api.get(URL);
 
-    return response.data
+    return response.data;
   } catch (error) {
-    console.error(error)
-    return null
+    console.error(error);
+    return null;
   }
 };
 
@@ -44,17 +44,34 @@ export const login = async (data: userData) => {
   }
 };
 
-//Todo: This is just for testing protected route
-export const getPosts = async () => {
+export const register = async (data: userData) => {
   try {
     let response;
-    const URL = `${import.meta.env.VITE_BACKEND_URL}/posts/all`;
+    const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/register`;
 
-    response = await api.get(URL)
+    const result =  userDataRegister.safeParse({
+      username: data.username,
+      email: data.email,
+      password: data.password,
+    });
+
+ 
+    if (result.success) {
+      response = await api.post(URL, {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      });
+    } else {
+      throw new Error("Invalid Data");
+    }
 
     return response.data
+    
 
   } catch (error) {
-    
+    console.error(error)
   }
-}
+
+ 
+};
