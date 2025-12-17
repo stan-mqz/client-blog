@@ -34,7 +34,7 @@ export const Login = () => {
 
           <div className="text-center">
             <h1 className="text-4xl font-bold text-white mb-7">Sign in</h1>
-            <Link to={"auth/register"} className="text-white">
+            <Link to={"/auth/register"} className="text-white">
               Don't have an account yet?{" "}
               <span className="text-purple-400 cursor-pointer">
                 Create one here

@@ -21,6 +21,7 @@ export const protectedLoader = async () => {
 
 
 export const protectedAuthLoader = async () => {
+  
   const { isAuthenticated } = useGlobalStore.getState()
 
   
