@@ -1,3 +1,4 @@
+import type { AxiosError } from "axios";
 import { useGlobalStore } from "../store/store";
 import { userDataLogin, userDataRegister } from "../types";
 import api from "./api";
@@ -5,6 +6,8 @@ import api from "./api";
 type userData = {
   [k: string]: FormDataEntryValue;
 };
+
+const { setError } = useGlobalStore.getState();
 
 export const me = async () => {
   try {
@@ -42,7 +45,13 @@ export const login = async (data: userData) => {
 
     return response.data;
   } catch (error) {
-    console.error(error);
+    const err = error as AxiosError<{ message: string }>;
+    if (err.response && err.response.data) {
+      setError(err.response.data.message || "Something went wrong");
+    } else {
+      setError(err.message || "Something went wrong");
+    }
+    return null;
   }
 };
 
@@ -69,7 +78,12 @@ export const register = async (data: userData) => {
 
     return response.data;
   } catch (error) {
-    console.error(error);
+    const err = error as AxiosError<{ message: string }>;
+    if (err.response && err.response.data) {
+      setError(err.response.data.message || "Something went wrong");
+    } else {
+      setError(err.message || "Something went wrong");
+    }
   }
 };
 

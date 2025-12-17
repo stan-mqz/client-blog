@@ -10,9 +10,9 @@ import {
 } from "./loaders/protectedLoaders";
 
 import {
-    action as registerAction
-} from './Pages/Register'
-import { VerifyEmail, loader as verifyEmailLoader} from "./Pages/VerifyEmail";
+  action as registerAction
+} from './Pages/Register';
+import { VerifyEmail, loader as verifyEmailLoader } from "./Pages/VerifyEmail";
 
 
 export const router = createBrowserRouter([
@@ -35,7 +35,8 @@ export const router = createBrowserRouter([
       {
         path: 'verify-email',
         element: <VerifyEmail/>,
-        loader: verifyEmailLoader
+        loader: verifyEmailLoader,
+       
       }
     ],
   },

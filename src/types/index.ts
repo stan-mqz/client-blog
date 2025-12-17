@@ -11,9 +11,17 @@ export const userDataRegister = z.object({
   password: z.string(),
 });
 
+
+export type loginData = z.infer<typeof userDataLogin>
+
+export type registerData = z.infer<typeof userDataRegister>
+
 export type authUserData = {
   id: number;
   username: string;
   email: string;
   avatar: string;
 };
+
+
+ 

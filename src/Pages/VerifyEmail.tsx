@@ -1,7 +1,5 @@
 import { Link, useLoaderData, type LoaderFunctionArgs } from "react-router-dom";
 import { verifyEmail } from "../services/AuthService";
-import { useGlobalStore } from "../store/store";
-import { LoadingSpinner } from "../Components/LoadingSpinner";
 
 // Loader corregido
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -18,11 +16,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export const VerifyEmail = () => {
   const result = useLoaderData();
-  const isLoading = useGlobalStore((state) => state.isLoading);
 
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-slate-900">
