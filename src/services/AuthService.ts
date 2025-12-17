@@ -3,6 +3,7 @@ import { useGlobalStore } from "../store/store";
 import {
   userDataLogin,
   userDataRecoverEmail,
+  userDataRecoverPassword,
   userDataRegister,
 } from "../types";
 import api from "./api";
@@ -59,30 +60,28 @@ export const login = async (data: userData) => {
   }
 };
 
-export const register = async (userData: userData) => {
+export const register = async (data: userData) => {
   try {
     let response;
     const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/register`;
 
     const result = userDataRegister.safeParse({
-      username: userData.username,
-      email: userData.email,
-      password: userData.password,
+      username: data.username,
+      email: data.email,
+      password: data.password,
     });
 
     if (!result.success) {
-     return result.error;
+      return result.error;
     }
 
     response = await api.post(URL, {
-      username: userData.username,
-      email: userData.email,
-      password: userData.password,
+      username: data.username,
+      email: data.email,
+      password: data.password,
     });
 
-   
-
-    return response.data
+    return response.data;
   } catch (error) {
     const err = error as AxiosError<{ message: string }>;
     if (err.response && err.response.data) {
@@ -139,7 +138,41 @@ export const recoverEmail = async (data: userData) => {
       setError(err.message || "Something went wrong");
     }
   }
+
+  return null
 };
+
+export const recoverPassword = async (data: userData) => {
+  try {
+
+    const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/recover-password`
+
+    const result = userDataRecoverPassword.safeParse({
+      email: data.email,
+      newPassword: data.newPassword,
+    })
+
+    if (!result.success) {
+      return result.error
+    }
+
+    const response = await api.post(URL, {
+      email: data.email,
+      newPassword: data.newPassword
+    })
+
+    return response.data
+
+  } catch (error) {
+    const err = error as AxiosError<{ message: string }>;
+    if (err.response && err.response.data) {
+      setError(err.response.data.message || "Something went wrong");
+    } else {
+      setError(err.message || "Something went wrong");
+    }
+  }
+};
+
 
 export const logout = async () => {
   try {

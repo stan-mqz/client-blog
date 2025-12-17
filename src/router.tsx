@@ -14,6 +14,7 @@ import {
 } from './Pages/Register';
 import { VerifyEmail, loader as verifyEmailLoader } from "./Pages/VerifyEmail";
 import { RecoverEmail, action as recoverEmailAction } from "./Pages/RecoverEmail";
+import { RecoverPassword, action as recoverPasswordAction } from "./Pages/RecoverPassword";
 
 
 export const router = createBrowserRouter([
@@ -44,6 +45,13 @@ export const router = createBrowserRouter([
         path: 'recover-email',
         element: <RecoverEmail/>,
         action: recoverEmailAction
+      },
+
+      {
+        path: 'recover-password',
+        element: <RecoverPassword/>,
+        action: recoverPasswordAction
+        
       }
     ],
   },

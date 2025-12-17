@@ -14,14 +14,14 @@ import { recoverEmail } from "../services/AuthService";
 export const action = async ({ request }: ActionFunctionArgs) => {
   const data = Object.fromEntries(await request.formData());
   const response = await recoverEmail(data);
-  return response;
+  return response?.message 
 };
 
 export const RecoverEmail = () => {
   const error = useGlobalStore((state) => state.error);
   const submit = useSubmit();
 
-  const response = useActionData();
+  const message = useActionData();
 
   const {
     register,
@@ -40,8 +40,8 @@ export const RecoverEmail = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-slate-900">
       <div className="flex flex-col gap-6 w-[30%] items-center py-12 px-8 rounded-lg bg-slate-800 shadow-xl">
-        {response && (
-          <p className="text-green-600 font-bold">E-mail updated succesfully</p>
+        {message && (
+          <p className="text-green-600 font-bold">{message}</p>
         )}
 
         {error && <ErrorMessage>{error}</ErrorMessage>}
