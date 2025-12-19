@@ -1,11 +1,11 @@
 // layouts/AppLayout.tsx
 import { Outlet } from "react-router-dom";
-
+import { NavBar } from "../Components/NavBar";
 
 export const MainLayout = () => {
   return (
     <div className="min-h-screen flex flex-col">
-        <h2>This is MainLayout</h2>
+      <NavBar />
       <main className="flex-1">
         <Outlet />
       </main>
