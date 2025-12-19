@@ -4,8 +4,8 @@ import {
   useSubmit,
   type ActionFunctionArgs,
 } from "react-router-dom";
-import { useGlobalStore } from "../store/store";
-import type { recoverPasswordData } from "../types";
+import { useBlogStore } from "../store/store";
+import type { recoverPasswordData } from "../types/userTypes";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "../Components/ErrorMessage";
 import { ErrorFormMessage } from "../Components/ErrorFormMessage";
@@ -18,7 +18,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export const RecoverPassword = () => {
-  const error = useGlobalStore((state) => state.error);
+  const error = useBlogStore((state) => state.error);
   const submit = useSubmit();
   const message = useActionData();
 

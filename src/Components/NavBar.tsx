@@ -1,4 +1,4 @@
-import { useGlobalStore } from "../store/store";
+import { useBlogStore } from "../store/store";
 import {
   HomeIcon,
   PlusCircleIcon,
@@ -6,7 +6,7 @@ import {
 } from "@heroicons/react/16/solid";
 
 export const NavBar = () => {
-  const { username, email, avatar } = useGlobalStore.getState().userData!;
+  const { username, email, avatar } = useBlogStore.getState().userData!
 
   return (
     <nav className="flex bg-slate-800 justify-between items-center p-3.5">

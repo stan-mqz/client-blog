@@ -1,7 +1,7 @@
 import { logout } from "../services/AuthService";
 import { useNavigate } from "react-router-dom";
-import { useGlobalStore } from "../store/store";
-import { LoadingSpinner } from "../Components/LoadingSpinner";
+import { useBlogStore} from "../store/store";
+import { LoadingSpinner } from "../Components/LoadingSpinner/LoadingSpinner";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ export const Home = () => {
     navigate("/auth/login");
   };
 
-  const isLoading = useGlobalStore((state) => state.isLoading);
+  const isLoading = useBlogStore((state) => state.isLoading);
 
   return (
     <>

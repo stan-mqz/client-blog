@@ -5,8 +5,8 @@ import {
   type ActionFunctionArgs,
 } from "react-router-dom";
 import { ErrorMessage } from "../Components/ErrorMessage";
-import { useGlobalStore } from "../store/store";
-import type { recoverEmailData } from "../types";
+import { useBlogStore } from "../store/store";
+import type { recoverEmailData } from "../types/userTypes";
 import { useForm } from "react-hook-form";
 import { ErrorFormMessage } from "../Components/ErrorFormMessage";
 import { recoverEmail } from "../services/AuthService";
@@ -18,7 +18,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export const RecoverEmail = () => {
-  const error = useGlobalStore((state) => state.error);
+  const error = useBlogStore((state) => state.error);
   const submit = useSubmit();
 
   const message = useActionData();

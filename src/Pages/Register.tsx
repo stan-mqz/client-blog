@@ -6,10 +6,10 @@ import {
   useSubmit,
   type ActionFunctionArgs,
 } from "react-router-dom";
-import { useGlobalStore } from "../store/store";
+import { useBlogStore } from "../store/store";
 import { ErrorMessage } from "../Components/ErrorMessage";
 import { useForm } from "react-hook-form";
-import type { registerData } from "../types";
+import type { registerData } from "../types/userTypes";
 import { ErrorFormMessage } from "../Components/ErrorFormMessage";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -38,7 +38,7 @@ export const Register = () => {
   };
 
   const message = useActionData();
-  const error = useGlobalStore((state) => state.error);
+  const error = useBlogStore((state) => state.error);
   return (
     <>
       {message ? (

@@ -1,18 +1,18 @@
 import type { AxiosError } from "axios";
-import { useGlobalStore } from "../store/store";
+import { useBlogStore } from "../store/store";
 import {
   userDataLogin,
   userDataRecoverEmail,
   userDataRecoverPassword,
   userDataRegister,
-} from "../types";
+} from "../types/userTypes";
 import api from "./api";
 
 type userData = {
   [k: string]: FormDataEntryValue;
 };
 
-const { setError } = useGlobalStore.getState();
+const { setError } = useBlogStore.getState();
 
 export const me = async () => {
   try {
@@ -176,10 +176,10 @@ export const recoverPassword = async (data: userData) => {
 
 export const logout = async () => {
   try {
-    useGlobalStore.setState({
+    useBlogStore.setState({
       isLoading: true,
     });
-    const store = useGlobalStore.getState();
+    const store = useBlogStore.getState();
     const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/logout`;
 
     await api.post(URL);
@@ -189,7 +189,7 @@ export const logout = async () => {
     console.error("Error logging out:", error);
     return null;
   } finally {
-    useGlobalStore.setState({
+    useBlogStore.setState({
       isLoading: false,
     });
   }

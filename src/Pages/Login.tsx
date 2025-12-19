@@ -6,22 +6,22 @@ import {
 } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { login } from "../services/AuthService";
-import { useGlobalStore } from "../store/store";
+import { useBlogStore } from "../store/store";
 import { ErrorMessage } from "../Components/ErrorMessage";
 import { ErrorFormMessage } from "../Components/ErrorFormMessage";
-import type { loginData } from "../types";
+import type { loginData } from "../types/userTypes";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const data = Object.fromEntries(await request.formData());
 
   const user = await login(data);
-  useGlobalStore.getState().setUserData(user);
+  useBlogStore.getState().setUserData(user);
 
   return redirect("/");
 };
 
 export const Login = () => {
-  const error = useGlobalStore((state) => state.error);
+  const error = useBlogStore((state) => state.error);
   const submit = useSubmit();
 
   const {

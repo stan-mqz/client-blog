@@ -1,9 +1,9 @@
 import { redirect } from "react-router-dom";
-import { useGlobalStore } from "../store/store";
+import { useBlogStore } from "../store/store";
 import { me } from "../services/AuthService";
 
 export const protectedLoader = async () => {
-  const { isAuthenticated, setUserData } = useGlobalStore.getState();
+  const { isAuthenticated, setUserData } = useBlogStore.getState();
 
   if (isAuthenticated) {
     return null;
@@ -22,7 +22,7 @@ export const protectedLoader = async () => {
 
 export const protectedAuthLoader = async () => {
   
-  const { isAuthenticated } = useGlobalStore.getState()
+  const { isAuthenticated } = useBlogStore.getState()
 
   
   if (isAuthenticated) {
