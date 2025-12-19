@@ -1,12 +1,23 @@
+import { useNavigate } from "react-router-dom";
 import { useBlogStore } from "../store/store";
 import {
   HomeIcon,
   PlusCircleIcon,
   Cog8ToothIcon,
 } from "@heroicons/react/16/solid";
+import { logout } from "../services/AuthService";
 
 export const NavBar = () => {
-  const { username, email, avatar } = useBlogStore.getState().userData!
+  const username = useBlogStore((state) => state.userData?.username);
+  const email = useBlogStore((state) => state.userData?.email);
+  const avatar = useBlogStore((state) => state.userData?.avatar);
+
+  const navigate = useNavigate();
+
+  const handleLogOut = async () => {
+    await logout();
+    navigate("/auth/login");
+  };
 
   return (
     <nav className="flex bg-slate-800 justify-between items-center p-3.5">
@@ -38,6 +49,15 @@ export const NavBar = () => {
 
         <div>
           <Cog8ToothIcon className="size-9 text-white" />
+        </div>
+
+        <div>
+          <button
+            className="text-white bg-red-600 hover:bg-red-700 px-5 py-2 rounded-lg transition-colors font-medium shadow-lg"
+            onClick={handleLogOut}
+          >
+            Logout
+          </button>
         </div>
       </div>
     </nav>

@@ -1,11 +1,17 @@
 import { type StateCreator } from "zustand";
-import type { PostsData } from "../../types/postsTypes";
+import type { Post } from "../../types/postsTypes";
 
 export type PostsSlice = {
-    posts: PostsData[]
-}
+  posts: Post[];
+  postError: string;
+  setPostError: (message: string) => void;
+};
 
-
-export const createPostsSlice : StateCreator<PostsSlice> = (set) => ({
-    posts: []
-})
+export const createPostsSlice: StateCreator<PostsSlice> = (set) => ({
+  posts: [],
+  postError: "",
+  setPostError: (message) => {
+    set({ postError: message });
+    setTimeout(() => set({ postError: "" }), 3000);
+  },
+});

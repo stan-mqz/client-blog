@@ -5,7 +5,7 @@ import {
   type ActionFunctionArgs,
 } from "react-router-dom";
 import { useBlogStore } from "../store/store";
-import type { recoverPasswordData } from "../types/userTypes";
+import type { UserRecoverPassword } from "../types/userTypes";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "../Components/ErrorMessage";
 import { ErrorFormMessage } from "../Components/ErrorFormMessage";
@@ -18,7 +18,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export const RecoverPassword = () => {
-  const error = useBlogStore((state) => state.error);
+  const error = useBlogStore((state) => state.authError);
   const submit = useSubmit();
   const message = useActionData();
 
@@ -26,9 +26,9 @@ export const RecoverPassword = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<recoverPasswordData>();
+  } = useForm<UserRecoverPassword>();
 
-  const onSubmit = (data: recoverPasswordData) => {
+  const onSubmit = (data: UserRecoverPassword) => {
     const formData = new FormData();
     formData.append("email", data.email);
     formData.append("newPassword", data.newPassword);
@@ -36,7 +36,7 @@ export const RecoverPassword = () => {
     submit(formData, { method: "POST" });
   };
   return (
-    <div className="flex items-center justify-center min-h-screen bg-slate-900">
+    <div className="flex items-center justify-center min-h-screen ">
       <div className="flex flex-col gap-6 w-[30%] items-center py-12 px-8 rounded-lg bg-slate-800 shadow-xl">
         {message && <p className="text-green-600 font-bold">{message}</p>}
         {error && <ErrorMessage>{error}</ErrorMessage>}

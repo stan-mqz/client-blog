@@ -1,10 +1,10 @@
 import type { AxiosError } from "axios";
 import { useBlogStore } from "../store/store";
 import {
-  userDataLogin,
-  userDataRecoverEmail,
-  userDataRecoverPassword,
-  userDataRegister,
+  UserLoginSchema,
+  UserRecoverEmailSchema,
+  UserRecoverPasswordSchema,
+  UserRegisterSchema,
 } from "../types/userTypes";
 import api from "./api";
 
@@ -12,7 +12,7 @@ type userData = {
   [k: string]: FormDataEntryValue;
 };
 
-const { setError } = useBlogStore.getState();
+const { setAuthError } = useBlogStore.getState();
 
 export const me = async () => {
   try {
@@ -24,7 +24,6 @@ export const me = async () => {
 
     return response.data;
   } catch (error) {
-    console.error(error);
     return null;
   }
 };
@@ -34,7 +33,7 @@ export const login = async (data: userData) => {
     let response;
     const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/login`;
 
-    const result = userDataLogin.safeParse({
+    const result = UserLoginSchema.safeParse({
       email: data.email,
       password: data.password,
     });
@@ -52,9 +51,9 @@ export const login = async (data: userData) => {
   } catch (error) {
     const err = error as AxiosError<{ message: string }>;
     if (err.response && err.response.data) {
-      setError(err.response.data.message || "Something went wrong");
+      setAuthError(err.response.data.message || "Something went wrong");
     } else {
-      setError(err.message || "Something went wrong");
+      setAuthError(err.message || "Something went wrong");
     }
     return null;
   }
@@ -65,7 +64,7 @@ export const register = async (data: userData) => {
     let response;
     const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/register`;
 
-    const result = userDataRegister.safeParse({
+    const result = UserRegisterSchema.safeParse({
       username: data.username,
       email: data.email,
       password: data.password,
@@ -85,10 +84,12 @@ export const register = async (data: userData) => {
   } catch (error) {
     const err = error as AxiosError<{ message: string }>;
     if (err.response && err.response.data) {
-      setError(err.response.data.message || "Something went wrong");
+      setAuthError(err.response.data.message || "Something went wrong");
     } else {
-      setError(err.message || "Something went wrong");
+      setAuthError(err.message || "Something went wrong");
     }
+
+    return null
   }
 };
 
@@ -115,7 +116,7 @@ export const recoverEmail = async (data: userData) => {
   try {
     const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/recover-email`;
 
-    const result = userDataRecoverEmail.safeParse({
+    const result = UserRecoverEmailSchema.safeParse({
       email: data.email,
       newEmail: data.newEmail,
     });
@@ -133,9 +134,9 @@ export const recoverEmail = async (data: userData) => {
   } catch (error) {
     const err = error as AxiosError<{ message: string }>;
     if (err.response && err.response.data) {
-      setError(err.response.data.message || "Something went wrong");
+      setAuthError(err.response.data.message || "Something went wrong");
     } else {
-      setError(err.message || "Something went wrong");
+      setAuthError(err.message || "Something went wrong");
     }
   }
 
@@ -147,7 +148,7 @@ export const recoverPassword = async (data: userData) => {
 
     const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/recover-password`
 
-    const result = userDataRecoverPassword.safeParse({
+    const result = UserRecoverPasswordSchema.safeParse({
       email: data.email,
       newPassword: data.newPassword,
     })
@@ -166,9 +167,9 @@ export const recoverPassword = async (data: userData) => {
   } catch (error) {
     const err = error as AxiosError<{ message: string }>;
     if (err.response && err.response.data) {
-      setError(err.response.data.message || "Something went wrong");
+      setAuthError(err.response.data.message || "Something went wrong");
     } else {
-      setError(err.message || "Something went wrong");
+      setAuthError(err.message || "Something went wrong");
     }
   }
 };

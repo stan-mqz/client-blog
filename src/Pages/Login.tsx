@@ -9,7 +9,7 @@ import { login } from "../services/AuthService";
 import { useBlogStore } from "../store/store";
 import { ErrorMessage } from "../Components/ErrorMessage";
 import { ErrorFormMessage } from "../Components/ErrorFormMessage";
-import type { loginData } from "../types/userTypes";
+import type { UserLogin } from "../types/userTypes";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const data = Object.fromEntries(await request.formData());
@@ -21,16 +21,16 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export const Login = () => {
-  const error = useBlogStore((state) => state.error);
+  const error = useBlogStore((state) => state.authError);
   const submit = useSubmit();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<loginData>();
+  } = useForm<UserLogin>();
 
-  const onSubmit = (data: loginData) => {
+  const onSubmit = (data: UserLogin) => {
     const formData = new FormData();
     formData.append("email", data.email);
     formData.append("password", data.password);
@@ -39,7 +39,7 @@ export const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-slate-900">
+    <div className="flex items-center justify-center min-h-screen">
       <div className="flex flex-col gap-6 w-[30%] items-center py-12 px-8 rounded-lg bg-slate-800 shadow-xl">
         {error && <ErrorMessage>{error}</ErrorMessage>}
 

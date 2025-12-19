@@ -9,7 +9,7 @@ import {
 import { useBlogStore } from "../store/store";
 import { ErrorMessage } from "../Components/ErrorMessage";
 import { useForm } from "react-hook-form";
-import type { registerData } from "../types/userTypes";
+import type { UserRegister } from "../types/userTypes";
 import { ErrorFormMessage } from "../Components/ErrorFormMessage";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -26,9 +26,9 @@ export const Register = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<registerData>();
+  } = useForm<UserRegister>();
 
-  const onSubmit = (data: registerData) => {
+  const onSubmit = (data: UserRegister) => {
     const formData = new FormData();
     formData.append("username", data.username);
     formData.append("email", data.email);
@@ -38,14 +38,14 @@ export const Register = () => {
   };
 
   const message = useActionData();
-  const error = useBlogStore((state) => state.error);
+  const error = useBlogStore((state) => state.authError);
   return (
     <>
       {message ? (
         <VerificationMessage message={message} />
       ) : (
         <>
-          <div className="flex items-center justify-center min-h-screen bg-slate-900">
+          <div className="flex items-center justify-center min-h-screen">
             <div className="flex flex-col gap-6 w-[30%] items-center py-12 px-8 rounded-lg bg-slate-800 shadow-xl">
               {error && <ErrorMessage>{error}</ErrorMessage>}
               <div className="text-center">

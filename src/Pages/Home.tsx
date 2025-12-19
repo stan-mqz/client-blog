@@ -1,27 +1,54 @@
-import { logout } from "../services/AuthService";
-import { useNavigate } from "react-router-dom";
-import { useBlogStore} from "../store/store";
+import { useLoaderData } from "react-router-dom";
+import { useBlogStore } from "../store/store";
 import { LoadingSpinner } from "../Components/LoadingSpinner/LoadingSpinner";
+import { getAllPosts } from "../services/PostServices";
+import type { Post } from "../types/postsTypes";
+import { DisplayPost } from "../Components/DisplayPost";
+
+export const loader = async () => {
+  const response = await getAllPosts();
+  return response;
+};
 
 export const Home = () => {
-  const navigate = useNavigate();
+  const posts = useLoaderData() as Post[] | null;
 
-  const handleLogOut = async () => {
-    await logout();
-    navigate("/auth/login");
-  };
-
+  
   const isLoading = useBlogStore((state) => state.isLoading);
-
+  
   return (
-    <>
+    <div className="min-h-screen from-slate-900 via-slate-800 to-slate-900">
       {isLoading ? (
-        <LoadingSpinner />
+        <div className="flex-1 flex justify-center items-center min-h-screen">
+          <LoadingSpinner />
+        </div>
       ) : (
-        <button className="cursor-pointer text-white" onClick={handleLogOut}>
-          Logout
-        </button>
+        <>
+          <div className="sticky top-0 z-10 bg-slate-900/80 backdrop-blur-sm border-b border-slate-700">
+            <div className="max-w-3xl mx-auto px-4 py-4">
+              <h1 className="text-2xl font-bold text-white text-center">Feed</h1>
+
+            </div>
+          </div>
+
+          <div className="max-w-3xl mx-auto px-4 py-8">
+            <div className="space-y-6">
+              {posts?.map((post) => (
+                <DisplayPost key={post.id_post} post={post} />
+              ))}
+            </div>
+          </div>
+
+          {posts?.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-20 text-slate-400">
+              {/* <svg className="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg> */}
+              <p className="text-xl">No hay posts aún</p>
+            </div>
+          )}
+        </>
       )}
-    </>
+    </div>
   );
 };

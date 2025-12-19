@@ -1,41 +1,49 @@
-import z from "zod";
+import { z } from "zod";
 
-export type authUserData = {
-  id: number;
-  username: string;
-  email: string;
-  avatar: string;
-};
+// Schema para usuario autenticado
+export const AuthUserSchema = z.object({
+  id_user: z.number(),
+  username: z.string(),
+  email: z.string(),
+  avatar: z.string(),
+});
 
-
-export const userDataLogin = z.object({
+// Schema para login
+export const UserLoginSchema = z.object({
   email: z.string(),
   password: z.string(),
 });
 
-export const userDataRegister = z.object({
+// Schema para registro
+export const UserRegisterSchema = z.object({
   username: z.string(),
   email: z.string(),
   password: z.string(),
 });
 
-export const userDataRecoverEmail = z.object({
+// Schema para recuperar email
+export const UserRecoverEmailSchema = z.object({
   email: z.string(),
-  newEmail: z.string()
-})
+  newEmail: z.string(),
+});
 
-
-export const userDataRecoverPassword = z.object({
+// Schema para recuperar contraseña
+export const UserRecoverPasswordSchema = z.object({
   email: z.string(),
-  newPassword: z.string()
-})
+  newPassword: z.string(),
+});
 
-export type loginData = z.infer<typeof userDataLogin>
+// Schema básico de usuario
+export const UserBasicSchema = z.object({
+  id_user: z.number(),
+  username: z.string(),
+  avatar: z.string(),
+});
 
-export type registerData = z.infer<typeof userDataRegister>
-
-export type recoverEmailData = z.infer<typeof userDataRecoverEmail>
-
-export type recoverPasswordData = z.infer<typeof userDataRecoverPassword>
-
- 
+// Tipos TypeScript
+export type AuthUser = z.infer<typeof AuthUserSchema>;
+export type UserLogin = z.infer<typeof UserLoginSchema>;
+export type UserRegister = z.infer<typeof UserRegisterSchema>;
+export type UserRecoverEmail = z.infer<typeof UserRecoverEmailSchema>;
+export type UserRecoverPassword = z.infer<typeof UserRecoverPasswordSchema>;
+export type UserBasic = z.infer<typeof UserBasicSchema>;

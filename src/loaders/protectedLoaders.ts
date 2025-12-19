@@ -3,31 +3,22 @@ import { useBlogStore } from "../store/store";
 import { me } from "../services/AuthService";
 
 export const protectedLoader = async () => {
-  const { isAuthenticated, setUserData } = useBlogStore.getState();
-
-  if (isAuthenticated) {
-    return null;
-  }
-
   const user = await me();
 
   if (!user) {
     return redirect("auth/login");
   }
 
-  setUserData(user);
+  useBlogStore.getState().setUserData(user);
   return null;
 };
 
-
 export const protectedAuthLoader = async () => {
-  
-  const { isAuthenticated } = useBlogStore.getState()
+  const { isAuthenticated } = useBlogStore.getState();
 
-  
   if (isAuthenticated) {
-    return redirect('/')
+    return redirect("/");
   }
 
-
-}
+  return null;
+};

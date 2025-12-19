@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { Login } from "./Pages/Login";
 import { Register } from "./Pages/Register";
 import { action as loginAction } from "./Pages/Login";
-import { Home } from "./Pages/Home";
+import { Home, loader as homeLoader } from "./Pages/Home";
 import { MainLayout } from "./Layouts/MainLayout";
 import {
   protectedAuthLoader,
@@ -64,6 +64,7 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+        loader: homeLoader
       },
     ],
   },
