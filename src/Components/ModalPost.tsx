@@ -1,5 +1,9 @@
 import { Box, Modal, Typography } from "@mui/material";
 import type { Post } from "../types/postsTypes";
+import {
+  ChatBubbleLeftEllipsisIcon,
+  HeartIcon,
+} from "@heroicons/react/24/outline";
 
 type ModalPostProps = {
   post: Post;
@@ -60,7 +64,7 @@ export const ModalPost = ({ post, modal, setModal }: ModalPostProps) => {
 
         {/* IMAGE */}
         {post.image && (
-          <div className="px-6 pb-6">
+          <div className="px-6 pb-4">
             <img
               src={post.image}
               alt="Post"
@@ -68,6 +72,11 @@ export const ModalPost = ({ post, modal, setModal }: ModalPostProps) => {
             />
           </div>
         )}
+
+        <div className="flex gap-3 px-6 pb-4">
+          <HeartIcon className="size-8 text-white hover:text-purple-600 cursor-pointer " />
+          <ChatBubbleLeftEllipsisIcon className="size-8 text-white hover:text-purple-600 cursor-pointer" />
+        </div>
       </Box>
     </Modal>
   );
