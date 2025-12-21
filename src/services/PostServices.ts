@@ -1,4 +1,4 @@
-import { PostsArraySchema, PostSchema } from "../types/postsTypes";
+import { PostsArraySchema, type Post } from "../types/postsTypes";
 import api from "./api";
 
 
@@ -22,3 +22,22 @@ export const getAllPosts = async () => {
     
   }
 };
+
+
+export const likePost = async (id: Post["id_post"]) => {
+  try {
+    const URL =  `${import.meta.env.VITE_BACKEND_URL}/posts/${id}/like`
+    await api.post(URL)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const unlikePost = async (id: Post["id_post"]) => {
+    try {
+    const URL =  `${import.meta.env.VITE_BACKEND_URL}/posts/${id}/like`
+    await api.delete(URL)
+  } catch (error) {
+    console.log(error)
+  }
+}
