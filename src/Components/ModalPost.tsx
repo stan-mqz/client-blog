@@ -7,6 +7,7 @@ import {
 
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/16/solid";
 import { useFetcher } from "react-router-dom";
+import { Comments } from "./Comments";
 
 type ModalPostProps = {
   post: Post;
@@ -107,6 +108,10 @@ export const ModalPost = ({ post, modal, setModal }: ModalPostProps) => {
               <ChatBubbleLeftEllipsisIcon className="size-7 text-white cursor-pointer transition-all duration-200 group-hover:scale-110 group-hover:text-purple-600" />
             </div>
           </div>
+        </div>
+        <div className="pl-6 pb-5 w-[96%]">
+         
+          <Comments post={post} />
         </div>
       </Box>
     </Modal>

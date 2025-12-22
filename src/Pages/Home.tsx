@@ -7,7 +7,6 @@ import { DisplayPost } from "../Components/DisplayPost";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const data = Object.fromEntries(await request.formData());
-  console.log(data);
   if (data.likedByUser === "true") {
     await unlikePost(+data.id);
   } else {

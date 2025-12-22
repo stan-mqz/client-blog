@@ -53,7 +53,7 @@ export const NavBar = () => {
 
         <div>
           <button
-            className="text-white bg-red-600 hover:bg-red-700 px-5 py-2 rounded-lg transition-colors font-medium shadow-lg"
+            className="text-white bg-red-600 hover:bg-red-700 px-5 py-2 rounded-lg transition-colors font-medium shadow-lg cursor-pointer"
             onClick={handleLogOut}
           >
             Logout

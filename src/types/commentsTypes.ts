@@ -10,7 +10,9 @@ export const CommentSchema = z.object({
   createdAt: z.string(),
   updatedAt: z.string(),
   user: UserBasicSchema,
+  isOwner: z.boolean()
 });
+
 
 export const CreateCommentSchema = z.object({
   content_comment: z.string(),
