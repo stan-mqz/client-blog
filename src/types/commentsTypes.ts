@@ -16,7 +16,6 @@ export const CommentSchema = z.object({
 
 export const CreateCommentSchema = z.object({
   content_comment: z.string(),
-  post_id: z.number(),
 });
 
 export const UpdateCommentSchema = z.object({
