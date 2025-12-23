@@ -5,8 +5,8 @@ export type PostsSlice = {
   posts: Post[];
   postError: string;
   setPostError: (message: string) => void;
-  likedByUser: boolean
-  setLikedByUser: (likeStatus: boolean) => void
+  commentError: string,
+  setCommentError: (message: string) => void
 };
 
 export const createPostsSlice: StateCreator<PostsSlice> = (set) => ({
@@ -16,10 +16,18 @@ export const createPostsSlice: StateCreator<PostsSlice> = (set) => ({
     set({ postError: message });
     setTimeout(() => set({ postError: "" }), 3000);
   },
-  likedByUser: false,
-  setLikedByUser: (likeStatus) => {
+
+  commentError: '',
+  setCommentError: (message) => {
     set(() => ({
-      likedByUser: likeStatus
+      commentError: message
     }))
-  }
+
+    setTimeout(() => {
+      set(() => ({
+        commentError: ''
+      }))
+    }, 3000);
+  } 
+  
 });

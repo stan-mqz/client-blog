@@ -2,31 +2,41 @@ import type { Post } from "../types/postsTypes";
 import { useForm } from "react-hook-form";
 import type { CreateComment } from "../types/commentsTypes";
 import { ErrorFormMessage } from "./ErrorFormMessage";
+import { Form, useNavigation, useSubmit } from "react-router-dom";
 
 type CommentsProps = {
   post: Post;
 };
 
 export const Comments = ({ post }: CommentsProps) => {
+  const navigation = useNavigation()
+  const isSubmitting = navigation.state !== 'idle'
+  const submit = useSubmit();
   const comments = post.comments.map((comment) => comment);
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors},
+    reset
   } = useForm<CreateComment>();
 
   const contentComment = watch("content_comment") || "";
   const commentLength = contentComment.length;
 
   const onSubmit = async (data: CreateComment) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log(data);
+    const formData = new FormData();
+    formData.append("content_comment", data.content_comment);
+    formData.append("intent", 'comment:create');
+    formData.append("id_post", String(post.id_post));
+    submit(formData, { method: "POST" });
+
+    reset()
   };
 
   return (
     <>
-      <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
+      <Form className="w-full" onSubmit={handleSubmit(onSubmit)}>
         <label className="text-white font-bold mb-2 block" htmlFor="id-comment">
           Got something to say?
         </label>
@@ -73,8 +83,15 @@ export const Comments = ({ post }: CommentsProps) => {
             </ErrorFormMessage>
           )}
         </div>
-        <p className="pl-14 text-white">{commentLength}/30</p>
-      </form>
+        <p
+          className={`pl-14 ${
+            commentLength > 30 ? "text-red-500" : "text-white"
+          }`}
+        >
+          {commentLength}
+          /30
+        </p>
+      </Form>
 
       <h2 className="text-white text-center uppercase font-bold mt-10 text-lg">
         Comments Section

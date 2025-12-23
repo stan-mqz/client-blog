@@ -80,18 +80,19 @@ export const ModalPost = ({ post, modal, setModal }: ModalPostProps) => {
         <div className="flex items-center justify-between px-6 pb-5">
           <div className="flex items-center gap-4">
             <fetcher.Form method="POST">
-              <input
-                type="hidden"
-                name="likedByUser"
-                value={String(likedByUser)}
-              />
               <input type="hidden" name="id" value={post.id_post} />
 
               <button type="submit" disabled={fetcher.state === "submitting"}>
                 {likedByUser ? (
-                  <HeartIconSolid className="size-8 text-purple-600 cursor-pointer transition-transform duration-200 group-hover:scale-110" />
+                  <>
+                    <input type="hidden" name="intent" value="unlike" />
+                    <HeartIconSolid className="size-8 text-purple-600 cursor-pointer transition-transform duration-200 group-hover:scale-110" />
+                  </>
                 ) : (
-                  <HeartIcon className="size-8 text-white cursor-pointer transition-all duration-200 group-hover:scale-110 group-hover:text-purple-600" />
+                  <>
+                    <input type="hidden" name="intent" value="like" />
+                    <HeartIcon className="size-8 text-white cursor-pointer transition-all duration-200 group-hover:scale-110 group-hover:text-purple-600" />
+                  </>
                 )}
               </button>
 
@@ -110,7 +111,6 @@ export const ModalPost = ({ post, modal, setModal }: ModalPostProps) => {
           </div>
         </div>
         <div className="pl-6 pb-5 w-[96%]">
-         
           <Comments post={post} />
         </div>
       </Box>

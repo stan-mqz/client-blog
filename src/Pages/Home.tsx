@@ -4,13 +4,30 @@ import { LoadingSpinner } from "../Components/LoadingSpinner/LoadingSpinner";
 import { getAllPosts, likePost, unlikePost } from "../services/PostServices";
 import type { Post } from "../types/postsTypes";
 import { DisplayPost } from "../Components/DisplayPost";
+import { isIntent } from "../helpers";
+import { createComment } from "../services/CommentsServices";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const data = Object.fromEntries(await request.formData());
-  if (data.likedByUser === "true") {
-    await unlikePost(+data.id);
-  } else {
-    await likePost(+data.id);
+  const intent = data.intent 
+  
+  if (!isIntent(intent)) {
+    throw new Response("Invalid intent", { status: 400 });
+  }
+
+  switch (intent) {
+    case 'like':
+      await likePost(+data.id)
+      break;
+
+    case 'unlike':
+      await unlikePost(+data.id)
+      break;
+         
+    case 'comment:create':
+      const id_post = parseInt(data.id_post as string)
+      await createComment(id_post, data)
+     
   }
 
   return null;
