@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import type { CreateComment } from "../types/commentsTypes";
 import { ErrorFormMessage } from "./ErrorFormMessage";
 import { Form, useNavigation, useSubmit } from "react-router-dom";
+import { useBlogStore } from "../store/store";
+import { ErrorMessage } from "./ErrorMessage";
 
 type CommentsProps = {
   post: Post;
@@ -13,6 +15,7 @@ export const Comments = ({ post }: CommentsProps) => {
   const isSubmitting = navigation.state !== 'idle'
   const submit = useSubmit();
   const comments = post.comments.map((comment) => comment);
+  const commentError = useBlogStore(state => state.commentError)
   const {
     register,
     handleSubmit,
@@ -58,8 +61,8 @@ export const Comments = ({ post }: CommentsProps) => {
                 message: "Content must be at least 1 character long",
               },
               maxLength: {
-                value: 30,
-                message: "Content can't be longer than 30 characters",
+                value: 100,
+                message: "Content can't be longer than 100 characters",
               },
             })}
             id="content_comment"
@@ -85,11 +88,11 @@ export const Comments = ({ post }: CommentsProps) => {
         </div>
         <p
           className={`pl-14 ${
-            commentLength > 30 ? "text-red-500" : "text-white"
+            commentLength > 100 ? "text-red-500" : "text-white"
           }`}
         >
           {commentLength}
-          /30
+          /100
         </p>
       </Form>
 
@@ -97,6 +100,7 @@ export const Comments = ({ post }: CommentsProps) => {
         Comments Section
       </h2>
 
+      {commentError && <ErrorMessage>{commentError}</ErrorMessage>}
       {comments.length > 0 ? (
         comments.map((comment) => (
           <div key={comment.id_comment}>
