@@ -1,5 +1,5 @@
 import { useBlogStore } from "../store/store";
-import { CreateCommentSchema } from "../types/commentsTypes";
+import { CreateCommentSchema, UpdateCommentSchema, type UpdateComment } from "../types/commentsTypes";
 import type { Post } from "../types/postsTypes";
 import { AxiosError } from "axios";
 import api from "./api";
@@ -22,14 +22,13 @@ export const createComment = async (
     })
 
     if (!result.success) {
-        return result.error
+        return console.log(result.error)
     }
 
      await api.post(URL, {
         content_comment : data.content_comment
     })
 
-    console.log('Creado')
     
   } catch (error) {
     const err = error as AxiosError<{ message: string }>;
@@ -41,3 +40,35 @@ export const createComment = async (
     }
   }
 };
+
+
+export const editComment = async (id_comment: UpdateComment['id_comment'], data: CommentData) => {
+  try {
+    const URL = `${import.meta.env.VITE_BACKEND_URL}/comments/edit-comment/${id_comment}`
+
+    const result = UpdateCommentSchema.safeParse({
+      id_comment,
+      update_comment: data.update_comment,
+      intent: data.intent
+    })
+
+    if (!result.success) {
+      console.log(result.error)
+    }
+
+   await api.patch(URL, {
+    content_comment: data.update_comment
+   })
+
+
+  } catch (error) {
+    const err = error as AxiosError<{ message: string }>;
+
+    if (err.response && err.response.data) {
+      setCommentError(err.response.data.message || "Something went wrong");
+    } else {
+      setCommentError(err.message || "Something went wrong");
+    }
+  }
+}
+

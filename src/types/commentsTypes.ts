@@ -14,13 +14,18 @@ export const CommentSchema = z.object({
 });
 
 
+
 export const CreateCommentSchema = z.object({
+  intent: z.literal("comment-create").optional(),
   content_comment: z.string(),
 });
 
 export const UpdateCommentSchema = z.object({
-  content_comment: z.string(),
+  intent: z.literal("comment-update").optional(),
+  id_comment: z.number().nullable(),
+  update_comment: z.string(),
 });
+
 
 export const CommentsArraySchema = z.array(CommentSchema);
 
@@ -28,3 +33,5 @@ export type Comment = z.infer<typeof CommentSchema>;
 export type CreateComment = z.infer<typeof CreateCommentSchema>;
 export type UpdateComment = z.infer<typeof UpdateCommentSchema>;
 export type Comments = z.infer<typeof CommentsArraySchema>;
+
+export type CommentAction = CreateComment | UpdateComment;

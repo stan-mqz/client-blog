@@ -1,11 +1,11 @@
-import { useLoaderData, type ActionFunctionArgs } from "react-router-dom";
+import { redirect, useLoaderData, type ActionFunctionArgs } from "react-router-dom";
 import { useBlogStore } from "../store/store";
 import { LoadingSpinner } from "../Components/LoadingSpinner/LoadingSpinner";
 import { getAllPosts, likePost, unlikePost } from "../services/PostServices";
 import type { Post } from "../types/postsTypes";
 import { DisplayPost } from "../Components/DisplayPost";
 import { isIntent } from "../helpers";
-import { createComment } from "../services/CommentsServices";
+import { createComment, editComment } from "../services/CommentsServices";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const data = Object.fromEntries(await request.formData());
@@ -24,13 +24,17 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       await unlikePost(+data.id)
       break;
          
-    case 'comment:create':
+    case 'comment-create':
       const id_post = parseInt(data.id_post as string)
       await createComment(id_post, data)
-     
+     break;
+
+    case 'comment-update': 
+    const id_comment = parseInt(data.id_comment as string)
+    await editComment(id_comment, data)
   }
 
-  return null;
+  return redirect('/');
 };
 
 export const loader = async () => {

@@ -1,147 +1,219 @@
 import type { Post } from "../types/postsTypes";
 import { useForm } from "react-hook-form";
-import type { CreateComment } from "../types/commentsTypes";
+import type { CommentAction, UpdateComment } from "../types/commentsTypes";
 import { ErrorFormMessage } from "./ErrorFormMessage";
-import { Form, useNavigation, useSubmit } from "react-router-dom";
+import { useNavigation, useSubmit } from "react-router-dom";
 import { useBlogStore } from "../store/store";
 import { ErrorMessage } from "./ErrorMessage";
+import { useState } from "react";
 
 type CommentsProps = {
   post: Post;
 };
 
 export const Comments = ({ post }: CommentsProps) => {
-  const navigation = useNavigation()
-  const isSubmitting = navigation.state !== 'idle'
+  const [updatingComment, setUpdatingComment] = useState<UpdateComment>({
+    id_comment: null,
+    update_comment: "",
+  });
+
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state !== "idle";
   const submit = useSubmit();
-  const comments = post.comments.map((comment) => comment);
-  const commentError = useBlogStore(state => state.commentError)
+  const commentError = useBlogStore((state) => state.commentError);
+
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors},
-    reset
-  } = useForm<CreateComment>();
+    setValue,
+    formState: { errors },
+    reset,
+  } = useForm<CommentAction>();
 
   const contentComment = watch("content_comment") || "";
   const commentLength = contentComment.length;
+  const editContentComment = watch("update_comment") || "";
+  const editCommentLength = editContentComment.length;
 
-  const onSubmit = async (data: CreateComment) => {
+  const onSubmit = (data: CommentAction) => {
     const formData = new FormData();
-    formData.append("content_comment", data.content_comment);
-    formData.append("intent", 'comment:create');
-    formData.append("id_post", String(post.id_post));
+
+    if (data.intent === "comment-create") {
+      console.log(data);
+      formData.append("intent", "comment-create");
+      formData.append("content_comment", data.content_comment);
+      formData.append("id_post", String(post.id_post));
+    }
+
+    if (data.intent === "comment-update") {
+      formData.append("intent", "comment-update");
+      formData.append("update_comment", data.update_comment);
+      formData.append("id_comment", String(data.id_comment));
+    }
+
     submit(formData, { method: "POST" });
 
-    reset()
+    reset();
+    setUpdatingComment({ id_comment: null, update_comment: "" });
   };
 
   return (
     <>
-      <Form className="w-full" onSubmit={handleSubmit(onSubmit)}>
-        <label className="text-white font-bold mb-2 block" htmlFor="id-comment">
-          Got something to say?
-        </label>
+      <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
+        <input type="hidden" {...register("intent")} />
+        <input
+          type="hidden"
+          {...register("id_comment", { valueAsNumber: true })}
+        />
 
-        <div className="flex items-center gap-2">
-          <div className="w-12 shrink-0">
-            <img
-              src={post.user.avatar}
-              alt="user avatar"
-              className="w-full rounded-full"
-            />
-          </div>
+        {!updatingComment.id_comment && (
+          <>
+            <label className="text-white font-bold mb-2 block">
+              Got something to say?
+            </label>
 
-          <input
-            {...register("content_comment", {
-              required: "Content is required",
-              minLength: {
-                value: 1,
-                message: "Content must be at least 1 character long",
-              },
-              maxLength: {
-                value: 100,
-                message: "Content can't be longer than 100 characters",
-              },
-            })}
-            id="content_comment"
-            className="flex-1 bg-slate-700 p-2 rounded-md text-white active:border-slate-400 placeholder:text-white"
-            type="text"
-            placeholder="Add a new comment here"
-          />
+            <div className="flex items-center gap-2">
+              <div className="w-12 shrink-0">
+                <img
+                  src={post.user.avatar}
+                  alt="user avatar"
+                  className="w-full rounded-full"
+                />
+              </div>
 
-          <button
-            type="submit"
-            className="bg-purple-600 text-white p-2 uppercase font-bold rounded-md h-full cursor-pointer disabled:bg-purple-400"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "Submitting..." : "Submit"}
-          </button>
-        </div>
-        <div className="pl-14">
-          {errors.content_comment && (
-            <ErrorFormMessage>
-              {errors.content_comment.message}
-            </ErrorFormMessage>
-          )}
-        </div>
-        <p
-          className={`pl-14 ${
-            commentLength > 100 ? "text-red-500" : "text-white"
-          }`}
-        >
-          {commentLength}
-          /100
-        </p>
-      </Form>
+              <input
+                {...register("content_comment", {
+                  required: "Content is required",
+                  minLength: { value: 1, message: "Min 1 character" },
+                  maxLength: { value: 100, message: "Max 100 characters" },
+                })}
+                className="flex-1 bg-slate-700 p-2 rounded-md text-white"
+                placeholder="Add a new comment here"
+              />
+
+              <button
+                type="submit"
+                onClick={() => setValue("intent", "comment-create")}
+                disabled={isSubmitting}
+                className="bg-purple-600 text-white p-2 uppercase font-bold rounded-md disabled:bg-purple-400 cursor-pointer"
+              >
+                Submit
+              </button>
+            </div>
+
+            <p
+              className={`pl-16 ${
+                commentLength > 100 ? "text-red-600" : "text-white"
+              }`}
+            >
+              {commentLength}/100
+            </p>
+            {"content_comment" in errors && errors.content_comment && (
+              <div className="pl-14">
+                <ErrorFormMessage>
+                  {errors.content_comment.message}
+                </ErrorFormMessage>
+              </div>
+            )}
+          </>
+        )}
+
+        {updatingComment.id_comment && (
+          <>
+            <div className="pl-16 mt-4 flex items-center gap-2">
+              <input
+                {...register("update_comment", {
+                  required: "Content is required",
+                  minLength: { value: 1, message: "Min 1 character" },
+                  maxLength: { value: 100, message: "Max 100 characters" },
+                })}
+                className="flex-1 bg-slate-700 p-2 rounded-md text-white"
+              />
+
+              <button
+                type="button"
+                onClick={() => {
+                  setValue("intent", "comment-update");
+                  handleSubmit(onSubmit)();
+                }}
+                disabled={isSubmitting}
+                className="bg-purple-600 text-white p-2 uppercase font-bold rounded-md disabled:bg-purple-400 cursor-pointer"
+              >
+                Update
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  reset();
+                  setUpdatingComment({ id_comment: null, update_comment: "" });
+                }}
+                className="bg-red-600 text-white p-2 uppercase font-bold rounded-md disabled:bg-purple-400 cursor-pointer"
+              >
+                Cancel
+              </button>
+            </div>
+            <p
+              className={`pl-16 ${
+                editCommentLength > 100 ? "text-red-600" : "text-white"
+              }`}
+            >
+              {editCommentLength}/100
+            </p>
+            {"update_comment" in errors && errors.update_comment && (
+              <div className="pl-16">
+                <ErrorFormMessage>
+                  {errors.update_comment.message}
+                </ErrorFormMessage>
+              </div>
+            )}
+          </>
+        )}
+      </form>
 
       <h2 className="text-white text-center uppercase font-bold mt-10 text-lg">
         Comments Section
       </h2>
 
       {commentError && <ErrorMessage>{commentError}</ErrorMessage>}
-      {comments.length > 0 ? (
-        comments.map((comment) => (
-          <div key={comment.id_comment}>
-            <div className="bg-slate-700 mt-5 w-[90%] ml-16 p-2 rounded-md">
-              <div className="flex gap-3 items-start">
-                <div className="w-16 shrink-0">
-                  <img
-                    className="w-full rounded-full"
-                    src={comment.user.avatar}
-                    alt="user avatar"
-                  />
-                </div>
 
-                <div className="flex flex-col">
-                  <p className="text-white font-bold">
-                    {comment.user.username}
-                  </p>
+      {post.comments.map((comment) => (
+        <div key={comment.id_comment} className="ml-16 mt-5">
+          <div className="bg-slate-700 p-3 rounded-md flex gap-3">
+            <img src={comment.user.avatar} className="w-12 rounded-full" />
 
-                  <p className="text-white mt-3">{comment.content_comment}</p>
-                </div>
-              </div>
+            <div>
+              <p className="text-white font-bold">{comment.user.username}</p>
+              <p className="text-white">{comment.content_comment}</p>
             </div>
-
-            {comment.isOwner && (
-              <div className="ml-16 mt-2 flex gap-4 text-md font-bold">
-                <button className="text-purple-600 hover:underline uppercase cursor-pointer">
-                  Edit Comment
-                </button>
-
-                <button className="text-red-600 hover:underline uppercase cursor-pointer">
-                  Delete Comment
-                </button>
-              </div>
-            )}
           </div>
-        ))
-      ) : (
-        <h2 className="text-lg text-red-600 text-center font-bold uppercase mt-10">
-          No comments yet
-        </h2>
-      )}
+
+          {comment.isOwner && (
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  setUpdatingComment({
+                    id_comment: comment.id_comment,
+                    update_comment: comment.content_comment,
+                  });
+
+                  setValue("update_comment", comment.content_comment);
+                  setValue("id_comment", comment.id_comment);
+                  setValue("intent", "comment-update");
+                }}
+                className="text-purple-600 font-bold uppercase mt-2 cursor-pointer"
+              >
+                Edit Comment
+              </button>
+
+              <button className="text-red-600 font-bold uppercase mt-2 cursor-pointer">
+                Delete Comment
+              </button>
+            </div>
+          )}
+        </div>
+      ))}
     </>
   );
 };
