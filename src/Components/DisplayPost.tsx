@@ -1,12 +1,13 @@
 import { useState } from "react";
 import type { Post } from "../types/postsTypes";
-import { ModalPost } from "./ModalPost";
+import { PostDetails } from "./PostDetails";
 
 type DisplayPostProp = {
   post: Post;
 };
 
 export const DisplayPost = ({ post }: DisplayPostProp) => {
+ 
   const [modal, setModal] = useState(false);
 
   return (
@@ -28,7 +29,6 @@ export const DisplayPost = ({ post }: DisplayPostProp) => {
               <p className="text-white font-semibold text-lg">
                 {post.user.username}
               </p>
-              {/* <p className="text-slate-400 text-sm">Hace 2 horas</p> */}
             </div>
           </div>
 
@@ -50,7 +50,7 @@ export const DisplayPost = ({ post }: DisplayPostProp) => {
         )}
       </article>
 
-      <ModalPost post={post} modal={modal} setModal={setModal} />
+      <PostDetails post={post} modal={modal} setModal={setModal} />
     </>
   );
 };
