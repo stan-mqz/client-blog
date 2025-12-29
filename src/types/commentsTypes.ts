@@ -1,6 +1,5 @@
 import { z } from "zod";
-import {UserBasicSchema} from './userTypes'
-
+import { UserBasicSchema } from "./userTypes";
 
 export const CommentSchema = z.object({
   id_comment: z.number(),
@@ -10,22 +9,24 @@ export const CommentSchema = z.object({
   createdAt: z.string(),
   updatedAt: z.string(),
   user: UserBasicSchema,
-  isOwner: z.boolean()
+  isOwner: z.boolean(),
 });
 
-
-
 export const CreateCommentSchema = z.object({
-  intent: z.literal("comment-create").optional(),
+  intent: z.literal("comment-create"),
   content_comment: z.string(),
 });
 
 export const UpdateCommentSchema = z.object({
   intent: z.literal("comment-update").optional(),
   id_comment: z.number().nullable(),
-  update_comment: z.string(),
+  update_comment: z.string().optional(),
 });
 
+export const DeleteCommentSchema = z.object({
+  intent: z.literal('comment-delete'),
+  id_comment: z.number()
+})
 
 export const CommentsArraySchema = z.array(CommentSchema);
 

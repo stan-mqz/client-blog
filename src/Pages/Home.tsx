@@ -1,40 +1,51 @@
-import { redirect, useLoaderData, type ActionFunctionArgs } from "react-router-dom";
+import { useLoaderData, type ActionFunctionArgs } from "react-router-dom";
 import { useBlogStore } from "../store/store";
 import { LoadingSpinner } from "../Components/LoadingSpinner/LoadingSpinner";
 import { getAllPosts, likePost, unlikePost } from "../services/PostServices";
 import type { Post } from "../types/postsTypes";
 import { DisplayPost } from "../Components/DisplayPost";
 import { isIntent } from "../helpers";
-import { createComment, editComment } from "../services/CommentsServices";
+import {
+  createComment,
+  deleteComment,
+  editComment,
+} from "../services/CommentsServices";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const data = Object.fromEntries(await request.formData());
-  const intent = data.intent 
-  
+  const intent = data.intent;
+
   if (!isIntent(intent)) {
     throw new Response("Invalid intent", { status: 400 });
   }
 
+  let id_comment
+
   switch (intent) {
-    case 'like':
-      await likePost(+data.id)
+    case "like":
+      await likePost(+data.id);
       break;
 
-    case 'unlike':
-      await unlikePost(+data.id)
+    case "unlike":
+      await unlikePost(+data.id);
       break;
-         
-    case 'comment-create':
-      const id_post = parseInt(data.id_post as string)
-      await createComment(id_post, data)
-     break;
 
-    case 'comment-update': 
-    const id_comment = parseInt(data.id_comment as string)
-    await editComment(id_comment, data)
+    case "comment-create":
+      const id_post = parseInt(data.id_post as string);
+      await createComment(id_post, data);
+      break;
+
+    case "comment-update":
+       id_comment = parseInt(data.id_comment as string);
+      await editComment(id_comment, data);
+      break;
+
+    case "comment-delete":
+      id_comment = parseInt(data.id_comment as string);
+      await deleteComment(id_comment, data);
   }
 
-  return redirect('/');
+  return null;
 };
 
 export const loader = async () => {

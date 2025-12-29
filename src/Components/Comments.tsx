@@ -6,6 +6,7 @@ import { useNavigation, useSubmit } from "react-router-dom";
 import { useBlogStore } from "../store/store";
 import { ErrorMessage } from "./ErrorMessage";
 import { useState } from "react";
+import { ConfirmDeleteModal } from "./ConfirmDeleteModal";
 
 type CommentsProps = {
   post: Post;
@@ -14,8 +15,11 @@ type CommentsProps = {
 export const Comments = ({ post }: CommentsProps) => {
   const [updatingComment, setUpdatingComment] = useState<UpdateComment>({
     id_comment: null,
-    update_comment: "",
   });
+
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
+  const [deleteTarget, setDeleteTarget] = useState<number | null>(null);
 
   const navigation = useNavigation();
   const isSubmitting = navigation.state !== "idle";
@@ -40,7 +44,6 @@ export const Comments = ({ post }: CommentsProps) => {
     const formData = new FormData();
 
     if (data.intent === "comment-create") {
-      console.log(data);
       formData.append("intent", "comment-create");
       formData.append("content_comment", data.content_comment);
       formData.append("id_post", String(post.id_post));
@@ -48,9 +51,11 @@ export const Comments = ({ post }: CommentsProps) => {
 
     if (data.intent === "comment-update") {
       formData.append("intent", "comment-update");
-      formData.append("update_comment", data.update_comment);
+      formData.append("update_comment", data.update_comment!);
       formData.append("id_comment", String(data.id_comment));
     }
+
+  
 
     submit(formData, { method: "POST" });
 
@@ -61,6 +66,26 @@ export const Comments = ({ post }: CommentsProps) => {
   return (
     <>
       <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
+        <ConfirmDeleteModal
+          open={openDeleteModal}
+          onCancel={() => {
+            setOpenDeleteModal(false);
+            setDeleteTarget(null);
+          }}
+          onConfirm={() => {
+            if (!deleteTarget) return;
+
+            const formData = new FormData();
+            formData.append("intent", "comment-delete");
+            formData.append("id_comment", String(deleteTarget));
+
+            submit(formData, { method: "POST" });
+
+            setOpenDeleteModal(false);
+            setDeleteTarget(null);
+          }}
+        />
+
         <input type="hidden" {...register("intent")} />
         <input
           type="hidden"
@@ -195,7 +220,6 @@ export const Comments = ({ post }: CommentsProps) => {
                 onClick={() => {
                   setUpdatingComment({
                     id_comment: comment.id_comment,
-                    update_comment: comment.content_comment,
                   });
 
                   setValue("update_comment", comment.content_comment);
@@ -207,7 +231,14 @@ export const Comments = ({ post }: CommentsProps) => {
                 Edit Comment
               </button>
 
-              <button className="text-red-600 font-bold uppercase mt-2 cursor-pointer">
+              <button
+                type="button"
+                onClick={() => {
+                  setDeleteTarget(comment.id_comment);
+                  setOpenDeleteModal(true);
+                }}
+                className="text-red-600 font-bold uppercase mt-2 cursor-pointer"
+              >
                 Delete Comment
               </button>
             </div>
