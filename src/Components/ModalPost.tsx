@@ -1,6 +1,5 @@
 import { Modal, Box } from "@mui/material";
 import type { ReactNode } from "react";
-import { useBlogStore } from "../store/store";
 
 const boxStyle = {
   backgroundColor: "#1e293b",
@@ -14,19 +13,20 @@ const boxStyle = {
 };
 
 type ModalPostProps = {
+  open: boolean,
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
   children: ReactNode;
 };
 
-export const ModalPost = ({children }: ModalPostProps) => {
+export const ModalPost = ({open, setOpen, children }: ModalPostProps) => {
 
-    const modalPost = useBlogStore(state => state.modalPost)
-    const setModalPost = useBlogStore(state => state.setModalPost)
+
   
 
   return (
     <Modal
-      open={modalPost}
-      onClose={() => setModalPost(false)}
+      open={open}
+      onClose={() => setOpen(false)}
       className="flex justify-center items-center px-4"
     >
       <Box sx={boxStyle}>{children}</Box>

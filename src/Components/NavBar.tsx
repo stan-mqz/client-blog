@@ -7,8 +7,11 @@ import {
 } from "@heroicons/react/16/solid";
 import { logout } from "../services/AuthService";
 import { useState } from "react";
+import { CreatePostModal } from "./CreatePostModal";
 
 export const NavBar = () => {
+  const [openCreate, setOpenCreate] = useState(false);
+
   const username = useBlogStore((state) => state.userData?.username);
   const email = useBlogStore((state) => state.userData?.email);
   const avatar = useBlogStore((state) => state.userData?.avatar);
@@ -48,7 +51,11 @@ export const NavBar = () => {
       </div>
       <div className="flex gap-3 text-white">
         <div>
-          <PlusCircleIcon className="size-9 text-white" />
+          <PlusCircleIcon
+            className="size-9 text-white cursor-pointer"
+            onClick={() => setOpenCreate(true)}
+          />
+          <CreatePostModal open={openCreate} setOpen={setOpenCreate} />
         </div>
         <div>
           <Cog8ToothIcon className="size-9 text-white" />

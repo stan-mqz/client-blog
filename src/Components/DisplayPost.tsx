@@ -1,20 +1,18 @@
 import type { Post } from "../types/postsTypes";
 import { PostDetails } from "./PostDetails";
-import { useBlogStore } from "../store/store";
+import { useState } from "react";
 
 type DisplayPostProp = {
   post: Post;
 };
 
 export const DisplayPost = ({ post }: DisplayPostProp) => {
- 
-
-  const setModalPost = useBlogStore(state => state.setModalPost)
+  const [openDetails, setOpenDetails] = useState(false);
 
   return (
     <>
       <article
-        onClick={() => setModalPost(true)}
+        onClick={() => setOpenDetails(true)}
         className="bg-slate-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-700 hover:border-slate-600 cursor-pointer"
       >
         <div className="p-6 pb-4">
@@ -51,7 +49,7 @@ export const DisplayPost = ({ post }: DisplayPostProp) => {
         )}
       </article>
 
-      <PostDetails post={post} />
+      <PostDetails post={post} open={openDetails} setOpen={setOpenDetails} />
     </>
   );
 };

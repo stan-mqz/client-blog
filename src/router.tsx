@@ -68,6 +68,10 @@ export const router = createBrowserRouter([
         loader: homeLoader,
         action: homeAction
       },
+
+      {
+        path: 'create-post'
+      }
     ],
   },
 ]);
