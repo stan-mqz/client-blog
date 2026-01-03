@@ -16,7 +16,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const data = Object.fromEntries(await request.formData());
   const user = await login(data);
   useBlogStore.getState().setUserData(user);
-  return redirect("/");
+  return redirect("/home");
 };
 
 export const Login = () => {
@@ -39,6 +39,7 @@ export const Login = () => {
   };
 
   return (
+
     <div className="flex items-center justify-center min-h-screen">
       <div className="flex flex-col gap-6 w-[30%] items-center py-12 px-8 rounded-lg bg-slate-800 shadow-xl">
         {error && <ErrorMessage>{error}</ErrorMessage>}

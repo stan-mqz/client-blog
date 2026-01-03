@@ -4,10 +4,6 @@ import { Register } from "./Pages/Register";
 import { action as loginAction } from "./Pages/Login";
 import { Home, loader as homeLoader, action as homeAction } from "./Pages/Home";
 import { MainLayout } from "./Layouts/MainLayout";
-import {
-  protectedAuthLoader,
-  protectedLoader,
-} from "./loaders/protectedLoaders";
 
 import { action as registerAction } from "./Pages/Register";
 import { VerifyEmail, loader as verifyEmailLoader } from "./Pages/VerifyEmail";
@@ -19,59 +15,68 @@ import {
   RecoverPassword,
   action as recoverPasswordAction,
 } from "./Pages/RecoverPassword";
+import { authMiddleware, protectedMiddleware } from "./middleware/auth";
+import { LoadingSpinner } from "./Components/LoadingSpinner/LoadingSpinner";
 
 export const router = createBrowserRouter([
   {
-    path: "/auth",
-    loader: protectedAuthLoader,
-    children: [
-      {
-        path: "login",
-        element: <Login />,
-        action: loginAction,
-      },
-
-      {
-        path: "register",
-        element: <Register />,
-        action: registerAction,
-      },
-
-      {
-        path: "verify-email",
-        element: <VerifyEmail />,
-        loader: verifyEmailLoader,
-      },
-
-      {
-        path: "recover-email",
-        element: <RecoverEmail />,
-        action: recoverEmailAction,
-      },
-
-      {
-        path: "recover-password",
-        element: <RecoverPassword />,
-        action: recoverPasswordAction,
-      },
-    ],
-  },
-
-  {
     path: "/",
-    element: <MainLayout />,
-    loader: protectedLoader,
+    HydrateFallback: LoadingSpinner,
     children: [
       {
-        index: true,
-        element: <Home />,
-        loader: homeLoader,
-        action: homeAction
+        path: "auth",
+        middleware: [authMiddleware],
+
+        children: [
+          {
+            path: "login",
+            element: <Login />,
+            action: loginAction,
+          },
+
+          {
+            path: "register",
+            element: <Register />,
+            action: registerAction,
+          },
+
+          {
+            path: "verify-email",
+            element: <VerifyEmail />,
+            loader: verifyEmailLoader,
+          },
+
+          {
+            path: "recover-email",
+            element: <RecoverEmail />,
+            action: recoverEmailAction,
+          },
+
+          {
+            path: "recover-password",
+            element: <RecoverPassword />,
+            action: recoverPasswordAction,
+          },
+        ],
       },
 
       {
-        path: 'create-post'
-      }
+        path: "/home",
+        element: <MainLayout />,
+        middleware: [protectedMiddleware],
+        children: [
+          {
+            index: true,
+            element: <Home />,
+            loader: homeLoader,
+            action: homeAction,
+          },
+
+          {
+            path: "create-post",
+          },
+        ],
+      },
     ],
   },
 ]);
