@@ -25,7 +25,7 @@ export const PostDetails = ({ post, open, setOpen }: PostDetailsProps) => {
   useEffect(() => {
     setLiked(post.likedByUser);
     setLikesCount(post.likesCount);
-  }, [post.likedByUser, post.likesCount]);
+  }, [post.id_post,post.likedByUser, post.likesCount]);
 
   useEffect(() => {
 
@@ -95,9 +95,8 @@ export const PostDetails = ({ post, open, setOpen }: PostDetailsProps) => {
                 <HeartIcon className="size-8 text-white cursor-pointer transition-all duration-200 hover:scale-110 hover:text-purple-600" />
               )}
             </button>
-          </fetcher.Form>
 
-          <span
+             <span
             className={`text-sm font-semibold tracking-wide ${
               liked ? "text-purple-500" : "text-slate-300"
             }`}
@@ -105,6 +104,9 @@ export const PostDetails = ({ post, open, setOpen }: PostDetailsProps) => {
             {likesCount}
           </span>
 
+          </fetcher.Form>
+
+         
           <ChatBubbleLeftEllipsisIcon className="size-7 text-white cursor-pointer transition-all duration-200 hover:scale-110 hover:text-purple-600" />
         </div>
       </div>

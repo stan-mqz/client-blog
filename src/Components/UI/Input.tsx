@@ -1,0 +1,36 @@
+
+type InputProps = {
+  label: string
+  type: string
+  placeholder: string
+  value?: string
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onBlur?: () => void
+  errorMessage?: string
+}
+
+
+export const Input = ({
+  label,
+  placeholder,
+  type,
+  value,
+  onChange,
+  onBlur,
+
+}: InputProps) => {
+  return (
+    <div className="flex flex-col gap-2 w-full">
+      <label className="text-white font-medium">{label}</label>
+
+      <input
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        onBlur={onBlur}
+        className="bg-white rounded-lg w-full h-12 px-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
+      />
+    </div>
+  )
+}

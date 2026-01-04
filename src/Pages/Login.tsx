@@ -1,17 +1,10 @@
-import {
-  Link,
-  redirect,
-  type ActionFunctionArgs,
-  useSubmit,
-  useNavigation,
-} from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { login } from "../services/AuthService";
+import { useSubmit, useNavigation } from "react-router-dom";
+import { Controller, useForm } from "react-hook-form";
 import { useBlogStore } from "../store/store";
-import { ErrorMessage } from "../Components/Errors/ErrorMessage";
-import { ErrorFormMessage } from "../Components/Errors/ErrorFormMessage";
 import type { UserLogin } from "../types/userTypes";
-
+import { AuthForm } from "../Components/UI/AuthForm";
+import { Input } from "../Components/UI/Input";
+import { ErrorFormMessage } from "../Components/Errors/ErrorFormMessage";
 
 export const Login = () => {
   const error = useBlogStore((state) => state.authError);
@@ -20,7 +13,7 @@ export const Login = () => {
   const isSubmitting = navigation.state !== "idle";
 
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<UserLogin>();
@@ -33,78 +26,80 @@ export const Login = () => {
   };
 
   return (
+    <AuthForm<UserLogin>
+      isSubmitting={isSubmitting}
+      handleSubmit={handleSubmit}
+      onSubmit={onSubmit}
+      messages={{
+        header: "Sign in",
+        error: error,
+        submit: "Sign in",
+      }}
+      links={[
+        {
+          path: "/auth/register",
+          message: "Don't have an account yet? ",
+          highlight: "Create one here",
+        },
 
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="flex flex-col gap-6 w-[30%] items-center py-12 px-8 rounded-lg bg-slate-800 shadow-xl">
-        {error && <ErrorMessage>{error}</ErrorMessage>}
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-white mb-7">Sign in</h1>
-          <Link to={"/auth/register"} className="text-white">
-            Don't have an account yet?{" "}
-            <span className="text-purple-400 cursor-pointer">
-              Create one here
-            </span>
-          </Link>
-        </div>
-        <form
-          className="flex flex-col gap-5 w-full"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          {/* Email */}
-          <div className="flex flex-col gap-2">
-            <label className="text-white font-medium">E-mail</label>
-            <input
-              {...register("email", {
-                required: "E-mail is required",
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "Enter a valid email address",
-                },
-              })}
-              type="email"
-              placeholder="Enter your e-mail"
-              className="bg-white rounded-lg w-full h-12 px-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={isSubmitting}
-            />
-            {errors.email && (
-              <ErrorFormMessage>{errors.email.message}</ErrorFormMessage>
-            )}
-          </div>
-          {/* Password */}
-          <div className="flex flex-col gap-2">
-            <label className="text-white font-medium">Password</label>
-            <input
-              {...register("password", { required: "Password is required" })}
-              type="password"
-              placeholder="Enter your password"
-              className="bg-white rounded-lg w-full h-12 px-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={isSubmitting}
-            />
-            {errors.password && (
-              <ErrorFormMessage>{errors.password.message}</ErrorFormMessage>
-            )}
-          </div>
-          <button
-            type="submit"
-            className="w-full h-12 bg-purple-600 text-white rounded-lg font-semibold cursor-pointer hover:bg-purple-700 transition-colors mt-2 disabled:bg-purple-400 disabled:cursor-not-allowed"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? 'Signing in...' : 'Sign in'}
-          </button>
-        </form>
-        <Link to={"/auth/recover-email"} className="text-white">
-          Forgot your e-mail?{" "}
-          <span className="text-purple-400 cursor-pointer">
-            Click here to recover it
-          </span>
-        </Link>
-        <Link to={"/auth/recover-password"} className="text-white">
-          Forgot your password?{" "}
-          <span className="text-purple-400 cursor-pointer">
-            Click here to recover it
-          </span>
-        </Link>
-      </div>
-    </div>
+        {
+          path: "/auth/recover-email",
+          message: "Forgot your e-mail? ",
+          highlight: "Click here to recover it",
+        },
+
+        {
+          path: "/auth/recover-password",
+          message: "Forgot your password? ",
+          highlight: "Click here to recover it",
+        },
+      ]}
+    >
+      <Controller
+        name="email"
+        control={control}
+        rules={{
+          required: "E-mail is required",
+          pattern: {
+            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            message: "Enter a valid email address",
+          },
+        }}
+        render={({ field }) => (
+          <Input
+            label="E-mail"
+            placeholder="Enter your e-mail"
+            type="text"
+            value={field.value}
+            onChange={field.onChange}
+          />
+        )}
+      />
+
+      {errors.email && (
+        <ErrorFormMessage>{errors.email.message}</ErrorFormMessage>
+      )}
+
+      <Controller
+        name="password"
+        control={control}
+        rules={{
+          required: "Password is required",
+        }}
+        render={({ field }) => (
+          <Input
+            label="password"
+            placeholder="Enter your password"
+            type="password"
+            value={field.value}
+            onChange={field.onChange}
+          />
+        )}
+      />
+
+      {errors.password && (
+        <ErrorFormMessage>{errors.password.message}</ErrorFormMessage>
+      )}
+    </AuthForm>
   );
 };

@@ -37,8 +37,8 @@ export const HomeSkeleton = () => {
             bgcolor: skeletonStyle.background.modal,
             borderRadius: "16px",
           }}
-          height={500}
-          width={500}
+          height={700}
+          width={600}
         >
 
           <div className="flex gap-2 mt-7 ml-4">
@@ -66,7 +66,7 @@ export const HomeSkeleton = () => {
             }}
 
             width='90%'
-            height={250}
+            height={450}
             />
         </Box>
       </div>
