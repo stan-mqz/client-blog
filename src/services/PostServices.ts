@@ -20,6 +20,7 @@ export const getAllPosts = async () => {
 export const likePost = async (id: Post["id_post"]) => {
   try {
     const URL = `${import.meta.env.VITE_BACKEND_URL}/posts/${id}/like`;
+    
     await api.post(URL);
   } catch (error) {
     console.log(error);
