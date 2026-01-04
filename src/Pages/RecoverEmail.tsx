@@ -1,21 +1,15 @@
 import {
   Link,
   useActionData,
-  useSubmit,
-  type ActionFunctionArgs,
+  useSubmit
 } from "react-router-dom";
 import { ErrorMessage } from "../Components/Errors/ErrorMessage";
 import { useBlogStore } from "../store/store";
 import type { UserRecoverEmail } from "../types/userTypes";
 import { useForm } from "react-hook-form";
 import { ErrorFormMessage } from "../Components/Errors/ErrorFormMessage";
-import { recoverEmail } from "../services/AuthService";
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const data = Object.fromEntries(await request.formData());
-  const response = await recoverEmail(data);
-  return response?.message 
-};
+
 
 export const RecoverEmail = () => {
   const error = useBlogStore((state) => state.authError);

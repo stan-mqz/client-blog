@@ -1,10 +1,8 @@
 import { VerificationMessage } from "../Components/UI/VerificationMessage";
-import { register } from "../services/AuthService";
 import {
   Link,
   useActionData,
-  useSubmit,
-  type ActionFunctionArgs,
+  useSubmit
 } from "react-router-dom";
 import { useBlogStore } from "../store/store";
 import { ErrorMessage } from "../Components/Errors/ErrorMessage";
@@ -12,13 +10,7 @@ import { useForm } from "react-hook-form";
 import type { UserRegister } from "../types/userTypes";
 import { ErrorFormMessage } from "../Components/Errors/ErrorFormMessage";
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const data = Object.fromEntries(await request.formData());
 
-  const response = await register(data);
-
-  return response?.message
-};
 
 export const Register = () => {
   const submit = useSubmit();

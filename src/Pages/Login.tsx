@@ -12,12 +12,6 @@ import { ErrorMessage } from "../Components/Errors/ErrorMessage";
 import { ErrorFormMessage } from "../Components/Errors/ErrorFormMessage";
 import type { UserLogin } from "../types/userTypes";
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const data = Object.fromEntries(await request.formData());
-  const user = await login(data);
-  useBlogStore.getState().setUserData(user);
-  return redirect("/home");
-};
 
 export const Login = () => {
   const error = useBlogStore((state) => state.authError);

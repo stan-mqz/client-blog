@@ -1,57 +1,10 @@
-import { useLoaderData, type ActionFunctionArgs } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import { useBlogStore } from "../store/store";
 import { LoadingSpinner } from "../Components/LoadingSpinner/LoadingSpinner";
-import { getAllPosts, likePost, unlikePost } from "../services/PostServices";
 import type { Post } from "../types/postsTypes";
 import { DisplayPost } from "../Components/UI/DisplayPost";
-import { isIntent } from "../helpers";
-import {
-  createComment,
-  deleteComment,
-  editComment,
-} from "../services/CommentsServices";
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const data = Object.fromEntries(await request.formData());
-  const intent = data.intent;
 
-  if (!isIntent(intent)) {
-    throw new Response("Invalid intent", { status: 400 });
-  }
-
-  let id_comment
-
-  switch (intent) {
-    case "like":
-      await likePost(+data.id);
-      break;
-
-    case "unlike":
-      await unlikePost(+data.id);
-      break;
-
-    case "comment-create":
-      const id_post = parseInt(data.id_post as string);
-      await createComment(id_post, data);
-      break;
-
-    case "comment-update":
-       id_comment = parseInt(data.id_comment as string);
-      await editComment(id_comment, data);
-      break;
-
-    case "comment-delete":
-      id_comment = parseInt(data.id_comment as string);
-      await deleteComment(id_comment, data);
-  }
-
-  return null;
-};
-
-export const loader = async () => {
-  const response = await getAllPosts();
-  return response;
-};
 
 export const Home = () => {
   const posts = useLoaderData() as Post[] | null;

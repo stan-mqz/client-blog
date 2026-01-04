@@ -1,24 +1,21 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Login } from "./Pages/Login";
 import { Register } from "./Pages/Register";
-import { action as loginAction } from "./Pages/Login";
-import { Home, loader as homeLoader, action as homeAction } from "./Pages/Home";
+import { Home} from "./Pages/Home";
 import { MainLayout } from "./Layouts/MainLayout";
-
-import { action as registerAction } from "./Pages/Register";
-import { VerifyEmail, loader as verifyEmailLoader } from "./Pages/VerifyEmail";
+import { VerifyEmail } from "./Pages/VerifyEmail";
 import {
   RecoverEmail,
-  action as recoverEmailAction,
 } from "./Pages/RecoverEmail";
 import {
   RecoverPassword,
-  action as recoverPasswordAction,
+
 } from "./Pages/RecoverPassword";
 import { protectedMiddleware } from "./middleware/auth";
-import { authLoader } from "./loaders/loaders";
+import { authLoader, homeLoader, verifyEmailLoader } from "./loaders/loaders";
 import { LoadingSpinner } from "./Components/LoadingSpinner/LoadingSpinner";
 import { HomeSkeleton } from "./Components/Skeleton/HomeSkeleton";
+import { homeAction, loginAction, recoverEmailAction, recoverPasswordAction, registerAction } from "./actions/actions";
 
 export const router = createBrowserRouter([
   {
@@ -56,7 +53,7 @@ export const router = createBrowserRouter([
           {
             path: "recover-password",
             element: <RecoverPassword />,
-            action: recoverPasswordAction,
+            action: recoverPasswordAction ,
           },
         ],
       },

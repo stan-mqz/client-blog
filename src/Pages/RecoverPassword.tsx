@@ -1,21 +1,15 @@
 import {
   Link,
   useActionData,
-  useSubmit,
-  type ActionFunctionArgs,
+  useSubmit
 } from "react-router-dom";
 import { useBlogStore } from "../store/store";
 import type { UserRecoverPassword } from "../types/userTypes";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "../Components/Errors/ErrorMessage";
 import { ErrorFormMessage } from "../Components/Errors/ErrorFormMessage";
-import { recoverPassword } from "../services/AuthService";
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const data = Object.fromEntries(await request.formData());
-  const response = await recoverPassword(data);
-  return response?.message;
-};
+
 
 export const RecoverPassword = () => {
   const error = useBlogStore((state) => state.authError);

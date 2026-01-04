@@ -1,18 +1,5 @@
-import { Link, useLoaderData, type LoaderFunctionArgs } from "react-router-dom";
-import { verifyEmail } from "../services/AuthService";
+import { Link, useLoaderData } from "react-router-dom";
 
-// Loader corregido
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  let result;
-  const url = new URL(request.url);
-  const token = url.searchParams.get("token");
-
-  if (token) {
-    result = await verifyEmail(token);
-  }
-
-  return result;
-};
 
 export const VerifyEmail = () => {
   const result = useLoaderData();
