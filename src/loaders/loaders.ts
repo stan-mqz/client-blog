@@ -1,13 +1,11 @@
 import { redirect } from "react-router-dom";
-import { useBlogStore } from "../store/store";
+import { me } from "../services/AuthService";
 
+export const authLoader = async () => {
+  const user = await me();
 
-
-export const protectedAuthLoader = async () => {
-  const { isAuthenticated } = useBlogStore.getState();
-
-  if (isAuthenticated) {
-    return redirect("/");
+  if (user) {
+    return redirect("/home");
   }
 
   return null;

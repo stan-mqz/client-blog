@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import type { Post } from "../types/postsTypes";
+import type { Post } from "../../types/postsTypes";
 import {
   ChatBubbleLeftEllipsisIcon,
   HeartIcon,

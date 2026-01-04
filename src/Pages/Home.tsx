@@ -3,7 +3,7 @@ import { useBlogStore } from "../store/store";
 import { LoadingSpinner } from "../Components/LoadingSpinner/LoadingSpinner";
 import { getAllPosts, likePost, unlikePost } from "../services/PostServices";
 import type { Post } from "../types/postsTypes";
-import { DisplayPost } from "../Components/DisplayPost";
+import { DisplayPost } from "../Components/UI/DisplayPost";
 import { isIntent } from "../helpers";
 import {
   createComment,

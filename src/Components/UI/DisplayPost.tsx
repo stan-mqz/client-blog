@@ -1,4 +1,4 @@
-import type { Post } from "../types/postsTypes";
+import type { Post } from "../../types/postsTypes";
 import { PostDetails } from "./PostDetails";
 import { useState } from "react";
 

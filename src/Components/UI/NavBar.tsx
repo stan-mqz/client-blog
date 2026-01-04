@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { useBlogStore } from "../store/store";
+import { useBlogStore } from "../../store/store";
 import {
   HomeIcon,
   PlusCircleIcon,
   Cog8ToothIcon,
 } from "@heroicons/react/16/solid";
-import { logout } from "../services/AuthService";
+import { logout } from "../../services/AuthService";
 import { useState } from "react";
 import { CreatePostModal } from "./CreatePostModal";
 

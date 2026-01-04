@@ -4,11 +4,11 @@ import {
   useSubmit,
   type ActionFunctionArgs,
 } from "react-router-dom";
-import { ErrorMessage } from "../Components/ErrorMessage";
+import { ErrorMessage } from "../Components/Errors/ErrorMessage";
 import { useBlogStore } from "../store/store";
 import type { UserRecoverEmail } from "../types/userTypes";
 import { useForm } from "react-hook-form";
-import { ErrorFormMessage } from "../Components/ErrorFormMessage";
+import { ErrorFormMessage } from "../Components/Errors/ErrorFormMessage";
 import { recoverEmail } from "../services/AuthService";
 
 export const action = async ({ request }: ActionFunctionArgs) => {

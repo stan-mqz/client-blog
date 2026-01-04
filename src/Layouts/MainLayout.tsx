@@ -1,6 +1,6 @@
 // layouts/AppLayout.tsx
 import { Outlet } from "react-router-dom";
-import { NavBar } from "../Components/NavBar";
+import { NavBar } from "../Components/UI/NavBar";
 
 export const MainLayout = () => {
   return (
@@ -9,6 +9,7 @@ export const MainLayout = () => {
       <main className="flex-1">
         <Outlet />
       </main>
+
     </div>
   );
 };

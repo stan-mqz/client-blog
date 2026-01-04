@@ -1,10 +1,10 @@
-import type { Post } from "../types/postsTypes";
+import type { Post } from "../../types/postsTypes"; 
 import { useForm } from "react-hook-form";
-import type { CommentAction, UpdateComment } from "../types/commentsTypes";
-import { ErrorFormMessage } from "./ErrorFormMessage";
+import type { CommentAction, UpdateComment } from "../../types/commentsTypes";
+import { ErrorFormMessage } from "./../Errors/ErrorFormMessage";
 import { useNavigation, useSubmit } from "react-router-dom";
-import { useBlogStore } from "../store/store";
-import { ErrorMessage } from "./ErrorMessage";
+import { useBlogStore } from "../../store/store";
+import { ErrorMessage } from "./../Errors/ErrorMessage";
 import { useState } from "react";
 import { ConfirmDeleteModal } from "./ConfirmDeleteModal";
 

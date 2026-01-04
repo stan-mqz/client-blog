@@ -15,18 +15,19 @@ import {
   RecoverPassword,
   action as recoverPasswordAction,
 } from "./Pages/RecoverPassword";
-import { authMiddleware, protectedMiddleware } from "./middleware/auth";
+import { protectedMiddleware } from "./middleware/auth";
+import { authLoader } from "./loaders/loaders";
 import { LoadingSpinner } from "./Components/LoadingSpinner/LoadingSpinner";
+import { HomeSkeleton } from "./Components/Skeleton/HomeSkeleton";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    HydrateFallback: LoadingSpinner,
     children: [
       {
         path: "auth",
-        middleware: [authMiddleware],
-
+        loader: authLoader,
+        HydrateFallback: LoadingSpinner,
         children: [
           {
             path: "login",
@@ -64,6 +65,7 @@ export const router = createBrowserRouter([
         path: "/home",
         element: <MainLayout />,
         middleware: [protectedMiddleware],
+        HydrateFallback: HomeSkeleton,
         children: [
           {
             index: true,

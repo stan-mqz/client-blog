@@ -8,8 +8,8 @@ import {
 import { useForm } from "react-hook-form";
 import { login } from "../services/AuthService";
 import { useBlogStore } from "../store/store";
-import { ErrorMessage } from "../Components/ErrorMessage";
-import { ErrorFormMessage } from "../Components/ErrorFormMessage";
+import { ErrorMessage } from "../Components/Errors/ErrorMessage";
+import { ErrorFormMessage } from "../Components/Errors/ErrorFormMessage";
 import type { UserLogin } from "../types/userTypes";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
