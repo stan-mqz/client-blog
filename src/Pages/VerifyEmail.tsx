@@ -1,9 +1,7 @@
 import { Link, useLoaderData } from "react-router-dom";
 
-
 export const VerifyEmail = () => {
   const result = useLoaderData();
-
 
   return (
     <div className="flex items-center justify-center min-h-screen">
@@ -12,14 +10,12 @@ export const VerifyEmail = () => {
           {result ? "Email Verified ✅" : "Verification Failed ❌"}
         </h1>
 
-        {result && (
-          <Link
-            to="/auth/login"
-            className="inline-block bg-purple-600 text-white font-semibold rounded-lg px-6 py-3 mt-4 hover:bg-purple-700 transition-all transform hover:scale-105"
-          >
-            Go to Login
-          </Link>
-        )}
+        <Link
+          to="/auth/login"
+          className="inline-block bg-purple-600 text-white font-semibold rounded-lg px-6 py-3 mt-4 hover:bg-purple-700 transition-all transform hover:scale-105"
+        >
+          Go to Login
+        </Link>
       </div>
     </div>
   );

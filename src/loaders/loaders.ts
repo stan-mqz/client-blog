@@ -1,17 +1,20 @@
 import { redirect, type LoaderFunctionArgs } from "react-router-dom";
-import { me, verifyEmail } from "../services/AuthService";
+import { verifyEmail } from "../services/AuthService";
 import { getAllPosts } from "../services/PostServices";
+import { useBlogStore } from "../store/store";
 
 export const authLoader = async () => {
-  const user = await me();
 
-  if (user) {
+
+  const { isAuthenticated } = useBlogStore.getState();
+
+  if (isAuthenticated) {
     return redirect("/home");
-  }
+  } 
 
-  return null;
+  return null
+
 };
-
 
 export const verifyEmailLoader = async ({ request }: LoaderFunctionArgs) => {
   let result;
