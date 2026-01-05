@@ -39,6 +39,7 @@ export const Register = () => {
           success: message,
           error: error,
           submit: "Sign up",
+          submitting: 'Signing up...'
         }}
         links={[
           {

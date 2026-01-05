@@ -34,6 +34,7 @@ export const Login = () => {
         header: "Sign in",
         error: error,
         submit: "Sign in",
+        submitting: 'Signing in...'
       }}
       links={[
         {

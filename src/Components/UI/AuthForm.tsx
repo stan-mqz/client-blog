@@ -15,6 +15,7 @@ export type Messages = {
   submit: string;
   error?: string;
   success?: string;
+  submitting: string
 };
 
 export type AuthFormProps<T extends FieldValues> = {
@@ -70,7 +71,7 @@ export function AuthForm<T extends FieldValues>({
                 className="w-full h-12 bg-purple-600 text-white rounded-lg font-semibold cursor-pointer hover:bg-purple-700 transition-colors mt-2 disabled:bg-purple-400 disabled:cursor-not-allowed"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Submitting..." : messages.submit}
+                {isSubmitting ? messages.submitting : messages.submit}
               </button>
             </form>
 
