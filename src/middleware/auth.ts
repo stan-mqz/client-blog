@@ -1,13 +1,12 @@
 import { redirect, type MiddlewareFunction } from "react-router-dom";
-import { me } from "../services/AuthService";
+import { useBlogStore } from "../store/store";
 
 export const protectedMiddleware: MiddlewareFunction = async () => {
-  const user = await me();
 
-  if (!user) {
+  const { isAuthenticated } = useBlogStore.getState();
+
+  if (!isAuthenticated) {
     throw redirect("/auth/login");
   }
 
-  // context.set(UserContext, user)
 };
-
