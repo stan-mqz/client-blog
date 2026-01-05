@@ -55,7 +55,6 @@ export const login = async (data: userData) => {
     } else {
       setAuthError(err.message || "Something went wrong");
     }
-    return null;
   }
 };
 
@@ -89,7 +88,7 @@ export const register = async (data: userData) => {
       setAuthError(err.message || "Something went wrong");
     }
 
-    return null
+    return null;
   }
 };
 
@@ -140,30 +139,28 @@ export const recoverEmail = async (data: userData) => {
     }
   }
 
-  return null
+  return null;
 };
 
 export const recoverPassword = async (data: userData) => {
   try {
-
-    const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/recover-password`
+    const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/recover-password`;
 
     const result = UserRecoverPasswordSchema.safeParse({
       email: data.email,
       newPassword: data.newPassword,
-    })
+    });
 
     if (!result.success) {
-      return result.error
+      return result.error;
     }
 
     const response = await api.post(URL, {
       email: data.email,
-      newPassword: data.newPassword
-    })
+      newPassword: data.newPassword,
+    });
 
-    return response.data
-
+    return response.data;
   } catch (error) {
     const err = error as AxiosError<{ message: string }>;
     if (err.response && err.response.data) {
@@ -173,7 +170,6 @@ export const recoverPassword = async (data: userData) => {
     }
   }
 };
-
 
 export const logout = async () => {
   try {

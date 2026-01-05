@@ -17,8 +17,13 @@ import {
 export const loginAction = async ({ request }: ActionFunctionArgs) => {
   const data = Object.fromEntries(await request.formData());
   const user = await login(data);
-  useBlogStore.getState().setUserData(user);
-  return redirect("/home");
+
+  if (user) {
+    useBlogStore.getState().setUserData(user);
+    return redirect("/home");
+  }
+
+  return redirect('/auth/login')
 };
 
 export const registerAction = async ({ request }: ActionFunctionArgs) => {
