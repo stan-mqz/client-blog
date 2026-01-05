@@ -16,6 +16,7 @@ import { authLoader, homeLoader, verifyEmailLoader } from "./loaders/loaders";
 import { LoadingSpinner } from "./Components/LoadingSpinner/LoadingSpinner";
 import { HomeSkeleton } from "./Components/Skeleton/HomeSkeleton";
 import { homeAction, loginAction, recoverEmailAction, recoverPasswordAction, registerAction } from "./actions/actions";
+import { VerificationMessage } from "./Components/UI/VerificationMessage";
 
 export const router = createBrowserRouter([
   {
@@ -36,6 +37,11 @@ export const router = createBrowserRouter([
             path: "register",
             element: <Register />,
             action: registerAction,
+          },
+
+          {
+            path: "success",
+            element: <VerificationMessage />
           },
 
           {
