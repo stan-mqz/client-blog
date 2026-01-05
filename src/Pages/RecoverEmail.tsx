@@ -1,7 +1,4 @@
-import {
-  useActionData, useNavigation,
-  useSubmit
-} from "react-router-dom";
+import { useActionData, useNavigation, useSubmit } from "react-router-dom";
 import { useBlogStore } from "../store/store";
 import type { UserRecoverEmail } from "../types/userTypes";
 import { Controller, useForm } from "react-hook-form";
@@ -9,12 +6,10 @@ import { ErrorFormMessage } from "../Components/Errors/ErrorFormMessage";
 import { AuthForm } from "../Components/UI/AuthForm";
 import { Input } from "../Components/UI/Input";
 
-
-
 export const RecoverEmail = () => {
   const error = useBlogStore((state) => state.authError);
   const submit = useSubmit();
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const isSubmitting = navigation.state !== "idle";
 
   const message = useActionData();
@@ -34,9 +29,7 @@ export const RecoverEmail = () => {
   };
 
   return (
-
-
-        <AuthForm<UserRecoverEmail>
+    <AuthForm<UserRecoverEmail>
       isSubmitting={isSubmitting}
       handleSubmit={handleSubmit}
       onSubmit={onSubmit}
@@ -45,7 +38,7 @@ export const RecoverEmail = () => {
         error: error,
         submit: "Update",
         success: message,
-        submitting: 'Updating...'
+        submitting: "Updating...",
       }}
       links={[
         {
@@ -53,7 +46,6 @@ export const RecoverEmail = () => {
           message: "Don't have an account yet? ",
           highlight: "Create one here",
         },
-
 
         {
           path: "/auth/login",
@@ -91,7 +83,11 @@ export const RecoverEmail = () => {
         name="newEmail"
         control={control}
         rules={{
-          required: "Password is required",
+          required: "new E-mail is required",
+          pattern: {
+            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            message: "Enter a valid email address",
+          },
         }}
         render={({ field }) => (
           <Input

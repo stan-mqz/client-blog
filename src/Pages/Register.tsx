@@ -106,6 +106,10 @@ export const Register = () => {
           name="password"
           rules={{
             required: "You must introduce a password",
+            minLength: {
+              value: 8,
+              message: "The password must be at least 8 characters long",
+            },
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <Input

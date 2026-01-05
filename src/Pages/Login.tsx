@@ -89,7 +89,7 @@ export const Login = () => {
         }}
         render={({ field }) => (
           <Input
-            label="password"
+            label="Password"
             placeholder="Enter your password"
             type="password"
             value={field.value}
