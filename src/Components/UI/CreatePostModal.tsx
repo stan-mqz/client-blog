@@ -1,15 +1,27 @@
 import { ModalPost } from "./ModalPost";
+import { useNavigate, useNavigation } from "react-router-dom";
+import { LoadingSpinner } from "../LoadingSpinner/LoadingSpinner";
 
-type CreatePostModalProps = {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
+export const CreatePostModal = () => {
+  const navigate = useNavigate();
+  const navigation = useNavigation();
 
-export const CreatePostModal = ({open, setOpen}: CreatePostModalProps) => {
+  const isNavigating = navigation.state !== "idle";
+
+  const onClose = () => {
+    navigate(-1);
+  };
+
 
   return (
-    <ModalPost open={open} setOpen={setOpen}>
-      <p>Hello World</p>
-    </ModalPost>
+    <>
+      {isNavigating ? (
+        <LoadingSpinner />
+      ) : (
+        <ModalPost open={true} onClose={onClose}>
+          <p>Hello World</p>
+        </ModalPost>
+      )}
+    </>
   );
 };

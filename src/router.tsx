@@ -1,22 +1,24 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Login } from "./Pages/Login";
 import { Register } from "./Pages/Register";
-import { Home} from "./Pages/Home";
+import { Home } from "./Pages/Home";
 import { MainLayout } from "./Layouts/MainLayout";
 import { VerifyEmail } from "./Pages/VerifyEmail";
-import {
-  RecoverEmail,
-} from "./Pages/RecoverEmail";
-import {
-  RecoverPassword,
-
-} from "./Pages/RecoverPassword";
+import { RecoverEmail } from "./Pages/RecoverEmail";
+import { RecoverPassword } from "./Pages/RecoverPassword";
 import { protectedMiddleware } from "./middleware/auth";
 import { authLoader, homeLoader, verifyEmailLoader } from "./loaders/loaders";
 import { LoadingSpinner } from "./Components/LoadingSpinner/LoadingSpinner";
 import { HomeSkeleton } from "./Components/Skeleton/HomeSkeleton";
-import { homeAction, loginAction, recoverEmailAction, recoverPasswordAction, registerAction } from "./actions/actions";
+import {
+  homeAction,
+  loginAction,
+  recoverEmailAction,
+  recoverPasswordAction,
+  registerAction,
+} from "./actions/actions";
 import { VerificationMessage } from "./Components/UI/VerificationMessage";
+import { CreatePostModal } from "./Components/UI/CreatePostModal";
 
 export const router = createBrowserRouter([
   {
@@ -41,7 +43,7 @@ export const router = createBrowserRouter([
 
           {
             path: "success",
-            element: <VerificationMessage />
+            element: <VerificationMessage />,
           },
 
           {
@@ -59,7 +61,7 @@ export const router = createBrowserRouter([
           {
             path: "recover-password",
             element: <RecoverPassword />,
-            action: recoverPasswordAction ,
+            action: recoverPasswordAction,
           },
         ],
       },
@@ -68,17 +70,18 @@ export const router = createBrowserRouter([
         path: "/home",
         element: <MainLayout />,
         middleware: [protectedMiddleware],
-        HydrateFallback: HomeSkeleton,
         children: [
           {
             index: true,
             element: <Home />,
             loader: homeLoader,
             action: homeAction,
+            HydrateFallback: HomeSkeleton,
           },
 
           {
             path: "create-post",
+            element: <CreatePostModal/>,
           },
         ],
       },

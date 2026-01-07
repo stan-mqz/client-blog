@@ -7,10 +7,9 @@ import {
 } from "@heroicons/react/16/solid";
 import { logout } from "../../services/AuthService";
 import { useState } from "react";
-import { CreatePostModal } from "./CreatePostModal";
 
 export const NavBar = () => {
-  const [openCreate, setOpenCreate] = useState(false);
+
 
   const username = useBlogStore((state) => state.userData?.username);
   const email = useBlogStore((state) => state.userData?.email);
@@ -53,9 +52,8 @@ export const NavBar = () => {
         <div>
           <PlusCircleIcon
             className="size-9 text-white cursor-pointer"
-            onClick={() => setOpenCreate(true)}
+          onClick={() => navigate('/home/create-post')}
           />
-          <CreatePostModal open={openCreate} setOpen={setOpenCreate} />
         </div>
         <div>
           <Cog8ToothIcon className="size-9 text-white" />

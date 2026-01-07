@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 const boxStyle = {
   backgroundColor: "#1e293b",
   borderRadius: "0.75rem",
-  overflow: "scroll",
+  overflow: "auto",
   width: "100%",
   maxWidth: "1100px",
   maxHeight: "95vh",
@@ -13,20 +13,23 @@ const boxStyle = {
 };
 
 type ModalPostProps = {
-  open: boolean,
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  open: boolean;
+  setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   children: ReactNode;
+  onClose?: () => void
 };
 
-export const ModalPost = ({open, setOpen, children }: ModalPostProps) => {
-
-
-  
-
+export const ModalPost = ({ open, setOpen, children, onClose }: ModalPostProps) => {
   return (
     <Modal
       open={open}
-      onClose={() => setOpen(false)}
+      onClose={
+        onClose
+          ? onClose
+          : setOpen
+          ? () => setOpen(false)
+          : undefined
+      }
       className="flex justify-center items-center px-4"
     >
       <Box sx={boxStyle}>{children}</Box>
