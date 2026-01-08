@@ -1,5 +1,14 @@
-import { PostsArraySchema, type Post } from "../types/postsTypes";
+import type { AxiosError } from "axios";
+import { useBlogStore } from "../store/store";
+import {
+  CreatePostSchema,
+  PostsArraySchema,
+  type Post,
+} from "../types/postsTypes";
+import type { formData } from "../types/userTypes";
 import api from "./api";
+
+const { setPostError } = useBlogStore.getState();
 
 export const getAllPosts = async () => {
   try {
@@ -17,10 +26,43 @@ export const getAllPosts = async () => {
   }
 };
 
+export const createPost = async (postData: formData) => {
+  try {
+    const result = CreatePostSchema.safeParse({
+      title: postData.title,
+      content: postData.content,
+    });
+
+    if (!result.success) {
+      console.log(result.error)
+    }
+
+
+
+    await api.post(
+      "/posts/create-post",
+      {
+        title: postData.title,
+        content: postData.content,
+        image: postData.image,
+      },
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+  } catch (error) {
+    console.log(error);
+    const err = error as AxiosError<{ message: string }>;
+    if (err.response && err.response.data) {
+      setPostError(err.response.data.message || "Something went wrong");
+    } else {
+      setPostError(err.message || "Something went wrong");
+    }
+  }
+};
+
 export const likePost = async (id: Post["id_post"]) => {
   try {
     const URL = `${import.meta.env.VITE_BACKEND_URL}/posts/${id}/like`;
-    
+
     await api.post(URL);
   } catch (error) {
     console.log(error);

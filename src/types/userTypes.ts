@@ -47,3 +47,6 @@ export type UserRegister = z.infer<typeof UserRegisterSchema>;
 export type UserRecoverEmail = z.infer<typeof UserRecoverEmailSchema>;
 export type UserRecoverPassword = z.infer<typeof UserRecoverPasswordSchema>;
 export type UserBasic = z.infer<typeof UserBasicSchema>;
+export type formData = {
+  [k: string]: FormDataEntryValue;
+};

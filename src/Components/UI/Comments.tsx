@@ -1,4 +1,4 @@
-import type { Post } from "../../types/postsTypes"; 
+import type { Post } from "../../types/postsTypes";
 import { useForm } from "react-hook-form";
 import type { CommentAction, UpdateComment } from "../../types/commentsTypes";
 import { ErrorFormMessage } from "./../Errors/ErrorFormMessage";
@@ -25,6 +25,7 @@ export const Comments = ({ post }: CommentsProps) => {
   const isSubmitting = navigation.state !== "idle";
   const submit = useSubmit();
   const commentError = useBlogStore((state) => state.commentError);
+  const avatar = useBlogStore(state => state.userData?.avatar)
 
   const {
     register,
@@ -54,8 +55,6 @@ export const Comments = ({ post }: CommentsProps) => {
       formData.append("update_comment", data.update_comment!);
       formData.append("id_comment", String(data.id_comment));
     }
-
-  
 
     submit(formData, { method: "POST" });
 
@@ -101,7 +100,7 @@ export const Comments = ({ post }: CommentsProps) => {
             <div className="flex items-center gap-2">
               <div className="w-12 shrink-0">
                 <img
-                  src={post.user.avatar}
+                  src={avatar}
                   alt="user avatar"
                   className="w-full rounded-full"
                 />
@@ -203,48 +202,50 @@ export const Comments = ({ post }: CommentsProps) => {
 
       {commentError && <ErrorMessage>{commentError}</ErrorMessage>}
 
-      {post.comments.map((comment) => (
-        <div key={comment.id_comment} className="ml-16 mt-5">
-          <div className="bg-slate-700 p-3 rounded-md flex gap-3">
-            <img src={comment.user.avatar} className="w-12 rounded-full" />
+      {post.comments.length === 0 ? (
+        <p className="ml-16 mt-5 text-gray-400">No comments yet</p>
+      ) : (
+        post.comments.map((comment) => (
+          <div key={comment.id_comment} className="ml-16 mt-5">
+            <div className="bg-slate-700 p-3 rounded-md flex gap-3">
+              <img src={comment.user.avatar} className="w-12 rounded-full" />
 
-            <div>
-              <p className="text-white font-bold">{comment.user.username}</p>
-              <p className="text-white">{comment.content_comment}</p>
+              <div>
+                <p className="text-white font-bold">{comment.user.username}</p>
+                <p className="text-white">{comment.content_comment}</p>
+              </div>
             </div>
+
+            {comment.isOwner && (
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUpdatingComment({ id_comment: comment.id_comment });
+                    setValue("update_comment", comment.content_comment);
+                    setValue("id_comment", comment.id_comment);
+                    setValue("intent", "comment-update");
+                  }}
+                  className="text-purple-600 font-bold uppercase mt-2 cursor-pointer"
+                >
+                  Edit Comment
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setDeleteTarget(comment.id_comment);
+                    setOpenDeleteModal(true);
+                  }}
+                  className="text-red-600 font-bold uppercase mt-2 cursor-pointer"
+                >
+                  Delete Comment
+                </button>
+              </div>
+            )}
           </div>
-
-          {comment.isOwner && (
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  setUpdatingComment({
-                    id_comment: comment.id_comment,
-                  });
-
-                  setValue("update_comment", comment.content_comment);
-                  setValue("id_comment", comment.id_comment);
-                  setValue("intent", "comment-update");
-                }}
-                className="text-purple-600 font-bold uppercase mt-2 cursor-pointer"
-              >
-                Edit Comment
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setDeleteTarget(comment.id_comment);
-                  setOpenDeleteModal(true);
-                }}
-                className="text-red-600 font-bold uppercase mt-2 cursor-pointer"
-              >
-                Delete Comment
-              </button>
-            </div>
-          )}
-        </div>
-      ))}
+        ))
+      )}
     </>
   );
 };

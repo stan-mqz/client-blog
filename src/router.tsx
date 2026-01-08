@@ -11,6 +11,7 @@ import { authLoader, homeLoader, verifyEmailLoader } from "./loaders/loaders";
 import { LoadingSpinner } from "./Components/LoadingSpinner/LoadingSpinner";
 import { HomeSkeleton } from "./Components/Skeleton/HomeSkeleton";
 import {
+  createPostAction,
   homeAction,
   loginAction,
   recoverEmailAction,
@@ -82,6 +83,7 @@ export const router = createBrowserRouter([
           {
             path: "create-post",
             element: <CreatePostModal/>,
+            action: createPostAction
           },
         ],
       },

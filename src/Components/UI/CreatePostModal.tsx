@@ -1,5 +1,5 @@
 import { ModalPost } from "./ModalPost";
-import { useNavigate, useNavigation } from "react-router-dom";
+import { useNavigate, useNavigation, useSubmit } from "react-router-dom";
 import { LoadingSpinner } from "../LoadingSpinner/LoadingSpinner";
 import { Input } from "./Input";
 import { Controller, useForm } from "react-hook-form";
@@ -10,12 +10,14 @@ import { FileInput } from "./FileInput";
 export const CreatePostModal = () => {
   const navigate = useNavigate();
   const navigation = useNavigation();
-
+  const submit = useSubmit();
   const isNavigating = navigation.state !== "idle";
+  const isSubmitting = navigation.state === "submitting";
 
   const {
     handleSubmit,
     control,
+    watch,
 
     formState: { errors },
   } = useForm<CreatePost>();
@@ -24,8 +26,21 @@ export const CreatePostModal = () => {
     navigate("/home");
   };
 
+//todo: Create legnth validation  
+  const title = watch("title");
+  const content = watch("content");
+
+
   const onSubmit = (data: CreatePost) => {
-    console.log(data);
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("content", data.content);
+
+    if (data.image) {
+      formData.append("image", data.image[0]);
+    }
+
+    submit(formData, { method: "POST", encType: "multipart/form-data" });
   };
 
   return (
@@ -124,6 +139,7 @@ export const CreatePostModal = () => {
             <button
               type="submit"
               className="w-full h-12 bg-purple-600 text-white rounded-lg font-semibold cursor-pointer hover:bg-purple-700 transition-colors mt-2 disabled:bg-purple-400 disabled:cursor-not-allowed"
+              disabled={isSubmitting}
             >
               Submit
             </button>

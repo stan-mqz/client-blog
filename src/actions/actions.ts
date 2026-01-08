@@ -7,7 +7,7 @@ import {
 } from "../services/AuthService";
 import { useBlogStore } from "../store/store";
 import { isIntent } from "../helpers";
-import { likePost, unlikePost } from "../services/PostServices";
+import { createPost, likePost, unlikePost } from "../services/PostServices";
 import {
   createComment,
   deleteComment,
@@ -23,7 +23,7 @@ export const loginAction = async ({ request }: ActionFunctionArgs) => {
     return redirect("/home");
   }
 
-  return redirect('/auth/login')
+  return redirect("/auth/login");
 };
 
 export const registerAction = async ({ request }: ActionFunctionArgs) => {
@@ -78,4 +78,14 @@ export const homeAction = async ({ request }: ActionFunctionArgs) => {
   }
 
   return null;
+};
+
+export const createPostAction = async ({ request }: ActionFunctionArgs) => {
+  const data = Object.fromEntries(await request.formData());
+
+ 
+
+  await createPost(data);
+
+  return redirect("/home");
 };

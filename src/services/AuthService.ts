@@ -5,12 +5,11 @@ import {
   UserRecoverEmailSchema,
   UserRecoverPasswordSchema,
   UserRegisterSchema,
+  type formData,
 } from "../types/userTypes";
 import api from "./api";
 
-type userData = {
-  [k: string]: FormDataEntryValue;
-};
+
 
 const { setAuthError } = useBlogStore.getState();
 
@@ -28,7 +27,7 @@ export const me = async () => {
   }
 };
 
-export const login = async (data: userData) => {
+export const login = async (data: formData) => {
   try {
     let response;
     const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/login`;
@@ -58,7 +57,7 @@ export const login = async (data: userData) => {
   }
 };
 
-export const register = async (data: userData) => {
+export const register = async (data: formData) => {
   try {
     let response;
     const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/register`;
@@ -111,7 +110,7 @@ export const verifyEmail = async (token: string) => {
   }
 };
 
-export const recoverEmail = async (data: userData) => {
+export const recoverEmail = async (data: formData) => {
   try {
     const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/recover-email`;
 
@@ -142,7 +141,7 @@ export const recoverEmail = async (data: userData) => {
   return null;
 };
 
-export const recoverPassword = async (data: userData) => {
+export const recoverPassword = async (data: formData) => {
   try {
     const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/recover-password`;
 
