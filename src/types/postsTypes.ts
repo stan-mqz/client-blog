@@ -17,7 +17,7 @@ export const PostSchema = z.object({
 export const CreatePostSchema = z.object({
   title: z.string(),
   content: z.string(),
-  image: z.string().nullable().optional(),
+  image: z.instanceof(FileList).optional(),
 });
 
 export const UpdatePostSchema = z.object({
