@@ -26,10 +26,11 @@ export const CreatePostModal = () => {
     navigate("/home");
   };
 
-//todo: Create legnth validation  
-  const title = watch("title");
-  const content = watch("content");
-
+  //todo: Create legnth validation
+  const title = watch("title") || '';
+  const titleLength = title.length
+  const content = watch("content") || '';
+  const contentLength = content.length
 
   const onSubmit = (data: CreatePost) => {
     const formData = new FormData();
@@ -84,6 +85,14 @@ export const CreatePostModal = () => {
                 )}
               />
 
+              <p
+                className={` ${
+                  titleLength > 100 ? "text-red-600" : "text-white"
+                }`}
+              >
+                {titleLength}/100
+              </p>
+
               {errors.title && (
                 <ErrorFormMessage>{errors.title.message}</ErrorFormMessage>
               )}
@@ -118,6 +127,14 @@ export const CreatePostModal = () => {
                   />
                 )}
               />
+
+              <p
+                className={` ${
+                  contentLength > 500 ? "text-red-600" : "text-white"
+                }`}
+              >
+                {contentLength}/500
+              </p>
 
               {errors.content && (
                 <ErrorFormMessage>{errors.content.message}</ErrorFormMessage>
