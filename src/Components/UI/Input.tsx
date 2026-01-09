@@ -38,7 +38,7 @@ export const Input = ({
         ></textarea>
       ) : (
         <input
-        autoFocus
+          autoFocus
           type={type}
           placeholder={placeholder}
           value={value}
