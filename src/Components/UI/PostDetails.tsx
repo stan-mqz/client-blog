@@ -12,10 +12,11 @@ import {
   HeartIcon,
 } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/16/solid";
-import { useFetcher, useNavigate } from "react-router-dom";
+import { useFetcher, useNavigate, useSubmit } from "react-router-dom";
 import { Comments } from "./Comments";
 import { ModalPost } from "./ModalPost";
 import { useEffect, useState } from "react";
+import { ConfirmDeleteModal } from "./ConfirmDeleteModal";
 
 type PostDetailsProps = {
   post: Post;
@@ -26,17 +27,19 @@ type PostDetailsProps = {
 export const PostDetails = ({ post, open, setOpen }: PostDetailsProps) => {
   const fetcher = useFetcher();
 
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [liked, setLiked] = useState(post.likedByUser);
   const [likesCount, setLikesCount] = useState(post.likesCount);
   const [postOptions, setPostOptions] = useState("");
   const navigate = useNavigate();
+  const submit = useSubmit();
 
   const handleOptionClick = (e: SelectChangeEvent) => {
     setPostOptions(e.target.value);
     if (e.target.value === "edit") {
       navigate("/edit-post");
     } else {
-      console.log("delete");
+      setOpenDeleteModal(true);
     }
   };
 
@@ -56,6 +59,22 @@ export const PostDetails = ({ post, open, setOpen }: PostDetailsProps) => {
 
   return (
     <ModalPost open={open} setOpen={setOpen}>
+      <ConfirmDeleteModal
+        open={openDeleteModal}
+        onCancel={() => {
+          setOpenDeleteModal(false);
+        }}
+        onConfirm={() => {
+          const formData = new FormData();
+
+          formData.append("intent", "post-delete");
+          formData.append("id_post", String(post.id_post));
+
+          submit(formData, { method: "POST" });
+
+          setOpenDeleteModal(false);
+        }}
+      />
       <div className="p-6 pb-4">
         <div className="flex justify-between items-center gap-3 mb-4">
           <div className="flex items-center gap-3">

@@ -7,7 +7,7 @@ import {
 } from "../services/AuthService";
 import { useBlogStore } from "../store/store";
 import { isIntent } from "../helpers";
-import { createPost, likePost, unlikePost } from "../services/PostServices";
+import { createPost, deletePost, likePost, unlikePost } from "../services/PostServices";
 import {
   createComment,
   deleteComment,
@@ -75,7 +75,14 @@ export const homeAction = async ({ request }: ActionFunctionArgs) => {
 
     case "comment-delete":
       await deleteComment(+data.id_comment, data);
+      break;
+
+    case 'post-delete' : 
+      await deletePost(+data.id_post)
   }
+
+  
+
 
   return null;
 };

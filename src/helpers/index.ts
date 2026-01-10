@@ -3,7 +3,8 @@ type Intent =
   | "unlike"
   | "comment-create"
   | "comment-update"
-  | "comment-delete";
+  | "comment-delete"
+  | 'post-delete'
 
 export const isIntent = (value: unknown): value is Intent => {
   return (
@@ -11,6 +12,7 @@ export const isIntent = (value: unknown): value is Intent => {
     value === "unlike" ||
     value === "comment-create" ||
     value === "comment-update" ||
-    value === "comment-delete"
+    value === "comment-delete" ||
+    value === 'post-delete'
   );
 };

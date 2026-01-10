@@ -34,10 +34,8 @@ export const createPost = async (postData: formData) => {
     });
 
     if (!result.success) {
-      console.log(result.error)
+      console.log(result.error);
     }
-
-
 
     await api.post(
       "/posts/create-post",
@@ -56,6 +54,14 @@ export const createPost = async (postData: formData) => {
     } else {
       setPostError(err.message || "Something went wrong");
     }
+  }
+};
+
+export const deletePost = async (id: Post['id_post']) => {
+  try {
+    await api.delete(`/posts/delete/${id}`);
+  } catch (error) {
+    console.log(error);
   }
 };
 
