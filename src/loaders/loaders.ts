@@ -1,19 +1,16 @@
 import { redirect, type LoaderFunctionArgs } from "react-router-dom";
 import { verifyEmail } from "../services/AuthService";
-import { getAllPosts } from "../services/PostServices";
+import { getAllPosts, getPostById } from "../services/PostServices";
 import { useBlogStore } from "../store/store";
 
 export const authLoader = async () => {
-
-
   const { isAuthenticated } = useBlogStore.getState();
 
   if (isAuthenticated) {
     return redirect("/home");
-  } 
+  }
 
-  return null
-
+  return null;
 };
 
 export const verifyEmailLoader = async ({ request }: LoaderFunctionArgs) => {
@@ -31,4 +28,14 @@ export const verifyEmailLoader = async ({ request }: LoaderFunctionArgs) => {
 export const homeLoader = async () => {
   const response = await getAllPosts();
   return response;
+};
+
+export const editPostLoader = async ({ params }: LoaderFunctionArgs) => {
+  const { id } = params;
+
+  const post = await getPostById(+id!)
+
+  if (post) return post
+  return redirect('/home')
+  
 };

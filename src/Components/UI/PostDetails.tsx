@@ -37,7 +37,7 @@ export const PostDetails = ({ post, open, setOpen }: PostDetailsProps) => {
   const handleOptionClick = (e: SelectChangeEvent) => {
     setPostOptions(e.target.value);
     if (e.target.value === "edit") {
-      navigate("/edit-post");
+      navigate(`/home/edit-post/${post.id_post}`);
     } else {
       setOpenDeleteModal(true);
     }

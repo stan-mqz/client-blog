@@ -1,13 +1,20 @@
 import { ModalPost } from "./ModalPost";
-import { useNavigate, useNavigation, useSubmit } from "react-router-dom";
+import {
+  useLoaderData,
+  useNavigate,
+  useNavigation,
+  useSubmit,
+} from "react-router-dom";
 import { LoadingSpinner } from "../LoadingSpinner/LoadingSpinner";
 import { Input } from "./Input";
 import { Controller, useForm } from "react-hook-form";
-import type { CreatePost } from "../../types/postsTypes";
+import type { CreatePost, Post } from "../../types/postsTypes";
 import { ErrorFormMessage } from "../Errors/ErrorFormMessage";
 import { FileInput } from "./FileInput";
 
-export const CreatePostModal = () => {
+export const EditPostModal = () => {
+  const post = useLoaderData() as Post;
+
   const navigate = useNavigate();
   const navigation = useNavigation();
   const submit = useSubmit();
@@ -18,21 +25,26 @@ export const CreatePostModal = () => {
     handleSubmit,
     control,
     watch,
-
     formState: { errors },
-  } = useForm<CreatePost>();
+  } = useForm<CreatePost>({
+    defaultValues: {
+      title: post.title,
+      content: post.content,
+    },
+  });
 
   const onClose = () => {
     navigate("/home");
   };
 
-  const title = watch("title") || '';
-  const titleLength = title.length
-  const content = watch("content") || '';
-  const contentLength = content.length
+  const title = watch("title") || "";
+  const titleLength = title.length;
+  const content = watch("content") || "";
+  const contentLength = content.length;
 
   const onSubmit = (data: CreatePost) => {
     const formData = new FormData();
+    formData.append('id' , String(post.id_post))
     formData.append("title", data.title);
     formData.append("content", data.content);
 
@@ -50,7 +62,7 @@ export const CreatePostModal = () => {
       ) : (
         <ModalPost open={true} onClose={onClose}>
           <h1 className="text-center text-white text-2xl m-6 uppercase font-bold">
-            Create Post
+            Edit Post
           </h1>
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -89,7 +101,7 @@ export const CreatePostModal = () => {
                   titleLength > 100 ? "text-red-600" : "text-white"
                 }`}
               >
-                {titleLength}/100
+                {titleLength ? titleLength : post.title.length}/100
               </p>
 
               {errors.title && (
@@ -132,7 +144,7 @@ export const CreatePostModal = () => {
                   contentLength > 500 ? "text-red-600" : "text-white"
                 }`}
               >
-                {contentLength}/500
+                {contentLength ? contentLength : post.content.length}/500
               </p>
 
               {errors.content && (

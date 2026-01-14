@@ -3,6 +3,7 @@ type InputProps = {
   type: string;
   placeholder: string;
   value?: string;
+  defaultValue?: string
   onChange?: (
     e:
       | React.ChangeEvent<HTMLInputElement>
@@ -21,6 +22,7 @@ export const Input = ({
   onChange,
   onBlur,
   textarea,
+  defaultValue
 }: InputProps) => {
   return (
 
@@ -34,6 +36,7 @@ export const Input = ({
           value={value}
           onChange={onChange}
           onBlur={onBlur}
+          defaultValue={defaultValue}
           className="bg-white rounded-lg w-full h-36 px-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed p-3"
         ></textarea>
       ) : (
@@ -44,6 +47,7 @@ export const Input = ({
           value={value}
           onChange={onChange}
           onBlur={onBlur}
+          defaultValue={defaultValue}
           className="bg-white rounded-lg w-full h-12 px-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
         />
       )}

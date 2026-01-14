@@ -3,6 +3,7 @@ import { useBlogStore } from "../store/store";
 import {
   CreatePostSchema,
   PostsArraySchema,
+  PostSchema,
   type Post,
 } from "../types/postsTypes";
 import type { formData } from "../types/userTypes";
@@ -26,11 +27,33 @@ export const getAllPosts = async () => {
   }
 };
 
-export const createPost = async (postData: formData) => {
+export const getPostById = async (id: Post["id_post"]) => {
+  try {
+    const { data } = await api(`posts/${id}`);
+
+    const result = PostSchema.safeParse(data);
+
+    if (!result.success) {
+      console.log(result.error);
+    }
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    const err = error as AxiosError<{ message: string }>;
+    if (err.response && err.response.data) {
+      setPostError(err.response.data.message || "Something went wrong");
+    } else {
+      setPostError(err.message || "Something went wrong");
+    }
+  }
+};
+
+export const createPost = async (data: formData) => {
   try {
     const result = CreatePostSchema.safeParse({
-      title: postData.title,
-      content: postData.content,
+      title: data.title,
+      content: data.content,
     });
 
     if (!result.success) {
@@ -40,9 +63,9 @@ export const createPost = async (postData: formData) => {
     await api.post(
       "/posts/create-post",
       {
-        title: postData.title,
-        content: postData.content,
-        image: postData.image,
+        title: data.title,
+        content: data.content,
+        image: data.image,
       },
       { headers: { "Content-Type": "multipart/form-data" } }
     );
@@ -57,7 +80,39 @@ export const createPost = async (postData: formData) => {
   }
 };
 
-export const deletePost = async (id: Post['id_post']) => {
+export const editPost = async (id: Post["id_post"], data: formData) => {
+  try {
+    const result = CreatePostSchema.safeParse({
+      id_post: id,
+      title: data.title,
+      content: data.content,
+    });
+
+    if (!result.success) {
+      console.log(result.error);
+    }
+
+    await api.patch(
+      `/posts/edit-post/${id}`,
+      {
+        title: data.title,
+        content: data.content,
+        image: data.image,
+      },
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+  } catch (error) {
+    console.log(error);
+    const err = error as AxiosError<{ message: string }>;
+    if (err.response && err.response.data) {
+      setPostError(err.response.data.message || "Something went wrong");
+    } else {
+      setPostError(err.message || "Something went wrong");
+    }
+  }
+};
+
+export const deletePost = async (id: Post["id_post"]) => {
   try {
     await api.delete(`/posts/delete/${id}`);
   } catch (error) {

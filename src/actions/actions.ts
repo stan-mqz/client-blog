@@ -7,7 +7,13 @@ import {
 } from "../services/AuthService";
 import { useBlogStore } from "../store/store";
 import { isIntent } from "../helpers";
-import { createPost, deletePost, likePost, unlikePost } from "../services/PostServices";
+import {
+  createPost,
+  deletePost,
+  editPost,
+  likePost,
+  unlikePost,
+} from "../services/PostServices";
 import {
   createComment,
   deleteComment,
@@ -77,12 +83,9 @@ export const homeAction = async ({ request }: ActionFunctionArgs) => {
       await deleteComment(+data.id_comment, data);
       break;
 
-    case 'post-delete' : 
-      await deletePost(+data.id_post)
+    case "post-delete":
+      await deletePost(+data.id_post);
   }
-
-  
-
 
   return null;
 };
@@ -90,11 +93,15 @@ export const homeAction = async ({ request }: ActionFunctionArgs) => {
 export const createPostAction = async ({ request }: ActionFunctionArgs) => {
   const data = Object.fromEntries(await request.formData());
 
- 
-
   await createPost(data);
 
   return redirect("/home");
 };
 
+export const editPostAction = async ({ request }: ActionFunctionArgs) => {
+  const data = Object.fromEntries(await request.formData());
 
+  await editPost(+data.id, data);
+
+  return redirect("/home");
+};
