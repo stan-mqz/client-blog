@@ -6,6 +6,8 @@ import { Controller, useForm } from "react-hook-form";
 import type { CreatePost } from "../../types/postsTypes";
 import { ErrorFormMessage } from "../Errors/ErrorFormMessage";
 import { FileInput } from "./FileInput";
+import { useBlogStore } from "../../store/store";
+import { ErrorMessage } from "../Errors/ErrorMessage";
 
 export const CreatePostModal = () => {
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ export const CreatePostModal = () => {
   const submit = useSubmit();
   const isNavigating = navigation.state !== "idle";
   const isSubmitting = navigation.state === "submitting";
+  const postError = useBlogStore(state => state.postError)
 
   const {
     handleSubmit,
@@ -49,6 +52,7 @@ export const CreatePostModal = () => {
         <LoadingSpinner />
       ) : (
         <ModalPost open={true} onClose={onClose}>
+          {postError && <ErrorMessage>{postError}</ErrorMessage>}
           <h1 className="text-center text-white text-2xl m-6 uppercase font-bold">
             Create Post
           </h1>

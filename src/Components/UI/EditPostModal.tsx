@@ -11,9 +11,12 @@ import { Controller, useForm } from "react-hook-form";
 import type { CreatePost, Post } from "../../types/postsTypes";
 import { ErrorFormMessage } from "../Errors/ErrorFormMessage";
 import { FileInput } from "./FileInput";
+import { useBlogStore } from "../../store/store";
+import { ErrorMessage } from "../Errors/ErrorMessage";
 
 export const EditPostModal = () => {
   const post = useLoaderData() as Post;
+  const postError = useBlogStore((state) => state.postError);
 
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -44,7 +47,7 @@ export const EditPostModal = () => {
 
   const onSubmit = (data: CreatePost) => {
     const formData = new FormData();
-    formData.append('id' , String(post.id_post))
+    formData.append("id", String(post.id_post));
     formData.append("title", data.title);
     formData.append("content", data.content);
 
@@ -61,6 +64,8 @@ export const EditPostModal = () => {
         <LoadingSpinner />
       ) : (
         <ModalPost open={true} onClose={onClose}>
+          {postError && <ErrorMessage>{postError}</ErrorMessage>}
+
           <h1 className="text-center text-white text-2xl m-6 uppercase font-bold">
             Edit Post
           </h1>
