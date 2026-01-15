@@ -7,7 +7,7 @@ import { VerifyEmail } from "./Pages/VerifyEmail";
 import { RecoverEmail } from "./Pages/RecoverEmail";
 import { RecoverPassword } from "./Pages/RecoverPassword";
 import { protectedMiddleware } from "./middleware/auth";
-import { authLoader, editPostLoader, homeLoader, verifyEmailLoader } from "./loaders/loaders";
+import { authLoader, editPostLoader, homeLoader, profileLoader, verifyEmailLoader } from "./loaders/loaders";
 import { LoadingSpinner } from "./Components/LoadingSpinner/LoadingSpinner";
 import { HomeSkeleton } from "./Components/Skeleton/HomeSkeleton";
 import {
@@ -22,6 +22,7 @@ import {
 import { VerificationMessage } from "./Components/UI/VerificationMessage";
 import { CreatePostModal } from "./Components/UI/CreatePostModal";
 import { EditPostModal } from "./Components/UI/EditPostModal";
+import { ProfilePage } from "./Pages/ProfilePage";
 
 export const router = createBrowserRouter([
   {
@@ -94,6 +95,12 @@ export const router = createBrowserRouter([
             action: editPostAction,
             loader: editPostLoader
           },
+
+          {
+            path: 'profile/:id',
+            element: <ProfilePage/>,
+            loader: profileLoader
+          }
         ],
       },
     ],

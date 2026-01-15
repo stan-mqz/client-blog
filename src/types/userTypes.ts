@@ -2,7 +2,7 @@ import { z } from "zod";
 
 // Schema para usuario autenticado
 export const AuthUserSchema = z.object({
-  id_user: z.number(),
+  id: z.number(),
   username: z.string(),
   email: z.string(),
   avatar: z.string(),

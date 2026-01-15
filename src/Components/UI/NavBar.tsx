@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useBlogStore } from "../../store/store";
 import {
   HomeIcon,
@@ -11,6 +11,7 @@ import { useState } from "react";
 export const NavBar = () => {
 
 
+  const id_user = useBlogStore(state => state.userData?.id)
   const username = useBlogStore((state) => state.userData?.username);
   const email = useBlogStore((state) => state.userData?.email);
   const avatar = useBlogStore((state) => state.userData?.avatar);
@@ -31,10 +32,10 @@ export const NavBar = () => {
   return (
     <nav className="flex bg-slate-800 justify-between items-center p-3.5">
       <div className="flex gap-4 items-center font-bold">
-        <div>
+        <Link to={'/home'}>
           <HomeIcon className="size-9 text-white" />
-        </div>
-        <div className="flex gap-3 justify-center items-center">
+        </Link>
+        <Link to={`/home/profile/${id_user}`} className="flex gap-3 justify-center items-center">
           <div className="w-14">
             <img
               className="w-full rounded-full"
@@ -46,7 +47,7 @@ export const NavBar = () => {
             <p>{username}</p>
             <p>{email}</p>
           </div>
-        </div>
+        </Link>
       </div>
       <div className="flex gap-3 text-white">
         <div>

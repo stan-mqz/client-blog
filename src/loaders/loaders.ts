@@ -2,6 +2,7 @@ import { redirect, type LoaderFunctionArgs } from "react-router-dom";
 import { verifyEmail } from "../services/AuthService";
 import { getAllPosts, getPostById } from "../services/PostServices";
 import { useBlogStore } from "../store/store";
+import { getUserProfile } from "../services/UserService";
 
 export const authLoader = async () => {
   const { isAuthenticated } = useBlogStore.getState();
@@ -39,3 +40,11 @@ export const editPostLoader = async ({ params }: LoaderFunctionArgs) => {
   return redirect('/home')
   
 };
+
+
+export const profileLoader = async ({params} : LoaderFunctionArgs) => {
+  const {id} = params
+
+  const data = await getUserProfile(+id!)
+  return data
+}
