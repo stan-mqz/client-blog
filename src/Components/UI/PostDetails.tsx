@@ -79,12 +79,11 @@ export const PostDetails = () => {
           setOpenDeleteModal(false);
         }}
       />
-      <div className="p-6 pb-4">
-        <div className="flex justify-between items-center gap-3 mb-4">
-          <Link to={`/home/profile/${post.user.id_user}`} className="flex items-center gap-3">
+      <div className="p-4 sm:p-6 pb-3 sm:pb-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+          <Link to={`/home/profile/${post.user.id_user}`} className="flex items-center gap-2 sm:gap-3">
             <div
-              
-              className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-slate-600"
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden ring-2 ring-slate-600"
             >
               <img
                 className="w-full h-full object-cover"
@@ -93,17 +92,17 @@ export const PostDetails = () => {
               />
             </div>
 
-            <p className="text-white font-semibold text-lg">
+            <p className="text-white font-semibold text-base sm:text-lg">
               {post?.user.username}
             </p>
           </Link>
 
           {post?.isOwner && (
-            <div>
+            <div className="w-full sm:w-auto">
               <FormControl
                 fullWidth
                 sx={{
-                  minWidth: 140,
+                  minWidth: { xs: "100%", sm: 140 },
                   "& .MuiOutlinedInput-root": {
                     borderRadius: "12px",
                     backgroundColor: "#334155",
@@ -174,28 +173,28 @@ export const PostDetails = () => {
 
         <Typography
           component="h2"
-          className="text-2xl font-bold text-white mb-3 leading-tight"
+          className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3 leading-tight"
         >
           {post?.title}
         </Typography>
 
-        <Typography className="text-slate-300 leading-relaxed mb-4">
+        <Typography className="text-sm sm:text-base text-slate-300 leading-relaxed mb-3 sm:mb-4">
           {post?.content}
         </Typography>
       </div>
 
       {post?.image && (
-        <div className="px-6 pb-4">
+        <div className="px-4 sm:px-6 pb-3 sm:pb-4">
           <img
             src={post?.image}
             alt="Post"
-            className="w-full max-h-[70vh] object-contain rounded-lg bg-black"
+            className="w-full max-h-[50vh] sm:max-h-[70vh] object-contain rounded-lg bg-black"
           />
         </div>
       )}
 
-      <div className="flex items-center justify-between px-6 pb-5">
-        <div className="flex items-center gap-4">
+      <div className="flex items-center justify-between px-4 sm:px-6 pb-4 sm:pb-5">
+        <div className="flex items-center gap-3 sm:gap-4">
           <fetcher.Form
             method="POST"
             onSubmit={() => {
@@ -207,30 +206,29 @@ export const PostDetails = () => {
             <input type="hidden" name="id" value={post?.id_post} />
             <input type="hidden" name="intent" value={intent} />
 
-            <button type="submit">
+            <button type="submit" className="flex items-center gap-1.5 sm:gap-2">
               {liked ? (
-                <HeartIconSolid className="size-8 text-purple-600 cursor-pointer transition-transform duration-200 hover:scale-110" />
+                <HeartIconSolid className="size-7 sm:size-8 text-purple-600 cursor-pointer transition-transform duration-200 hover:scale-110" />
               ) : (
-                <HeartIcon className="size-8 text-white cursor-pointer transition-all duration-200 hover:scale-110 hover:text-purple-600" />
+                <HeartIcon className="size-7 sm:size-8 text-white cursor-pointer transition-all duration-200 hover:scale-110 hover:text-purple-600" />
               )}
+              <span
+                className={`text-xs sm:text-sm font-semibold tracking-wide ${
+                  liked ? "text-purple-500" : "text-slate-300"
+                }`}
+              >
+                {likesCount}
+              </span>
             </button>
-
-            <span
-              className={`text-sm font-semibold tracking-wide ${
-                liked ? "text-purple-500" : "text-slate-300"
-              }`}
-            >
-              {likesCount}
-            </span>
           </fetcher.Form>
 
-          <ChatBubbleLeftEllipsisIcon className="size-7 text-white cursor-pointer transition-all duration-200 hover:scale-110 hover:text-purple-600" />
+          <ChatBubbleLeftEllipsisIcon className="size-6 sm:size-7 text-white cursor-pointer transition-all duration-200 hover:scale-110 hover:text-purple-600" />
         </div>
       </div>
 
-      <div className="pl-6 pb-5 w-[96%]">
+      <div className="pl-4 sm:pl-6 pb-4 sm:pb-5 w-[98%] sm:w-[96%]">
         <Comments post={post!} />
       </div>
     </ModalPost>
   );
-};
+};  

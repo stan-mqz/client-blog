@@ -21,17 +21,19 @@ export const ProfilePage = () => {
           <p>{user?.email}</p>
         </div>
 
-        <div className="grid grid-cols-3 gap-7 my-5 w-[90%]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-7 my-5 w-full px-4 sm:w-[95%] lg:w-[90%]">
           {user.posts.map((post) => (
             <div
               key={post.id_post}
-              className="bg-slate-800 space-y-3 p-2 rounded-lg cursor-pointer"
+              className="bg-slate-800 space-y-3 p-3 sm:p-4 rounded-lg cursor-pointer hover:bg-slate-700 transition-colors"
               onClick={() => navigate(`/home/display-post/${post.id_post}`)}
             >
-              <p className="font-bold text-white">{post.title}</p>
+              <p className="font-bold text-white text-sm sm:text-base">
+                {post.title}
+              </p>
               <div className="rounded-lg overflow-hidden">
                 <img
-                  className="w-full h-48 object-cover"
+                  className="w-full h-40 sm:h-48 object-cover"
                   src={post?.image!}
                   alt="Post Image"
                 />
