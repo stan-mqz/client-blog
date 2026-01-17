@@ -1,8 +1,9 @@
 import { z } from "zod";
+import { PostSchema } from "./postsTypes";
 
 // Schema para usuario autenticado
 export const AuthUserSchema = z.object({
-  id: z.number(),
+  id_user: z.number(),
   username: z.string(),
   email: z.string(),
   avatar: z.string(),
@@ -40,9 +41,18 @@ export const UserBasicSchema = z.object({
   avatar: z.string(),
 });
 
+export const UserProfileSchema = z.object({
+  id_user: z.number(),
+  username: z.string(),
+  email: z.string(),
+  avatar: z.string(),
+  posts:  z.array(PostSchema)
+});
+
 // Tipos TypeScript
 export type AuthUser = z.infer<typeof AuthUserSchema>;
 export type UserLogin = z.infer<typeof UserLoginSchema>;
+export type UserProfile = z.infer<typeof UserProfileSchema>
 export type UserRegister = z.infer<typeof UserRegisterSchema>;
 export type UserRecoverEmail = z.infer<typeof UserRecoverEmailSchema>;
 export type UserRecoverPassword = z.infer<typeof UserRecoverPasswordSchema>;

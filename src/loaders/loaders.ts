@@ -31,20 +31,24 @@ export const homeLoader = async () => {
   return response;
 };
 
-export const editPostLoader = async ({ params }: LoaderFunctionArgs) => {
+
+
+
+export const getSinglePostLoader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
 
-  const post = await getPostById(+id!)
+  const post = await getPostById(+id!);
 
-  if (post) return post
-  return redirect('/home')
-  
+  console.log(post)
+
+  if (post) return post;
+  return redirect("/home");
 };
 
+export const profileLoader = async ({ params }: LoaderFunctionArgs) => {
+  const { id } = params;
 
-export const profileLoader = async ({params} : LoaderFunctionArgs) => {
-  const {id} = params
+  const data = await getUserProfile(+id!);
+  return data;
+};
 
-  const data = await getUserProfile(+id!)
-  return data
-}

@@ -15,7 +15,7 @@ const boxStyle = {
 type ModalPostProps = {
   open: boolean;
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-  children: ReactNode;
+  children?: ReactNode;
   onClose?: () => void
 };
 

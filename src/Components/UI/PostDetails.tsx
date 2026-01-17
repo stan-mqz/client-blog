@@ -12,24 +12,24 @@ import {
   HeartIcon,
 } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/16/solid";
-import { useFetcher, useNavigate, useSubmit } from "react-router-dom";
+import { Link, useFetcher, useLoaderData, useNavigate, useSubmit } from "react-router-dom";
 import { Comments } from "./Comments";
 import { ModalPost } from "./ModalPost";
 import { useEffect, useState } from "react";
 import { ConfirmDeleteModal } from "./ConfirmDeleteModal";
 
-type PostDetailsProps = {
-  post: Post;
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
 
-export const PostDetails = ({ post, open, setOpen }: PostDetailsProps) => {
+
+export const PostDetails = () => {
   const fetcher = useFetcher();
 
+  const post = useLoaderData() as Post
+
+
+
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const [liked, setLiked] = useState(post.likedByUser);
-  const [likesCount, setLikesCount] = useState(post.likesCount);
+  const [liked, setLiked] = useState(post?.likedByUser);
+  const [likesCount, setLikesCount] = useState(post?.likesCount);
   const [postOptions, setPostOptions] = useState("");
   const navigate = useNavigate();
   const submit = useSubmit();
@@ -37,16 +37,16 @@ export const PostDetails = ({ post, open, setOpen }: PostDetailsProps) => {
   const handleOptionClick = (e: SelectChangeEvent) => {
     setPostOptions(e.target.value);
     if (e.target.value === "edit") {
-      navigate(`/home/edit-post/${post.id_post}`);
+      navigate(`/home/edit-post/${post?.id_post}`);
     } else {
       setOpenDeleteModal(true);
     }
   };
 
   useEffect(() => {
-    setLiked(post.likedByUser);
-    setLikesCount(post.likesCount);
-  }, [post.id_post, post.likedByUser, post.likesCount]);
+    setLiked(post?.likedByUser);
+    setLikesCount(post?.likesCount);
+  }, [post?.id_post, post?.likedByUser, post?.likesCount]);
 
   useEffect(() => {
     if (fetcher.state === "idle" && fetcher.data?.success) {
@@ -57,8 +57,13 @@ export const PostDetails = ({ post, open, setOpen }: PostDetailsProps) => {
 
   const intent = liked ? "unlike" : "like";
 
+
+  const onClose = () => {
+    navigate(-1)
+  }
+
   return (
-    <ModalPost open={open} setOpen={setOpen}>
+    <ModalPost open={true} onClose={onClose}>
       <ConfirmDeleteModal
         open={openDeleteModal}
         onCancel={() => {
@@ -68,7 +73,7 @@ export const PostDetails = ({ post, open, setOpen }: PostDetailsProps) => {
           const formData = new FormData();
 
           formData.append("intent", "post-delete");
-          formData.append("id_post", String(post.id_post));
+          formData.append("id_post", String(post?.id_post));
 
           submit(formData, { method: "POST" });
 
@@ -78,20 +83,23 @@ export const PostDetails = ({ post, open, setOpen }: PostDetailsProps) => {
       <div className="p-6 pb-4">
         <div className="flex justify-between items-center gap-3 mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-slate-600">
+            <Link
+              to={`/home/profile/${post?.user?.id_user}`}
+              className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-slate-600"
+            >
               <img
                 className="w-full h-full object-cover"
                 src={post.user.avatar}
-                alt={`${post.user.username} avatar`}
+                alt={`${post?.user.username} avatar`}
               />
-            </div>
+            </Link>
 
             <p className="text-white font-semibold text-lg">
-              {post.user.username}
+              {post?.user.username}
             </p>
           </div>
 
-          {post.isOwner && (
+          {post?.isOwner && (
             <div>
               <FormControl
                 fullWidth
@@ -169,18 +177,18 @@ export const PostDetails = ({ post, open, setOpen }: PostDetailsProps) => {
           component="h2"
           className="text-2xl font-bold text-white mb-3 leading-tight"
         >
-          {post.title}
+          {post?.title}
         </Typography>
 
         <Typography className="text-slate-300 leading-relaxed mb-4">
-          {post.content}
+          {post?.content}
         </Typography>
       </div>
 
-      {post.image && (
+      {post?.image && (
         <div className="px-6 pb-4">
           <img
-            src={post.image}
+            src={post?.image}
             alt="Post"
             className="w-full max-h-[70vh] object-contain rounded-lg bg-black"
           />
@@ -193,10 +201,11 @@ export const PostDetails = ({ post, open, setOpen }: PostDetailsProps) => {
             method="POST"
             onSubmit={() => {
               setLiked(!liked);
-              setLikesCount((c) => (liked ? c - 1 : c + 1));
+              setLikesCount((c) => (liked ? c! - 1 : c! + 1));
+              
             }}
           >
-            <input type="hidden" name="id" value={post.id_post} />
+            <input type="hidden" name="id" value={post?.id_post} />
             <input type="hidden" name="intent" value={intent} />
 
             <button type="submit">
@@ -221,7 +230,7 @@ export const PostDetails = ({ post, open, setOpen }: PostDetailsProps) => {
       </div>
 
       <div className="pl-6 pb-5 w-[96%]">
-        <Comments post={post} />
+        <Comments post={post!} />
       </div>
     </ModalPost>
   );

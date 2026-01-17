@@ -8,7 +8,7 @@ export const CommentSchema = z.object({
   post_id: z.number(),
   createdAt: z.string(),
   updatedAt: z.string(),
-  user: UserBasicSchema,
+  user: z.lazy(() => UserBasicSchema),
   isOwner: z.boolean(),
 });
 

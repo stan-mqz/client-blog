@@ -7,10 +7,20 @@ export const PostSchema = z.object({
   title: z.string(),
   content: z.string(),
   image: z.string().nullable(),
-  user: UserBasicSchema,
+  user: z.lazy(() => UserBasicSchema),
   likesCount: z.number(),
   likedByUser: z.boolean(),
   comments: z.array(CommentSchema),
+  isOwner: z.boolean(),
+});
+
+export const PostSummarySchema = z.object({
+  id_post: z.number(),
+  title: z.string(),
+  content: z.string(),
+  image: z.string().nullable(),
+  likesCount: z.number(),
+  likedByUser: z.boolean(),
   isOwner: z.boolean(),
 });
 
@@ -37,6 +47,7 @@ export const UpdatePostSchema = z.object({
 export const PostsArraySchema = z.array(PostSchema);
 
 export type Post = z.infer<typeof PostSchema>;
+export type PostSummary = z.infer<typeof PostSummarySchema>;
 export type CreatePost = z.infer<typeof CreatePostSchema>;
 export type UpdatePost = z.infer<typeof UpdatePostSchema>;
 export type Posts = z.infer<typeof PostsArraySchema>;

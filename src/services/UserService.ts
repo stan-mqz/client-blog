@@ -1,13 +1,13 @@
 import { AuthUserSchema, type AuthUser } from "../types/userTypes";
 import api from "./api";
 
-export const getUserProfile = async (id: AuthUser["id"]) => {
+export const getUserProfile = async (id: AuthUser["id_user"]) => {
   try {
     if (!id) {
       throw new Error("Id cannot be empty");
     }
 
-    const result = AuthUserSchema.shape.id.safeParse(id);
+    const result = AuthUserSchema.shape.id_user.safeParse(id);
 
     if (!result.success) {
         console.log(result.error)

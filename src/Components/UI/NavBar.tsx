@@ -11,7 +11,7 @@ import { useState } from "react";
 export const NavBar = () => {
 
 
-  const id_user = useBlogStore(state => state.userData?.id)
+  const id_user = useBlogStore(state => state.userData?.id_user)
   const username = useBlogStore((state) => state.userData?.username);
   const email = useBlogStore((state) => state.userData?.email);
   const avatar = useBlogStore((state) => state.userData?.avatar);
