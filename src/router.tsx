@@ -80,7 +80,6 @@ export const router = createBrowserRouter([
             index: true,
             element: <Home />,
             loader: homeLoader,
-            action: homeAction,
             HydrateFallback: HomeSkeleton,
           },
 

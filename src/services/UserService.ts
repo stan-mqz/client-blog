@@ -15,6 +15,7 @@ export const getUserProfile = async (id: AuthUser["id_user"]) => {
 
     const {data} = await api.get(`/user/profile/${id}`)
 
+
     return data
 
 

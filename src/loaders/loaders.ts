@@ -31,15 +31,10 @@ export const homeLoader = async () => {
   return response;
 };
 
-
-
-
 export const getSinglePostLoader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
 
   const post = await getPostById(+id!);
-
-  console.log(post)
 
   if (post) return post;
   return redirect("/home");
@@ -50,5 +45,5 @@ export const profileLoader = async ({ params }: LoaderFunctionArgs) => {
 
   const data = await getUserProfile(+id!);
   return data;
-};
 
+};

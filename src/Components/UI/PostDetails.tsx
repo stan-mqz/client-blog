@@ -26,7 +26,6 @@ export const PostDetails = () => {
   const post = useLoaderData() as Post
 
 
-
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [liked, setLiked] = useState(post?.likedByUser);
   const [likesCount, setLikesCount] = useState(post?.likesCount);
@@ -82,9 +81,9 @@ export const PostDetails = () => {
       />
       <div className="p-6 pb-4">
         <div className="flex justify-between items-center gap-3 mb-4">
-          <div className="flex items-center gap-3">
-            <Link
-              to={`/home/profile/${post?.user?.id_user}`}
+          <Link to={`/home/profile/${post.user.id_user}`} className="flex items-center gap-3">
+            <div
+              
               className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-slate-600"
             >
               <img
@@ -92,12 +91,12 @@ export const PostDetails = () => {
                 src={post.user.avatar}
                 alt={`${post?.user.username} avatar`}
               />
-            </Link>
+            </div>
 
             <p className="text-white font-semibold text-lg">
               {post?.user.username}
             </p>
-          </div>
+          </Link>
 
           {post?.isOwner && (
             <div>
@@ -201,7 +200,7 @@ export const PostDetails = () => {
             method="POST"
             onSubmit={() => {
               setLiked(!liked);
-              setLikesCount((c) => (liked ? c! - 1 : c! + 1));
+              setLikesCount((c) => (liked ? c - 1 : c + 1));
               
             }}
           >
