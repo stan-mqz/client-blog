@@ -24,6 +24,7 @@ import { CreatePostModal } from "./Components/UI/CreatePostModal";
 import { EditPostModal } from "./Components/UI/EditPostModal";
 import { ProfilePage } from "./Pages/ProfilePage";
 import { PostDetails } from "./Components/UI/PostDetails";
+import { Settings } from "./Pages/Settings";
 
 export const router = createBrowserRouter([
   {
@@ -108,7 +109,13 @@ export const router = createBrowserRouter([
             element: <ProfilePage/>,
             loader: profileLoader,
             action: homeAction
+          },
+
+          {
+            path: 'settings',
+            element: <Settings/>  
           }
+         
         ],
       },
     ],

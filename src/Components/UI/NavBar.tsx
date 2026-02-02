@@ -58,7 +58,9 @@ export const NavBar = () => {
           />
         </div>
         <div>
-          <Cog8ToothIcon className="size-8 sm:size-9 text-white cursor-pointer hover:text-gray-300 transition-colors" />
+          <Cog8ToothIcon
+          onClick={() => navigate("/home/settings")}
+          className="size-8 sm:size-9 text-white cursor-pointer hover:text-gray-300 transition-colors" />
         </div>
         <div>
           <button
