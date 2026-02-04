@@ -8,6 +8,7 @@ import { ErrorFormMessage } from "../Errors/ErrorFormMessage";
 import { FileInput } from "./FileInput";
 import { useBlogStore } from "../../store/store";
 import { ErrorMessage } from "../Errors/ErrorMessage";
+import { SubmitButton } from "./SubmitButton";
 
 export const CreatePostModal = () => {
   const navigate = useNavigate();
@@ -156,13 +157,12 @@ export const CreatePostModal = () => {
               )}
             />
 
-            <button
-              type="submit"
-              className="w-full h-12 bg-purple-600 text-white rounded-lg font-semibold cursor-pointer hover:bg-purple-700 transition-colors mt-2 disabled:bg-purple-400 disabled:cursor-not-allowed"
-              disabled={isSubmitting}
-            >
-              Submit
-            </button>
+
+            <SubmitButton
+            text='Create Post'
+            disabled={isSubmitting}
+            />
+
           </form>
         </ModalPost>
       )}

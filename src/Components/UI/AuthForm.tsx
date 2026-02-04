@@ -2,6 +2,7 @@ import { type FieldValues, type UseFormHandleSubmit } from "react-hook-form";
 import { ErrorMessage } from "../Errors/ErrorMessage";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, type ReactNode } from "react";
+import { SubmitButton } from "./SubmitButton";
 
 export type NavLinkConfig = {
   path: string;
@@ -64,17 +65,16 @@ export function AuthForm<T extends FieldValues>({
           </div>
 
           <form
-            className="flex flex-col space-y-4 w-full"
+            className="flex flex-col space-y-6 w-full"
             onSubmit={handleSubmit(onSubmit)}
           >
             {children}
-            <button
-              type="submit"
-              className="w-full h-12 bg-purple-600 text-white rounded-lg font-semibold cursor-pointer hover:bg-purple-700 transition-colors mt-2 disabled:bg-purple-400 disabled:cursor-not-allowed"
+
+            <SubmitButton
+              text={`${isSubmitting ? messages.submitting : messages.submit}`}
               disabled={isSubmitting}
-            >
-              {isSubmitting ? messages.submitting : messages.submit}
-            </button>
+              onClick={() => console.log('Hello')}
+            />
           </form>
 
           {links?.[1] && (

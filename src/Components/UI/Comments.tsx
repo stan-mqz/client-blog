@@ -7,6 +7,7 @@ import { useBlogStore } from "../../store/store";
 import { ErrorMessage } from "./../Errors/ErrorMessage";
 import { useState } from "react";
 import { ConfirmDeleteModal } from "./ConfirmDeleteModal";
+import { SubmitButton } from "./SubmitButton";
 
 type CommentsProps = {
   post: Post;
@@ -25,7 +26,7 @@ export const Comments = ({ post }: CommentsProps) => {
   const isSubmitting = navigation.state !== "idle";
   const submit = useSubmit();
   const commentError = useBlogStore((state) => state.commentError);
-  const avatar = useBlogStore(state => state.userData?.avatar)
+  const avatar = useBlogStore((state) => state.userData?.avatar);
 
   const {
     register,
@@ -116,14 +117,13 @@ export const Comments = ({ post }: CommentsProps) => {
                 placeholder="Add a new comment here"
               />
 
-              <button
-                type="submit"
-                onClick={() => setValue("intent", "comment-create")}
-                disabled={isSubmitting}
-                className="w-full sm:w-auto bg-purple-600 text-white px-3 sm:px-4 py-2 uppercase font-bold rounded-md disabled:bg-purple-400 cursor-pointer text-sm sm:text-base"
-              >
-                Submit
-              </button>
+              <div className="">
+                <SubmitButton
+                  text="Create Comment"
+                  disabled={isSubmitting}
+                  onClick={() => setValue("intent", "comment-create")}
+                />
+              </div>
             </div>
 
             <p
@@ -172,7 +172,10 @@ export const Comments = ({ post }: CommentsProps) => {
                   type="button"
                   onClick={() => {
                     reset();
-                    setUpdatingComment({ id_comment: null, update_comment: "" });
+                    setUpdatingComment({
+                      id_comment: null,
+                      update_comment: "",
+                    });
                   }}
                   className="flex-1 sm:flex-none bg-red-600 text-white px-3 sm:px-4 py-2 uppercase font-bold rounded-md disabled:bg-purple-400 cursor-pointer text-xs sm:text-base"
                 >
@@ -205,16 +208,25 @@ export const Comments = ({ post }: CommentsProps) => {
       {commentError && <ErrorMessage>{commentError}</ErrorMessage>}
 
       {post.comments.length === 0 ? (
-        <p className="ml-0 sm:ml-16 mt-5 text-gray-400 text-sm sm:text-base text-center sm:text-left">No comments yet</p>
+        <p className="ml-0 sm:ml-16 mt-5 text-gray-400 text-sm sm:text-base text-center sm:text-left">
+          No comments yet
+        </p>
       ) : (
         post.comments.map((comment) => (
           <div key={comment.id_comment} className="ml-0 sm:ml-16 mt-4 sm:mt-5">
             <div className="bg-slate-700 p-2 sm:p-3 rounded-md flex gap-2 sm:gap-3">
-              <img src={comment.user.avatar} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover shrink-0" />
+              <img
+                src={comment.user.avatar}
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover shrink-0"
+              />
 
               <div className="flex-1 min-w-0">
-                <p className="text-white font-bold text-sm sm:text-base truncate">{comment.user.username}</p>
-                <p className="text-white text-xs sm:text-base wrap-break-word">{comment.content_comment}</p>
+                <p className="text-white font-bold text-sm sm:text-base truncate">
+                  {comment.user.username}
+                </p>
+                <p className="text-white text-xs sm:text-base wrap-break-word">
+                  {comment.content_comment}
+                </p>
               </div>
             </div>
 
