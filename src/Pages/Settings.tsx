@@ -1,42 +1,53 @@
+import { Controller, useForm } from "react-hook-form";
 import { Input } from "../Components/UI/Input";
 import { SubmitButton } from "../Components/UI/SubmitButton";
+import { FileInput } from "../Components/UI/FileInput";
 
 export const Settings = () => {
+  const { control } = useForm();
   return (
     <div className="flex flex-col items-center justify-center mb-6  ">
       <div className="mt-10 space-y-16">
         <h1 className="text-white font-bold text-4xl">User Profile Settings</h1>
 
-        <form className="space-y-5">
+        <div className="space-y-5">
           <h2 className="text-white font-bold text-xl ">
             Upadate User Information
           </h2>
 
-          <Input
-            type="text"
-            placeholder="Enter your new username"
-            label="Change username"
-          />
+          <form className="space-y-5">
+            <Input
+              type="text"
+              placeholder="Enter your new username"
+              label="Change username"
+            />
+            <SubmitButton text="update username" disabled={false} />
+          </form>
 
-          <Input
-            type="e-mail"
-            placeholder="Enter your new e-mail"
-            label="Change E-mail"
-          />
-
-                <SubmitButton
-          text="update information"
-          disabled={false}
-          />
-
-
-          
-        </form>
+          <form className="space-y-5">
+            <Input
+              type="e-mail"
+              placeholder="Enter your new e-mail"
+              label="Change E-mail"
+            />
+            <SubmitButton text="update e-mail" disabled={false} />
+          </form>
+        </div>
 
         <form className="space-y-5">
           <h2 className="text-white font-bold text-xl ">Upadate Avatar</h2>
-
-          <p>Update Avatar*</p>
+          <Controller
+            control={control}
+            name="image"
+            render={({ field: { onChange, value } }) => (
+              <FileInput
+                label="Image"
+                value={value}
+                onChange={(e) => onChange(e.target.files)}
+              />
+            )}
+          />
+          <SubmitButton text="update avatar" disabled={false} />
         </form>
 
         <div className="space-y-5">
@@ -56,11 +67,7 @@ export const Settings = () => {
             label="New Password"
           />
 
-             <SubmitButton
-          text="update password"
-          disabled={false}
-          />
-
+          <SubmitButton text="update password" disabled={false} />
         </div>
       </div>
     </div>
