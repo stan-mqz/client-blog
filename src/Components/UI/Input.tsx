@@ -10,7 +10,6 @@ type InputProps = {
       | React.ChangeEvent<HTMLTextAreaElement>
   ) => void;
   onBlur?: () => void;
-  errorMessage?: string;
   textarea?: true;
 };
 

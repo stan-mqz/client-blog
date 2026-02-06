@@ -49,6 +49,7 @@ export const UserProfileSchema = z.object({
   posts:  z.array(PostSchema)
 });
 
+
 // Tipos TypeScript
 export type AuthUser = z.infer<typeof AuthUserSchema>;
 export type UserLogin = z.infer<typeof UserLoginSchema>;
@@ -59,4 +60,15 @@ export type UserRecoverPassword = z.infer<typeof UserRecoverPasswordSchema>;
 export type UserBasic = z.infer<typeof UserBasicSchema>;
 export type formData = {
   [k: string]: FormDataEntryValue;
+};
+export type UpdateUserName = Pick<AuthUser, 'username'>
+export type UpdateUserEmail = Pick<AuthUser, 'email'>
+export type UpdatePassword = {
+  email : string,
+  currentPassword: string,
+  newPassword: string
+}
+
+export type UpdateAvatar = {
+  image: FileList;
 };
