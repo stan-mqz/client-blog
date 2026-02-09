@@ -9,13 +9,27 @@ import type {
   UpdateAvatar,
 } from "../types/userTypes";
 import { ErrorFormMessage } from "../Components/Errors/ErrorFormMessage";
+import { useNavigation, useSubmit } from "react-router-dom";
+import { useBlogStore } from "../store/store";
 
 export const Settings = () => {
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state !== "idle";
+  const settingsSuccess = useBlogStore((state) => state.settingsSucces);
+  const settingsError = useBlogStore((state) => state.settingsError);
+
+  const submit = useSubmit();
+
   const {
     control: controlUsername,
     handleSubmit: handleSubmitUsername,
+    register: registerUserName,
     formState: { errors: errorsUsername },
-  } = useForm<UpdateUserName>();
+  } = useForm<UpdateUserName>({
+    defaultValues: {
+      intent: "update-username",
+    },
+  });
 
   const {
     control: controlEmail,
@@ -37,7 +51,14 @@ export const Settings = () => {
   } = useForm<UpdatePassword>();
 
   const onSubmitUsername = (data: UpdateUserName) => {
-    console.log(data);
+    const formData = new FormData();
+
+    formData.append("username", data.username);
+    formData.append("intent", data.intent);
+
+    submit(formData, {
+      method: "POST",
+    });
   };
 
   const onSubmitEmail = (data: UpdateUserEmail) => {
@@ -67,6 +88,7 @@ export const Settings = () => {
             onSubmit={handleSubmitUsername(onSubmitUsername)}
             className="space-y-5"
           >
+            <input type="hidden" {...registerUserName("intent")} />
             <Controller
               name="username"
               control={controlUsername}
@@ -88,13 +110,20 @@ export const Settings = () => {
               )}
             />
 
+            {settingsSuccess && (
+              <p className="text-green-600 font-bold">{settingsSuccess}</p>
+            )}
+
+            {settingsError && (
+              <ErrorFormMessage>{settingsError}</ErrorFormMessage>
+            )}
             {errorsUsername.username && (
               <ErrorFormMessage>
                 {errorsUsername.username.message}
               </ErrorFormMessage>
             )}
 
-            <SubmitButton text="update username" disabled={false} />
+            <SubmitButton text="update username" disabled={isSubmitting} />
           </form>
 
           {/* EMAIL */}

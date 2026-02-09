@@ -4,7 +4,7 @@ type Intent =
   | "comment-create"
   | "comment-update"
   | "comment-delete"
-  | 'post-delete'
+  | "post-delete";
 
 export const isIntent = (value: unknown): value is Intent => {
   return (
@@ -13,6 +13,12 @@ export const isIntent = (value: unknown): value is Intent => {
     value === "comment-create" ||
     value === "comment-update" ||
     value === "comment-delete" ||
-    value === 'post-delete'
+    value === "post-delete"
   );
+};
+
+type SettingsIntent = "update-username";
+
+export const isSettingsIntent = (value: unknown): value is SettingsIntent => {
+  return value === "update-username";
 };

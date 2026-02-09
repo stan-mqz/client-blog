@@ -18,6 +18,7 @@ import {
   recoverEmailAction,
   recoverPasswordAction,
   registerAction,
+  settingsAction,
 } from "./actions/actions";
 import { VerificationMessage } from "./Components/UI/VerificationMessage";
 import { CreatePostModal } from "./Components/UI/CreatePostModal";
@@ -113,6 +114,7 @@ export const router = createBrowserRouter([
 
           {
             path: 'settings',
+            action: settingsAction,
             element: <Settings/>  
           }
          

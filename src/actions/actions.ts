@@ -6,7 +6,7 @@ import {
   register,
 } from "../services/AuthService";
 import { useBlogStore } from "../store/store";
-import { isIntent } from "../helpers";
+import { isIntent, isSettingsIntent } from "../helpers";
 import {
   createPost,
   deletePost,
@@ -19,6 +19,7 @@ import {
   deleteComment,
   editComment,
 } from "../services/CommentsServices";
+import { UpdateUserName } from "../services/UserService";
 
 export const loginAction = async ({ request }: ActionFunctionArgs) => {
   const data = Object.fromEntries(await request.formData());
@@ -104,4 +105,23 @@ export const editPostAction = async ({ request }: ActionFunctionArgs) => {
   await editPost(+data.id, data);
 
   return redirect("/home");
+};
+
+export const settingsAction = async ({ request }: ActionFunctionArgs) => {
+  const data = Object.fromEntries(await request.formData());
+  const intent = data.intent;
+
+  if (!isSettingsIntent(intent)) {
+    throw new Response("Invalid intent", { status: 400 });
+  }
+
+
+  switch (intent) {
+    case 'update-username':
+      await UpdateUserName(data)
+      break;
+  
+    default:
+      break;
+  }
 };

@@ -40,7 +40,6 @@ export const Input = ({
         ></textarea>
       ) : (
         <input
-          autoFocus
           type={type}
           placeholder={placeholder}
           value={value}
