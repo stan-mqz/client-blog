@@ -19,7 +19,7 @@ import {
   deleteComment,
   editComment,
 } from "../services/CommentsServices";
-import { UpdateUserEmail, UpdateUserName } from "../services/UserService";
+import { UpdateAvatar, UpdateUserEmail, UpdateUserName } from "../services/UserService";
 
 export const loginAction = async ({ request }: ActionFunctionArgs) => {
   const data = Object.fromEntries(await request.formData());
@@ -115,14 +115,16 @@ export const settingsAction = async ({ request }: ActionFunctionArgs) => {
     throw new Response("Invalid intent", { status: 400 });
   }
 
-
   switch (intent) {
-    case 'update-username':
-      await UpdateUserName(data)
-      break;  
+    case "update-username":
+      await UpdateUserName(data);
+      break;
 
-    case 'update-email' :
-      UpdateUserEmail(data)
+    case "update-email":
+      await UpdateUserEmail(data);
+      break;
 
+    case "update-avatar":
+      await UpdateAvatar(data)
   }
 };

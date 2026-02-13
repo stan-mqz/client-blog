@@ -45,12 +45,13 @@ export const Settings = () => {
   const {
     control: controlAvatar,
     register: registerAvatar,
+     reset: resetAvatar,
     handleSubmit: handleSubmitAvatar,
     formState: { errors: errorsAvatar },
   } = useForm<UpdateAvatar>({
     defaultValues: {
-      intent: 'update-avatar'
-    }
+      intent: "update-avatar",
+    },
   });
 
   const {
@@ -79,11 +80,20 @@ export const Settings = () => {
     submit(formData, {
       method: "POST",
     });
-
   };
 
   const onSubmitAvatar = (data: UpdateAvatar) => {
-      const formData = new FormData()
+    const formData = new FormData();
+
+    formData.append("avatar", data.avatar);
+    formData.append("intent", data.intent);
+
+    submit(formData, {
+      method: 'POST',
+      encType: 'multipart/form-data'
+    })
+
+    resetAvatar()
   };
 
   const onSubmitPassword = (data: UpdatePassword) => {
@@ -127,11 +137,13 @@ export const Settings = () => {
               )}
             />
 
-            {settingsSuccess.field === 'username' && (
-              <p className="text-green-600 font-bold">{settingsSuccess.message}</p>
+            {settingsSuccess.field === "username" && (
+              <p className="text-green-600 font-bold">
+                {settingsSuccess.message}
+              </p>
             )}
 
-            {settingsError.field === 'error-username' && (
+            {settingsError.field === "error-username" && (
               <ErrorFormMessage>{settingsError.message}</ErrorFormMessage>
             )}
             {errorsUsername.username && (
@@ -172,11 +184,13 @@ export const Settings = () => {
               <ErrorFormMessage>{errorsEmail.email.message}</ErrorFormMessage>
             )}
 
-            {settingsSuccess.field === 'email' && (
-              <p className="text-green-600 font-bold">{settingsSuccess.message}</p>
+            {settingsSuccess.field === "email" && (
+              <p className="text-green-600 font-bold">
+                {settingsSuccess.message}
+              </p>
             )}
 
-            {settingsError.field === 'error-email' && (
+            {settingsError.field === "error-email" && (
               <ErrorFormMessage>{settingsError.message}</ErrorFormMessage>
             )}
 
@@ -191,23 +205,33 @@ export const Settings = () => {
         >
           <h2 className="text-white font-bold text-xl">Upadate Avatar</h2>
 
-              <input type="hidden"  {...registerAvatar('intent')} />
+          <input type="hidden" {...registerAvatar("intent")} />
 
           <Controller
-            name="image"
+            name="avatar"
             control={controlAvatar}
             rules={{ required: "Image is required" }}
             render={({ field: { onChange, value } }) => (
               <FileInput
                 value={value}
                 label="Image"
-                onChange={(e) => onChange(e.target.files)}
+                onChange={(e) => onChange(e.target.files?.[0])}
               />
             )}
           />
 
-          {errorsAvatar.image && (
-            <ErrorFormMessage>{errorsAvatar.image.message}</ErrorFormMessage>
+            {settingsSuccess.field === "avatar" && (
+              <p className="text-green-600 font-bold">
+                {settingsSuccess.message}
+              </p>
+            )}
+
+            {settingsError.field === "error-avatar" && (
+              <ErrorFormMessage>{settingsError.message}</ErrorFormMessage>
+            )}
+
+          {errorsAvatar.avatar && (
+            <ErrorFormMessage>{errorsAvatar.avatar.message}</ErrorFormMessage>
           )}
 
           <SubmitButton text="update avatar" disabled={isSubmitting} />

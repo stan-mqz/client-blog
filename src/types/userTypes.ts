@@ -78,7 +78,7 @@ export const UpdateUserEmailSchema = z.object({
 })
 
 export const UpdateAvatarSchema = z.object({
-  image: IMAGE_SCHEMA,
+  avatar: IMAGE_SCHEMA,
   intent: z.string()
 })
 
