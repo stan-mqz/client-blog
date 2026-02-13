@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { IMAGE_SCHEMA } from "./imageTypes";
 import { UserBasicSchema } from "./userTypes";
 import { CommentSchema } from "./commentsTypes";
 
@@ -27,15 +28,7 @@ export const PostSummarySchema = z.object({
 export const CreatePostSchema = z.object({
   title: z.string(),
   content: z.string(),
-  image: z
-    .any()
-    .optional()
-    .refine((files) => !files || files instanceof FileList, "Invalid file")
-    .refine(
-      (files) =>
-        !files || files.length === 0 || files[0]?.type?.startsWith("image/"),
-      "Only image files are allowed"
-    ),
+  image: IMAGE_SCHEMA,
 });
 
 export const UpdatePostSchema = z.object({

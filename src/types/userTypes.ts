@@ -1,20 +1,6 @@
 import { z } from "zod";
 import { PostSchema } from "./postsTypes";
-
-
-export const IMAGE_SCHEMA = z
-  .instanceof(File)
-  .refine(
-    (file) =>
-      [
-        "image/png",
-        "image/jpeg",
-        "image/jpg",
-        "image/svg+xml",
-        "image/gif",
-      ].includes(file.type),
-    { message: "Invalid image file type" }
-  );
+import { IMAGE_SCHEMA } from "./imageTypes";
 
 // Schema para usuario autenticado
 export const AuthUserSchema = z.object({

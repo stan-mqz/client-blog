@@ -45,7 +45,7 @@ export const Settings = () => {
   const {
     control: controlAvatar,
     register: registerAvatar,
-     reset: resetAvatar,
+    reset: resetAvatar,
     handleSubmit: handleSubmitAvatar,
     formState: { errors: errorsAvatar },
   } = useForm<UpdateAvatar>({
@@ -60,18 +60,18 @@ export const Settings = () => {
     formState: { errors: errorsPassword },
   } = useForm<UpdatePassword>();
 
-  const onSubmitUsername = (data: UpdateUserName) => {
+  const onSubmitUsername =  (data: UpdateUserName) => {
     const formData = new FormData();
 
     formData.append("username", data.username);
     formData.append("intent", data.intent);
 
-    submit(formData, {
+     submit(formData, {
       method: "POST",
     });
   };
 
-  const onSubmitEmail = (data: UpdateUserEmail) => {
+  const onSubmitEmail =  (data: UpdateUserEmail) => {
     const formData = new FormData();
 
     formData.append("email", data.email);
@@ -80,6 +80,7 @@ export const Settings = () => {
     submit(formData, {
       method: "POST",
     });
+
   };
 
   const onSubmitAvatar = (data: UpdateAvatar) => {
@@ -89,11 +90,11 @@ export const Settings = () => {
     formData.append("intent", data.intent);
 
     submit(formData, {
-      method: 'POST',
-      encType: 'multipart/form-data'
-    })
+      method: "POST",
+      encType: "multipart/form-data",
+    });
 
-    resetAvatar()
+    resetAvatar();
   };
 
   const onSubmitPassword = (data: UpdatePassword) => {
@@ -220,15 +221,15 @@ export const Settings = () => {
             )}
           />
 
-            {settingsSuccess.field === "avatar" && (
-              <p className="text-green-600 font-bold">
-                {settingsSuccess.message}
-              </p>
-            )}
+          {settingsSuccess.field === "avatar" && (
+            <p className="text-green-600 font-bold">
+              {settingsSuccess.message}
+            </p>
+          )}
 
-            {settingsError.field === "error-avatar" && (
-              <ErrorFormMessage>{settingsError.message}</ErrorFormMessage>
-            )}
+          {settingsError.field === "error-avatar" && (
+            <ErrorFormMessage>{settingsError.message}</ErrorFormMessage>
+          )}
 
           {errorsAvatar.avatar && (
             <ErrorFormMessage>{errorsAvatar.avatar.message}</ErrorFormMessage>

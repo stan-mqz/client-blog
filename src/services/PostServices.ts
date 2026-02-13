@@ -55,6 +55,7 @@ export const createPost = async (data: formData) => {
     const result = CreatePostSchema.safeParse({
       title: data.title,
       content: data.content,
+      image: data.image
     });
 
     if (!result.success) {
@@ -87,6 +88,7 @@ export const editPost = async (id: Post["id_post"], data: formData) => {
       id_post: id,
       title: data.title,
       content: data.content,
+      image: data.image
     });
 
     if (!result.success) {
