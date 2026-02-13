@@ -51,6 +51,7 @@ export const getPostById = async (id: Post["id_post"]) => {
 
 export const createPost = async (data: formData) => {
   try {
+
     const result = CreatePostSchema.safeParse({
       title: data.title,
       content: data.content,

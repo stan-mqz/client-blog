@@ -1,6 +1,21 @@
 import { z } from "zod";
 import { PostSchema } from "./postsTypes";
 
+
+export const IMAGE_SCHEMA = z
+  .instanceof(File)
+  .refine(
+    (file) =>
+      [
+        "image/png",
+        "image/jpeg",
+        "image/jpg",
+        "image/svg+xml",
+        "image/gif",
+      ].includes(file.type),
+    { message: "Invalid image file type" }
+  );
+
 // Schema para usuario autenticado
 export const AuthUserSchema = z.object({
   id_user: z.number(),
@@ -62,6 +77,12 @@ export const UpdateUserEmailSchema = z.object({
   intent: z.string()
 })
 
+export const UpdateAvatarSchema = z.object({
+  image: IMAGE_SCHEMA,
+  intent: z.string()
+})
+
+
 export type AuthUser = z.infer<typeof AuthUserSchema>;
 export type UserLogin = z.infer<typeof UserLoginSchema>;
 export type UserProfile = z.infer<typeof UserProfileSchema>
@@ -80,6 +101,6 @@ export type UpdatePassword = {
   newPassword: string
 }
 
-export type UpdateAvatar = {
-  image: FileList;
-};
+export type IMAGE = z.infer<typeof IMAGE_SCHEMA>
+
+export type UpdateAvatar = z.infer<typeof UpdateAvatarSchema>

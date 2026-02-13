@@ -44,9 +44,14 @@ export const Settings = () => {
 
   const {
     control: controlAvatar,
+    register: registerAvatar,
     handleSubmit: handleSubmitAvatar,
     formState: { errors: errorsAvatar },
-  } = useForm<UpdateAvatar>();
+  } = useForm<UpdateAvatar>({
+    defaultValues: {
+      intent: 'update-avatar'
+    }
+  });
 
   const {
     control: controlPassword,
@@ -74,10 +79,11 @@ export const Settings = () => {
     submit(formData, {
       method: "POST",
     });
+
   };
 
   const onSubmitAvatar = (data: UpdateAvatar) => {
-    console.log(data);
+      const formData = new FormData()
   };
 
   const onSubmitPassword = (data: UpdatePassword) => {
@@ -121,8 +127,8 @@ export const Settings = () => {
               )}
             />
 
-            {settingsSuccess.field === 'username' && ('Username updated correctly ^^') && (
-              <p className="text-green-600 font-bold">{settingsError.message}</p>
+            {settingsSuccess.field === 'username' && (
+              <p className="text-green-600 font-bold">{settingsSuccess.message}</p>
             )}
 
             {settingsError.field === 'error-username' && (
@@ -174,7 +180,7 @@ export const Settings = () => {
               <ErrorFormMessage>{settingsError.message}</ErrorFormMessage>
             )}
 
-            <SubmitButton text="update e-mail" disabled={false} />
+            <SubmitButton text="update e-mail" disabled={isSubmitting} />
           </form>
         </div>
 
@@ -184,6 +190,8 @@ export const Settings = () => {
           className="space-y-5"
         >
           <h2 className="text-white font-bold text-xl">Upadate Avatar</h2>
+
+              <input type="hidden"  {...registerAvatar('intent')} />
 
           <Controller
             name="image"
@@ -202,7 +210,7 @@ export const Settings = () => {
             <ErrorFormMessage>{errorsAvatar.image.message}</ErrorFormMessage>
           )}
 
-          <SubmitButton text="update avatar" disabled={false} />
+          <SubmitButton text="update avatar" disabled={isSubmitting} />
         </form>
 
         {/* PASSWORD */}

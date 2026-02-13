@@ -41,7 +41,7 @@ export const CreatePostModal = () => {
     formData.append("content", data.content);
 
     if (data.image) {
-      formData.append("image", data.image[0]);
+      formData.append("image", data.image);
     }
 
     submit(formData, { method: "POST", encType: "multipart/form-data" });
@@ -152,7 +152,7 @@ export const CreatePostModal = () => {
                 <FileInput
                   label="Image"
                   value={value}
-                  onChange={(e) => onChange(e.target.files)}
+                  onChange={(e) => onChange(e.target.files?.[0])}
                 />
               )}
             />

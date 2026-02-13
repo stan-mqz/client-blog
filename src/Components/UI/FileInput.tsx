@@ -1,18 +1,19 @@
+import type { IMAGE } from "../../types/userTypes";
+
 type FileInputProps = {
   label: string;
-  value?: FileList 
+  value?: IMAGE;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export const FileInput = ({ label, value, onChange }: FileInputProps) => {
-  const file = value?.[0];
+  const file = value;
 
   return (
     <div className="flex flex-col gap-2 w-full">
       <label className="text-white font-medium">{label}</label>
 
       <label className="flex items-center gap-4 cursor-pointer group">
-
         <div
           className={`w-12 h-12 flex items-center justify-center rounded-full text-white transition
           ${file ? "bg-green-600" : "bg-purple-600 group-hover:bg-purple-700"}`}
@@ -25,7 +26,12 @@ export const FileInput = ({ label, value, onChange }: FileInputProps) => {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+              />
             </svg>
           ) : (
             <svg
@@ -43,14 +49,15 @@ export const FileInput = ({ label, value, onChange }: FileInputProps) => {
               />
             </svg>
           )}
-
         </div>
 
         <div
           className={`flex-1 border-b pb-2 transition
           ${file ? "border-green-500" : "border-gray-400 group-hover:border-purple-500"}`}
         >
-          <p className={`text-sm truncate ${file ? "text-green-400" : "text-gray-300"}`}>
+          <p
+            className={`text-sm truncate ${file ? "text-green-400" : "text-gray-300"}`}
+          >
             {file ? file.name : "Upload your file"}
           </p>
         </div>
