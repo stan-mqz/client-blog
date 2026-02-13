@@ -1,6 +1,7 @@
 import type { AxiosError } from "axios";
 import {
   AuthUserSchema,
+  UpdateUserEmailSchema,
   UpdateUserNameSchema,
   type AuthUser,
   type formData,
@@ -8,7 +9,8 @@ import {
 import api from "./api";
 import { useBlogStore } from "../store/store";
 
-const { setSettingsError, setSettingsSuccess, setUserData } = useBlogStore.getState();
+const { setSettingsError, setSettingsSuccess, setUserData } =
+  useBlogStore.getState();
 
 export const getUserProfile = async (id: AuthUser["id_user"]) => {
   try {
@@ -45,15 +47,49 @@ export const UpdateUserName = async (data: formData) => {
       username: data.username,
     });
 
-    setUserData({username: response.data.username})
+    setUserData({ username: response.data.username });
 
-    setSettingsSuccess('Username updated correctly ^^')
+    setSettingsSuccess("Username updated correctly ^^", "username");
   } catch (error) {
     const err = error as AxiosError<{ message: string }>;
     if (err.response && err.response.data) {
-      setSettingsError(err.response.data.message || "Something went wrong");
+      setSettingsError(
+        err.response.data.message || "Something went wrong",
+        "error-username",
+      );
     } else {
-      setSettingsError(err.message || "Something went wrong");
+      setSettingsError(err.message || "Something went wrong", "error-username");
+    }
+  }
+};
+
+export const UpdateUserEmail = async (data: formData) => {
+  try {
+    const result = UpdateUserEmailSchema.safeParse({
+      email: data.email,
+      intent: data.intent,
+    });
+
+    if (!result.success) {
+      console.log(result.error);
+    }
+
+    const response = await api.patch(`/user/update-email`, {
+      email: data.email,
+    });
+
+    setUserData({ email: response.data.email });
+
+    setSettingsSuccess("E-mail updated correctly ^^", "email");
+  } catch (error) {
+    const err = error as AxiosError<{ message: string }>;
+    if (err.response && err.response.data) {
+      setSettingsError(
+        err.response.data.message || "Something went wrong",
+        "error-email",
+      );
+    } else {
+      setSettingsError(err.message || "Something went wrong", "error-email");
     }
   }
 };

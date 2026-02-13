@@ -17,8 +17,12 @@ export const isIntent = (value: unknown): value is Intent => {
   );
 };
 
-type SettingsIntent = "update-username";
+type SettingsIntent = "update-username" | 'update-email';
 
 export const isSettingsIntent = (value: unknown): value is SettingsIntent => {
-  return value === "update-username";
+  return (
+    value === "update-username" ||
+    value === 'update-email'
+
+  )
 };

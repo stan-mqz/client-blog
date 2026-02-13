@@ -19,7 +19,7 @@ import {
   deleteComment,
   editComment,
 } from "../services/CommentsServices";
-import { UpdateUserName } from "../services/UserService";
+import { UpdateUserEmail, UpdateUserName } from "../services/UserService";
 
 export const loginAction = async ({ request }: ActionFunctionArgs) => {
   const data = Object.fromEntries(await request.formData());
@@ -119,9 +119,10 @@ export const settingsAction = async ({ request }: ActionFunctionArgs) => {
   switch (intent) {
     case 'update-username':
       await UpdateUserName(data)
-      break;
-  
-    default:
-      break;
+      break;  
+
+    case 'update-email' :
+      UpdateUserEmail(data)
+
   }
 };

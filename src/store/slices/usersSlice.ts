@@ -4,19 +4,31 @@ import type { AuthUser } from "../../types/userTypes";
 export type UsersSlice = {
   isLoading: boolean;
   authError: string;
-  settingsSucces: string;
+  settingsSucces: {
+    message: string;
+    field: string;
+  };
   setAuthError: (message: string) => void;
   userData: AuthUser | null;
   setUserData: (user: Partial<AuthUser> | null) => void;
-  settingsError: string;
+  settingsError: {
+    message: string;
+    field: string;
+  };
   isAuthenticated: boolean;
-  setSettingsSuccess: (message: string) => void;
-  setSettingsError: (message: string) => void;
+  setSettingsSuccess: (message: string, field: string) => void;
+  setSettingsError: (message: string, field: string) => void;
 };
 
 export const createUsersSlice: StateCreator<UsersSlice> = (set) => ({
-  settingsSucces: "",
-  settingsError: "",
+  settingsSucces: {
+    message: "",
+    field: "",
+  },
+  settingsError: {
+    message: "",
+    field: "",
+  },
   isLoading: false,
   authError: "",
   userData: null,
@@ -38,19 +50,39 @@ export const createUsersSlice: StateCreator<UsersSlice> = (set) => ({
       isAuthenticated: !!user,
     })),
 
-  setSettingsError: (message) => {
-    set({ settingsError: message });
+  setSettingsError: (message, field) => {
+    set({
+      settingsError: {
+        message,
+        field,
+      },
+    });
 
     setTimeout(() => {
-      set({ settingsError: "" });
+      set({
+        settingsError: {
+          message: "",
+          field: "",
+        },
+      });
     }, 3000);
   },
 
-  setSettingsSuccess: (message) => {
-    set({ settingsSucces: message });
+  setSettingsSuccess: (message, field) => {
+    set({
+      settingsSucces: {
+        message,
+        field,
+      },
+    });
 
     setTimeout(() => {
-      set({ settingsSucces: "" });
+      set({
+        settingsSucces: {
+          message: "",
+          field: "",
+        },
+      });
     }, 3000);
   },
 });

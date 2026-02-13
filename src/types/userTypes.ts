@@ -56,7 +56,12 @@ export const UpdateUserNameSchema = z.object({
 })
 
 
-// Tipos TypeScript
+
+export const UpdateUserEmailSchema = z.object({
+  email: z.string(),
+  intent: z.string()
+})
+
 export type AuthUser = z.infer<typeof AuthUserSchema>;
 export type UserLogin = z.infer<typeof UserLoginSchema>;
 export type UserProfile = z.infer<typeof UserProfileSchema>
@@ -68,7 +73,7 @@ export type formData = {
   [k: string]: FormDataEntryValue;
 };
 export type UpdateUserName = z.infer<typeof UpdateUserNameSchema>
-export type UpdateUserEmail = Pick<AuthUser, 'email'>
+export type UpdateUserEmail = z.infer<typeof UpdateUserEmailSchema>
 export type UpdatePassword = {
   email : string,
   currentPassword: string,

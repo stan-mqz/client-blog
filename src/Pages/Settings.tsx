@@ -33,11 +33,15 @@ export const Settings = () => {
 
   const {
     control: controlEmail,
+    register: registerUserEmail,
     handleSubmit: handleSubmitEmail,
     formState: { errors: errorsEmail },
-  } = useForm<UpdateUserEmail>();
+  } = useForm<UpdateUserEmail>({
+    defaultValues: {
+      intent: "update-email",
+    },
+  });
 
-  /* Formularios faltantes */
   const {
     control: controlAvatar,
     handleSubmit: handleSubmitAvatar,
@@ -62,7 +66,14 @@ export const Settings = () => {
   };
 
   const onSubmitEmail = (data: UpdateUserEmail) => {
-    console.log(data);
+    const formData = new FormData();
+
+    formData.append("email", data.email);
+    formData.append("intent", data.intent);
+
+    submit(formData, {
+      method: "POST",
+    });
   };
 
   const onSubmitAvatar = (data: UpdateAvatar) => {
@@ -110,12 +121,12 @@ export const Settings = () => {
               )}
             />
 
-            {settingsSuccess && (
-              <p className="text-green-600 font-bold">{settingsSuccess}</p>
+            {settingsSuccess.field === 'username' && ('Username updated correctly ^^') && (
+              <p className="text-green-600 font-bold">{settingsError.message}</p>
             )}
 
-            {settingsError && (
-              <ErrorFormMessage>{settingsError}</ErrorFormMessage>
+            {settingsError.field === 'error-username' && (
+              <ErrorFormMessage>{settingsError.message}</ErrorFormMessage>
             )}
             {errorsUsername.username && (
               <ErrorFormMessage>
@@ -126,11 +137,11 @@ export const Settings = () => {
             <SubmitButton text="update username" disabled={isSubmitting} />
           </form>
 
-          {/* EMAIL */}
           <form
             onSubmit={handleSubmitEmail(onSubmitEmail)}
             className="space-y-5"
           >
+            <input type="hidden" {...registerUserEmail("intent")} />
             <Controller
               name="email"
               control={controlEmail}
@@ -153,6 +164,14 @@ export const Settings = () => {
 
             {errorsEmail.email && (
               <ErrorFormMessage>{errorsEmail.email.message}</ErrorFormMessage>
+            )}
+
+            {settingsSuccess.field === 'email' && (
+              <p className="text-green-600 font-bold">{settingsSuccess.message}</p>
+            )}
+
+            {settingsError.field === 'error-email' && (
+              <ErrorFormMessage>{settingsError.message}</ErrorFormMessage>
             )}
 
             <SubmitButton text="update e-mail" disabled={false} />
