@@ -57,21 +57,26 @@ export const Settings = () => {
   const {
     control: controlPassword,
     handleSubmit: handleSubmitPassword,
+    register: registerPassword,
     formState: { errors: errorsPassword },
-  } = useForm<UpdatePassword>();
+  } = useForm<UpdatePassword>({
+    defaultValues: {
+      intent: "update-password",
+    },
+  });
 
-  const onSubmitUsername =  (data: UpdateUserName) => {
+  const onSubmitUsername = (data: UpdateUserName) => {
     const formData = new FormData();
 
     formData.append("username", data.username);
     formData.append("intent", data.intent);
 
-     submit(formData, {
+    submit(formData, {
       method: "POST",
     });
   };
 
-  const onSubmitEmail =  (data: UpdateUserEmail) => {
+  const onSubmitEmail = (data: UpdateUserEmail) => {
     const formData = new FormData();
 
     formData.append("email", data.email);
@@ -80,7 +85,6 @@ export const Settings = () => {
     submit(formData, {
       method: "POST",
     });
-
   };
 
   const onSubmitAvatar = (data: UpdateAvatar) => {
@@ -98,7 +102,17 @@ export const Settings = () => {
   };
 
   const onSubmitPassword = (data: UpdatePassword) => {
-    console.log(data);
+    const formData = new FormData();
+    formData.append("email", data.email);
+    formData.append("password", data.currentPassword);
+    formData.append("newPassword", data.newPassword);
+    formData.append("intent", data.intent)
+
+    submit(formData, {
+      method: 'POST'
+    })
+
+
   };
 
   return (
@@ -245,6 +259,8 @@ export const Settings = () => {
         >
           <h2 className="text-white font-bold text-xl">Upadate Password</h2>
 
+          <input type="hidden" {...registerPassword("intent")} />
+
           <Controller
             name="email"
             control={controlPassword}
@@ -277,6 +293,12 @@ export const Settings = () => {
             )}
           />
 
+          {errorsPassword.currentPassword && (
+            <ErrorFormMessage>
+              {errorsPassword.currentPassword.message}
+            </ErrorFormMessage>
+          )}
+
           <Controller
             name="newPassword"
             control={controlPassword}
@@ -284,7 +306,7 @@ export const Settings = () => {
               required: "New password is required",
               minLength: {
                 value: 8,
-                message: "Password must be at least 6 characters",
+                message: "Password must be at least 8 characters",
               },
             }}
             render={({ field }) => (
@@ -303,7 +325,17 @@ export const Settings = () => {
             </ErrorFormMessage>
           )}
 
-          <SubmitButton text="update password" disabled={false} />
+          {settingsSuccess.field === "password" && (
+            <p className="text-green-600 font-bold">
+              {settingsSuccess.message}
+            </p>
+          )}
+
+          {settingsError.field === "error-password" && (
+            <ErrorFormMessage>{settingsError.message}</ErrorFormMessage>
+          )}
+
+          <SubmitButton text="update password" disabled={isSubmitting} />
         </form>
       </div>
     </div>

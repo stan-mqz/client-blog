@@ -2,6 +2,7 @@ import type { AxiosError } from "axios";
 import {
   AuthUserSchema,
   UpdateAvatarSchema,
+  UpdatePasswordSchema,
   UpdateUserEmailSchema,
   UpdateUserNameSchema,
   type AuthUser,
@@ -97,8 +98,6 @@ export const UpdateUserEmail = async (data: formData) => {
 
 export const UpdateAvatar = async (data: formData) => {
   try {
-
-
     const result = UpdateAvatarSchema.safeParse({
       avatar: data.avatar,
       intent: data.intent,
@@ -128,6 +127,41 @@ export const UpdateAvatar = async (data: formData) => {
       );
     } else {
       setSettingsError(err.message || "Something went wrong", "error-avatar");
+    }
+  }
+};
+
+export const UpdatePassword = async (data: formData) => {
+  try {
+    const result = UpdatePasswordSchema.safeParse({
+      email: data.email,
+      currentPassword: data.password,
+      newPassword: data.newPassword,
+      intent: data.intent,
+    });
+
+    if (!result.success) {
+      console.log(result);
+    }
+
+    await api.patch(`/user/update-password`, {
+      email: data.email,
+      password: data.password,
+      newPassword: data.newPassword,
+    });
+
+    setSettingsSuccess("Password updated correctly ^^", "password");
+
+  } catch (error) {
+    const err = error as AxiosError<{ message: string }>;
+
+    if (err.response && err.response.data) {
+      setSettingsError(
+        err.response.data.message || "Something went wrong",
+        "error-password",
+      );
+    } else {
+      setSettingsError(err.message || "Something went wrong", "error-password");
     }
   }
 };

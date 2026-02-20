@@ -17,13 +17,14 @@ export const isIntent = (value: unknown): value is Intent => {
   );
 };
 
-type SettingsIntent = "update-username" | 'update-email' | 'update-avatar';
+type SettingsIntent = "update-username" | 'update-email' | 'update-avatar' | 'update-password';
 
 export const isSettingsIntent = (value: unknown): value is SettingsIntent => {
   return (
     value === "update-username" ||
     value === 'update-email' || 
-    value === 'update-avatar'
+    value === 'update-avatar' ||
+    value === 'update-password'
 
   )
 };
