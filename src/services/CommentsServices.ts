@@ -20,10 +20,6 @@ export const createComment = async (
   data: CommentData
 ) => {
   try {
-    const URL = `${
-      import.meta.env.VITE_BACKEND_URL
-    }/comments/create-comment/${id_post}`;
-
     const result = CreateCommentSchema.safeParse({
       intent: data.intent,
       content_comment: data.content_comment,
@@ -33,7 +29,7 @@ export const createComment = async (
       return console.log(result.error);
     }
 
-    await api.post(URL, {
+    await api.post(`/comments/create-comment/${id_post}`, {
       content_comment: data.content_comment,
     });
   } catch (error) {
@@ -52,10 +48,6 @@ export const editComment = async (
   data: CommentData
 ) => {
   try {
-    const URL = `${
-      import.meta.env.VITE_BACKEND_URL
-    }/comments/edit-comment/${id_comment}`;
-
     const result = UpdateCommentSchema.safeParse({
       id_comment,
       update_comment: data.update_comment,
@@ -66,7 +58,7 @@ export const editComment = async (
       console.log(result.error);
     }
 
-    await api.patch(URL, {
+    await api.patch(`/comments/edit-comment/${id_comment}`, {
       content_comment: data.update_comment,
     });
   } catch (error) {
@@ -82,10 +74,6 @@ export const editComment = async (
 
 export const deleteComment = async (id_comment: Comment["id_comment"], data: CommentData) => {
   try {
-    const URL = `${
-      import.meta.env.VITE_BACKEND_URL
-    }/comments/delete-comment/${id_comment}`;
-
     const result = DeleteCommentSchema.safeParse({
       id_comment,
       intent: data.intent
@@ -95,7 +83,7 @@ export const deleteComment = async (id_comment: Comment["id_comment"], data: Com
       console.log(result.error)
     }
 
-    await api.delete(URL)
+    await api.delete(`/comments/delete-comment/${id_comment}`)
 
 
   } catch (error) {

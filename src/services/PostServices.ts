@@ -13,8 +13,7 @@ const { setPostError } = useBlogStore.getState();
 
 export const getAllPosts = async () => {
   try {
-    const URL = `${import.meta.env.VITE_BACKEND_URL}/posts/all`;
-    const { data } = await api(URL);
+    const { data } = await api.get("/posts/all");
     const result = PostsArraySchema.safeParse(data);
 
     if (!result.success) {
@@ -29,7 +28,7 @@ export const getAllPosts = async () => {
 
 export const getPostById = async (id: Post["id_post"]) => {
   try {
-    const { data } = await api(`posts/${id}`);
+    const { data } = await api.get(`/posts/${id}`);
 
     const result = PostSchema.safeParse(data);
 
@@ -125,9 +124,7 @@ export const deletePost = async (id: Post["id_post"]) => {
 
 export const likePost = async (id: Post["id_post"]) => {
   try {
-    const URL = `${import.meta.env.VITE_BACKEND_URL}/posts/${id}/like`;
-
-    await api.post(URL);
+    await api.post(`/posts/${id}/like`);
   } catch (error) {
     console.log(error);
   }
@@ -135,8 +132,7 @@ export const likePost = async (id: Post["id_post"]) => {
 
 export const unlikePost = async (id: Post["id_post"]) => {
   try {
-    const URL = `${import.meta.env.VITE_BACKEND_URL}/posts/${id}/like`;
-    await api.delete(URL);
+    await api.delete(`/posts/${id}/like`);
   } catch (error) {
     console.log(error);
   }

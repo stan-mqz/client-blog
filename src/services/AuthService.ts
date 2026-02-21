@@ -15,12 +15,7 @@ const { setAuthError } = useBlogStore.getState();
 
 export const me = async () => {
   try {
-    let response;
-
-    const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/me`;
-
-    response = await api.get(URL);
-
+    const response = await api.get("/auth/me");
     return response.data;
   } catch (error) {
     return null;
@@ -29,9 +24,6 @@ export const me = async () => {
 
 export const login = async (data: formData) => {
   try {
-    let response;
-    const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/login`;
-
     const result = UserLoginSchema.safeParse({
       email: data.email,
       password: data.password,
@@ -41,7 +33,7 @@ export const login = async (data: formData) => {
       return result.error;
     }
 
-    response = await api.post(URL, {
+    const response = await api.post("/auth/login", {
       email: data.email,
       password: data.password,
     });
@@ -59,9 +51,6 @@ export const login = async (data: formData) => {
 
 export const register = async (data: formData) => {
   try {
-    let response;
-    const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/register`;
-
     const result = UserRegisterSchema.safeParse({
       username: data.username,
       email: data.email,
@@ -72,7 +61,7 @@ export const register = async (data: formData) => {
       return result.error;
     }
 
-    response = await api.post(URL, {
+    const response = await api.post("/auth/register", {
       username: data.username,
       email: data.email,
       password: data.password,
@@ -95,9 +84,7 @@ export const verifyEmail = async (token: string) => {
   let success;
 
   try {
-    const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/verify-email`;
-
-    await api.post(URL, {
+    await api.post("/auth/verify-email", {
       verficationToken: token,
     });
 
@@ -112,8 +99,6 @@ export const verifyEmail = async (token: string) => {
 
 export const recoverEmail = async (data: formData) => {
   try {
-    const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/recover-email`;
-
     const result = UserRecoverEmailSchema.safeParse({
       email: data.email,
       newEmail: data.newEmail,
@@ -123,7 +108,7 @@ export const recoverEmail = async (data: formData) => {
       return result.error;
     }
 
-    const response = await api.post(URL, {
+    const response = await api.post("/auth/recover-email", {
       email: data.email,
       newEmail: data.newEmail,
     });
@@ -143,8 +128,6 @@ export const recoverEmail = async (data: formData) => {
 
 export const recoverPassword = async (data: formData) => {
   try {
-    const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/recover-password`;
-
     const result = UserRecoverPasswordSchema.safeParse({
       email: data.email,
       newPassword: data.newPassword,
@@ -154,7 +137,7 @@ export const recoverPassword = async (data: formData) => {
       return result.error;
     }
 
-    const response = await api.post(URL, {
+    const response = await api.post("/auth/recover-password", {
       email: data.email,
       newPassword: data.newPassword,
     });
@@ -176,9 +159,8 @@ export const logout = async () => {
       isLoading: true,
     });
     const store = useBlogStore.getState();
-    const URL = `${import.meta.env.VITE_BACKEND_URL}/auth/logout`;
 
-    await api.post(URL);
+    await api.post("/auth/logout");
 
     store.setUserData(null);
   } catch (error) {
