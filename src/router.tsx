@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import { Login } from "./Pages/Login";
 import { Register } from "./Pages/Register";
 import { Home } from "./Pages/Home";
@@ -31,6 +31,11 @@ export const router = createBrowserRouter([
   {
     path: "/",
     children: [
+
+      {
+        index: true,
+        element: <Navigate to="/home" replace />
+      },
       {
         path: "auth",
         loader: authLoader,
@@ -87,27 +92,27 @@ export const router = createBrowserRouter([
 
           {
             path: "create-post",
-            element: <CreatePostModal/>,
+            element: <CreatePostModal />,
             action: createPostAction
           },
 
           {
             path: 'display-post/:id',
-            element: <PostDetails/>,
+            element: <PostDetails />,
             loader: getSinglePostLoader,
             action: homeAction
           },
 
           {
             path: "edit-post/:id",
-            element: <EditPostModal/>,
+            element: <EditPostModal />,
             action: editPostAction,
             loader: getSinglePostLoader
           },
 
           {
             path: 'profile/:id',
-            element: <ProfilePage/>,
+            element: <ProfilePage />,
             loader: profileLoader,
             action: homeAction
           },
@@ -115,9 +120,9 @@ export const router = createBrowserRouter([
           {
             path: 'settings',
             action: settingsAction,
-            element: <Settings/>  
+            element: <Settings />
           }
-         
+
         ],
       },
     ],
